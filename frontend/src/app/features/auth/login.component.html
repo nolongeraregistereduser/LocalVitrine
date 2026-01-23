@@ -1,0 +1,24 @@
+<div class="login">
+  <div class="login__card">
+    <h1>Connexion</h1>
+    <p class="login__subtitle">Accédez à votre espace LocalVitrine.</p>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label>
+        <span>Email</span>
+        <input type="email" formControlName="email" placeholder="vous@example.com" />
+        <small *ngIf="form.controls.email.touched && form.controls.email.invalid">
+          Adresse email invalide
+        </small>
+      </label>
+      <label>
+        <span>Mot de passe</span>
+        <input type="password" formControlName="password" placeholder="••••••••" />
+        <small *ngIf="form.controls.password.touched && form.controls.password.invalid">
+          Mot de passe requis
+        </small>
+      </label>
+      <button type="submit">Se connecter</button>
+    </form>
+  </div>
+</div>
+

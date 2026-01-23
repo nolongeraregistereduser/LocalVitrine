@@ -1,0 +1,14 @@
+<div class="dashboard">
+  <h1>Dashboard</h1>
+  <p class="subtitle">Connexion API de test via /api/health.</p>
+
+  <div class="card">
+    <p *ngIf="loading">Chargement du statut...</p>
+    <p *ngIf="error" class="error">{{ error }}</p>
+    <div *ngIf="health && !loading">
+      <span class="badge success">{{ health.status }}</span>
+      <p class="muted">Horodatage: {{ health.timestamp }}</p>
+    </div>
+  </div>
+</div>
+

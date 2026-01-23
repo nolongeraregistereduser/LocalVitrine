@@ -4,7 +4,7 @@ Initialize the project structure for backend and frontend.
 ## Backend
 - Create Spring Boot project
 - Setup packages (controller, service, repository, entity, dto)
-- Connect PostgreSQL
+- Connect MySQL
 - Create test endpoint (/api/health)
 
 ## Frontend

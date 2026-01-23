@@ -39,7 +39,7 @@ Backend:
 - Spring Boot
 - Spring Security + JWT
 - JPA / Hibernate
-- PostgreSQL
+- MySQL
 
 Frontend:
 - Angular (standalone)
