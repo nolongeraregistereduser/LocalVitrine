@@ -1,0 +1,28 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <h1>Connexion</h1>
+    <p class="auth-subtitle">Accédez à votre espace LocalVitrine.</p>
+    <p *ngIf="serverError" class="auth-banner" role="alert">{{ serverError }}</p>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label>
+        <span>Email</span>
+        <input type="email" formControlName="email" placeholder="vous@example.com" autocomplete="email" />
+        <small *ngIf="form.controls.email.touched && form.controls.email.invalid">
+          Adresse email invalide
+        </small>
+      </label>
+      <label>
+        <span>Mot de passe</span>
+        <input type="password" formControlName="password" placeholder="••••••••" autocomplete="current-password" />
+        <small *ngIf="form.controls.password.touched && form.controls.password.invalid">
+          Mot de passe requis
+        </small>
+      </label>
+      <button type="submit" [disabled]="submitting">{{ submitting ? 'Connexion…' : 'Se connecter' }}</button>
+    </form>
+    <p class="auth-footer">
+      Pas encore de compte ?
+      <a routerLink="/register">Créer un compte</a>
+    </p>
+  </div>
+</div>

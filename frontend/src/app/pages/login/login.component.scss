@@ -1,11 +1,11 @@
-.login {
+.auth-page {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 320px;
 }
 
-.login__card {
+.auth-card {
   width: min(420px, 100%);
   border: 1px solid #e2e8f0;
   border-radius: 12px;
@@ -22,9 +22,18 @@ h1 {
   font-size: 22px;
 }
 
-.login__subtitle {
+.auth-subtitle {
   margin: 0;
   color: #475569;
+  font-size: 14px;
+}
+
+.auth-banner {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #b91c1c;
   font-size: 14px;
 }
 
@@ -65,7 +74,27 @@ button {
   transition: opacity 150ms ease;
 }
 
-button:hover {
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
   opacity: 0.9;
 }
 
+.auth-footer {
+  margin: 0;
+  font-size: 14px;
+  color: #475569;
+}
+
+.auth-footer a {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
