@@ -1,1 +1,70 @@
-@import '../login/login.component.scss';
+.auth-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.auth-banner {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: var(--lv-radius-sm);
+  background: var(--lv-danger-soft);
+  color: var(--lv-danger);
+  font-size: 14px;
+  border: 1px solid #fecaca;
+}
+
+.auth-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--lv-text);
+}
+
+input {
+  padding: 11px 12px;
+  border-radius: var(--lv-radius-sm);
+  border: 1px solid #cbd5e1;
+  font-size: 14px;
+  background: #fff;
+}
+
+input:focus-visible {
+  border-color: var(--lv-primary);
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+small {
+  color: var(--lv-danger);
+}
+
+.auth-footer {
+  margin: 14px 0 0;
+  font-size: 14px;
+  color: var(--lv-text-muted);
+}
+
+.auth-footer a {
+  color: var(--lv-primary-strong);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 540px) {
+  :host ::ng-deep .ui-card {
+    padding: 18px;
+  }
+}

@@ -1,35 +1,58 @@
-<div class="auth-page">
-  <div class="auth-card">
-    <h1>Inscription</h1>
-    <p class="auth-subtitle">Créez votre compte LocalVitrine.</p>
-    <p *ngIf="serverError" class="auth-banner" role="alert">{{ serverError }}</p>
-    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-      <label>
-        <span>Nom complet</span>
-        <input type="text" formControlName="fullName" placeholder="Votre nom" autocomplete="name" />
-        <small *ngIf="form.controls.fullName.touched && form.controls.fullName.invalid">
-          Nom requis
-        </small>
-      </label>
-      <label>
-        <span>Email</span>
-        <input type="email" formControlName="email" placeholder="vous@example.com" autocomplete="email" />
-        <small *ngIf="form.controls.email.touched && form.controls.email.invalid">
-          Adresse email invalide
-        </small>
-      </label>
-      <label>
-        <span>Mot de passe</span>
-        <input type="password" formControlName="password" placeholder="Au moins 8 caractères" autocomplete="new-password" />
-        <small *ngIf="form.controls.password.touched && form.controls.password.invalid">
-          Minimum 8 caractères
-        </small>
-      </label>
-      <button type="submit" [disabled]="submitting">{{ submitting ? 'Création…' : 'Créer mon compte' }}</button>
-    </form>
-    <p class="auth-footer">
-      Déjà inscrit ?
-      <a routerLink="/login">Se connecter</a>
-    </p>
+<app-ui-card>
+  <div class="auth-header">
+    <h1 class="lv-page-title">Inscription</h1>
+    <p class="lv-subtitle">Creez votre compte LocalVitrine en moins d'une minute.</p>
   </div>
-</div>
+
+  <p *ngIf="serverError" class="auth-banner" role="alert">{{ serverError }}</p>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form" novalidate>
+    <label class="auth-field" for="register-name">
+      <span>Nom complet</span>
+      <input
+        id="register-name"
+        type="text"
+        formControlName="fullName"
+        placeholder="Votre nom"
+        autocomplete="name"
+        [attr.aria-invalid]="fullNameInvalid"
+      />
+      <small *ngIf="fullNameInvalid">Le nom complet est requis.</small>
+    </label>
+
+    <label class="auth-field" for="register-email">
+      <span>Email</span>
+      <input
+        id="register-email"
+        type="email"
+        formControlName="email"
+        placeholder="vous@example.com"
+        autocomplete="email"
+        [attr.aria-invalid]="emailInvalid"
+      />
+      <small *ngIf="emailInvalid">Entrez une adresse email valide.</small>
+    </label>
+
+    <label class="auth-field" for="register-password">
+      <span>Mot de passe</span>
+      <input
+        id="register-password"
+        type="password"
+        formControlName="password"
+        placeholder="Minimum 8 caracteres"
+        autocomplete="new-password"
+        [attr.aria-invalid]="passwordInvalid"
+      />
+      <small *ngIf="passwordInvalid">Le mot de passe doit contenir au moins 8 caracteres.</small>
+    </label>
+
+    <app-ui-button type="submit" [loading]="submitting" [disabled]="form.invalid">
+      Creer mon compte
+    </app-ui-button>
+  </form>
+
+  <p class="auth-footer">
+    Deja inscrit ?
+    <a routerLink="/login">Se connecter</a>
+  </p>
+</app-ui-card>

@@ -1,28 +1,45 @@
-<div class="auth-page">
-  <div class="auth-card">
-    <h1>Connexion</h1>
-    <p class="auth-subtitle">Accédez à votre espace LocalVitrine.</p>
-    <p *ngIf="serverError" class="auth-banner" role="alert">{{ serverError }}</p>
-    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-      <label>
-        <span>Email</span>
-        <input type="email" formControlName="email" placeholder="vous@example.com" autocomplete="email" />
-        <small *ngIf="form.controls.email.touched && form.controls.email.invalid">
-          Adresse email invalide
-        </small>
-      </label>
-      <label>
-        <span>Mot de passe</span>
-        <input type="password" formControlName="password" placeholder="••••••••" autocomplete="current-password" />
-        <small *ngIf="form.controls.password.touched && form.controls.password.invalid">
-          Mot de passe requis
-        </small>
-      </label>
-      <button type="submit" [disabled]="submitting">{{ submitting ? 'Connexion…' : 'Se connecter' }}</button>
-    </form>
-    <p class="auth-footer">
-      Pas encore de compte ?
-      <a routerLink="/register">Créer un compte</a>
-    </p>
+<app-ui-card>
+  <div class="auth-header">
+    <h1 class="lv-page-title">Connexion</h1>
+    <p class="lv-subtitle">Accedez a votre espace LocalVitrine.</p>
   </div>
-</div>
+
+  <p *ngIf="serverError" class="auth-banner" role="alert">{{ serverError }}</p>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form" novalidate>
+    <label class="auth-field" for="login-email">
+      <span>Email</span>
+      <input
+        id="login-email"
+        type="email"
+        formControlName="email"
+        placeholder="vous@example.com"
+        autocomplete="email"
+        [attr.aria-invalid]="emailInvalid"
+      />
+      <small *ngIf="emailInvalid">Entrez une adresse email valide.</small>
+    </label>
+
+    <label class="auth-field" for="login-password">
+      <span>Mot de passe</span>
+      <input
+        id="login-password"
+        type="password"
+        formControlName="password"
+        placeholder="Votre mot de passe"
+        autocomplete="current-password"
+        [attr.aria-invalid]="passwordInvalid"
+      />
+      <small *ngIf="passwordInvalid">Le mot de passe est requis.</small>
+    </label>
+
+    <app-ui-button type="submit" [loading]="submitting" [disabled]="form.invalid">
+      Se connecter
+    </app-ui-button>
+  </form>
+
+  <p class="auth-footer">
+    Pas encore de compte ?
+    <a routerLink="/register">Creer un compte</a>
+  </p>
+</app-ui-card>

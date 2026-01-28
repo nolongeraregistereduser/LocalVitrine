@@ -1,100 +1,70 @@
-.auth-page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 320px;
-}
-
-.auth-card {
-  width: min(420px, 100%);
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 24px;
-  background: #fff;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+.auth-header {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-}
-
-h1 {
-  margin: 0;
-  font-size: 22px;
-}
-
-.auth-subtitle {
-  margin: 0;
-  color: #475569;
-  font-size: 14px;
+  gap: 6px;
+  margin-bottom: 16px;
 }
 
 .auth-banner {
   margin: 0;
-  padding: 10px 12px;
-  border-radius: 8px;
-  background: #fef2f2;
-  color: #b91c1c;
+  padding: 10px 14px;
+  border-radius: var(--lv-radius-sm);
+  background: var(--lv-danger-soft);
+  color: var(--lv-danger);
   font-size: 14px;
+  border: 1px solid #fecaca;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.auth-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
 }
 
-label {
+.auth-field {
   display: flex;
   flex-direction: column;
   gap: 6px;
   font-size: 14px;
-  color: #0f172a;
+  color: var(--lv-text);
 }
 
 input {
-  padding: 10px 12px;
-  border-radius: 8px;
+  padding: 11px 12px;
+  border-radius: var(--lv-radius-sm);
   border: 1px solid #cbd5e1;
   font-size: 14px;
+  background: #fff;
+}
+
+input:focus-visible {
+  border-color: var(--lv-primary);
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 small {
-  color: #dc2626;
-}
-
-button {
-  margin-top: 8px;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(90deg, #2563eb, #4f46e5);
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 150ms ease;
-}
-
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-button:hover:not(:disabled) {
-  opacity: 0.9;
+  color: var(--lv-danger);
 }
 
 .auth-footer {
-  margin: 0;
+  margin: 14px 0 0;
   font-size: 14px;
-  color: #475569;
+  color: var(--lv-text-muted);
 }
 
 .auth-footer a {
-  color: #2563eb;
+  color: var(--lv-primary-strong);
   font-weight: 600;
   text-decoration: none;
 }
 
 .auth-footer a:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 540px) {
+  :host ::ng-deep .ui-card {
+    padding: 18px;
+  }
 }

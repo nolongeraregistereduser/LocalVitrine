@@ -1,0 +1,21 @@
+.badge {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  background: #e2e8f0;
+  color: #1e293b;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.badge--success {
+  background: var(--lv-success-soft);
+  color: var(--lv-success);
+}
+
+.badge--error {
+  background: var(--lv-danger-soft);
+  color: var(--lv-danger);
+}

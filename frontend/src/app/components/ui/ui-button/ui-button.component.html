@@ -1,0 +1,4 @@
+<button class="ui-button" [class.ui-button--secondary]="variant === 'secondary'" [type]="type" [disabled]="disabled || loading">
+  <span *ngIf="loading">Chargement...</span>
+  <ng-content *ngIf="!loading"></ng-content>
+</button>
