@@ -5,19 +5,93 @@
   <div class="dashboard__grid">
     <app-ui-card>
       <h2 class="card-title">Etat de l'API</h2>
-      <p *ngIf="loading" class="muted">Chargement du statut...</p>
-      <p *ngIf="error" class="error">{{ error }}</p>
-      <div *ngIf="health && !loading" class="api-status">
+      <p *ngIf="loadingHealth" class="muted">Chargement du statut...</p>
+      <p *ngIf="healthError" class="error">{{ healthError }}</p>
+      <div *ngIf="health && !loadingHealth" class="api-status">
         <app-status-badge tone="success">{{ health.status }}</app-status-badge>
         <p class="muted">Horodatage: {{ health.timestamp }}</p>
       </div>
     </app-ui-card>
 
-    <app-ui-card>
-      <h2 class="card-title">Prochaine etape</h2>
-      <p class="muted">Commencez par creer votre premiere page projet et publiez-la en un clic.</p>
-      <app-status-badge tone="neutral">Configuration initiale</app-status-badge>
+    <app-ui-card class="dashboard__projects-wide">
+      <div class="projects-header">
+        <h2 class="card-title">Mes projets</h2>
+        <app-ui-button [disabled]="projectsLoading" (click)="openCreateModal()">Nouveau projet</app-ui-button>
+      </div>
+
+      <p *ngIf="projectsLoading" class="muted">Chargement de vos projets...</p>
+      <p *ngIf="projectsError" class="error">{{ projectsError }}</p>
+
+      <div *ngIf="!projectsLoading && !projects.length && !projectsError" class="empty-state">
+        <p class="muted">Aucun projet pour l'instant. Creez votre premiere vitrine locale.</p>
+        <app-ui-button (click)="openCreateModal()">Creer un projet</app-ui-button>
+      </div>
+
+      <div *ngIf="!projectsLoading && projects.length" class="project-grid">
+        <div class="project-card" *ngFor="let project of projects">
+          <app-ui-card>
+            <div class="project-card__head">
+              <h3 class="project-title">{{ project.title }}</h3>
+              <app-status-badge [tone]="projectStatusTone(project.status)">{{ project.status }}</app-status-badge>
+            </div>
+            <p class="muted project-meta">Cree le {{ project.createdAt | date : 'short' }}</p>
+            <p *ngIf="project.publicUrl" class="project-url">
+              <span class="muted">URL publique:</span>
+              {{ project.publicUrl }}
+            </p>
+            <div class="project-actions">
+              <app-ui-button variant="secondary" [disabled]="projectsLoading" (click)="openEditModal(project)">
+                Modifier
+              </app-ui-button>
+              <app-ui-button variant="secondary" [disabled]="projectsLoading" (click)="deleteProject(project)">
+                Supprimer
+              </app-ui-button>
+            </div>
+          </app-ui-card>
+        </div>
+      </div>
     </app-ui-card>
   </div>
 </div>
 
+<div *ngIf="modalOpen" class="modal-backdrop" (click)="closeModal()">
+  <div class="modal-panel" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+    <h2 class="modal-title">{{ modalMode === 'create' ? 'Nouveau projet' : 'Modifier le projet' }}</h2>
+
+    <form class="modal-form" (ngSubmit)="submitModal()">
+      <label class="field">
+        <span>Titre</span>
+        <input name="title" [(ngModel)]="formTitle" required maxlength="200" [disabled]="modalSubmitting" />
+      </label>
+
+      <label class="field">
+        <span>Statut</span>
+        <select name="status" [(ngModel)]="formStatus" [disabled]="modalSubmitting">
+          <option *ngFor="let s of statusOptions" [ngValue]="s">{{ s }}</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>URL publique (optionnel)</span>
+        <input
+          name="publicUrl"
+          [(ngModel)]="formPublicUrl"
+          maxlength="500"
+          placeholder="https://..."
+          [disabled]="modalSubmitting"
+        />
+      </label>
+
+      <p *ngIf="modalError" class="error">{{ modalError }}</p>
+
+      <div class="modal-actions">
+        <app-ui-button type="button" variant="secondary" [disabled]="modalSubmitting" (click)="closeModal()">
+          Annuler
+        </app-ui-button>
+        <app-ui-button type="submit" [loading]="modalSubmitting" [disabled]="!formTitle.trim()">
+          Enregistrer
+        </app-ui-button>
+      </div>
+    </form>
+  </div>
+</div>
