@@ -90,7 +90,26 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  align-items: center;
   margin-top: 4px;
+}
+
+.project-nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: var(--lv-radius-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  background: var(--lv-primary, #2563eb);
+  color: #fff;
+  border: none;
+}
+
+.project-nav-link:hover {
+  filter: brightness(1.05);
 }
 
 .modal-backdrop {

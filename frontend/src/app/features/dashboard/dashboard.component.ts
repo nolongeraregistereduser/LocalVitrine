@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { StatusBadgeComponent } from '../../components/ui/status-badge/status-badge.component';
 import { UiButtonComponent } from '../../components/ui/ui-button/ui-button.component';
 import { UiCardComponent } from '../../components/ui/ui-card/ui-card.component';
@@ -11,7 +12,7 @@ import { ProjectDto, ProjectPayload, ProjectService, ProjectStatus } from '../..
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, UiCardComponent, StatusBadgeComponent, UiButtonComponent],
+  imports: [CommonModule, FormsModule, RouterLink, UiCardComponent, StatusBadgeComponent, UiButtonComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })

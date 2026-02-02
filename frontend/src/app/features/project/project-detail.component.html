@@ -1,0 +1,12 @@
+<div class="project-detail lv-container">
+  <p class="back">
+    <a routerLink="/dashboard">Retour au tableau de bord</a>
+  </p>
+
+  <h1 class="lv-page-title">Fiche entreprise</h1>
+  <p class="lv-subtitle">Renseignez les informations liees a ce projet.</p>
+
+  <p *ngIf="!projectId" class="error">Projet invalide.</p>
+
+  <app-business-profile-form *ngIf="projectId" [projectId]="projectId" />
+</div>

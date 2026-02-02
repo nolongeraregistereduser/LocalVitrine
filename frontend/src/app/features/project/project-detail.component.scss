@@ -1,0 +1,25 @@
+.project-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.back {
+  margin: 0;
+}
+
+.back a {
+  color: var(--lv-text-muted);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.back a:hover {
+  color: var(--lv-primary, #2563eb);
+  text-decoration: underline;
+}
+
+.error {
+  color: var(--lv-danger);
+  margin: 0;
+}

@@ -1,0 +1,84 @@
+.bp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bp-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bp-section-title {
+  margin: 0 0 4px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--lv-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--lv-text);
+}
+
+.field input,
+.field textarea {
+  font: inherit;
+  padding: 10px 12px;
+  border-radius: var(--lv-radius-sm);
+  border: 1px solid var(--lv-border);
+  background: var(--lv-bg);
+  color: var(--lv-text);
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 96px;
+}
+
+.field input:disabled,
+.field textarea:disabled {
+  opacity: 0.7;
+}
+
+.bp-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.muted {
+  color: var(--lv-text-muted);
+  margin: 0;
+}
+
+.error {
+  color: var(--lv-danger);
+  margin: 0 0 8px;
+}
+
+.success-banner {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border-radius: var(--lv-radius-sm);
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .bp-actions {
+    justify-content: stretch;
+  }
+
+  .bp-actions app-ui-button {
+    width: 100%;
+  }
+}

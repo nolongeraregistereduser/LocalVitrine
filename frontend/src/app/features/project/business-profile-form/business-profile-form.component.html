@@ -1,0 +1,61 @@
+<app-ui-card>
+  <p *ngIf="loading" class="muted">Chargement de la fiche...</p>
+  <p *ngIf="error" class="error">{{ error }}</p>
+  <div *ngIf="success" class="success-banner" role="status">Fiche enregistree.</div>
+
+  <form *ngIf="!loading" class="bp-form" (ngSubmit)="submit()">
+    <div class="bp-section">
+      <h2 class="bp-section-title">Identite</h2>
+      <label class="field">
+        <span>Nom de l entreprise</span>
+        <input name="businessName" [(ngModel)]="businessName" required maxlength="200" [disabled]="saving" />
+      </label>
+      <label class="field">
+        <span>Ville</span>
+        <input name="city" [(ngModel)]="city" required maxlength="120" [disabled]="saving" />
+      </label>
+      <label class="field">
+        <span>Description</span>
+        <textarea
+          name="description"
+          [(ngModel)]="description"
+          rows="4"
+          required
+          maxlength="10000"
+          placeholder="Decrivez votre activite..."
+          [disabled]="saving"
+        ></textarea>
+      </label>
+    </div>
+
+    <div class="bp-section">
+      <h2 class="bp-section-title">Contact</h2>
+      <label class="field">
+        <span>Telephone</span>
+        <input name="phone" [(ngModel)]="phone" required maxlength="40" placeholder="+33 ..." [disabled]="saving" />
+      </label>
+      <label class="field">
+        <span>Email</span>
+        <input name="email" type="email" [(ngModel)]="email" required maxlength="190" [disabled]="saving" />
+      </label>
+    </div>
+
+    <div class="bp-section">
+      <h2 class="bp-section-title">Positionnement</h2>
+      <label class="field">
+        <span>Objectif</span>
+        <input name="goal" [(ngModel)]="goal" required maxlength="200" [disabled]="saving" />
+      </label>
+      <label class="field">
+        <span>Secteur</span>
+        <input name="sector" [(ngModel)]="sector" required maxlength="120" [disabled]="saving" />
+      </label>
+    </div>
+
+    <div class="bp-actions">
+      <app-ui-button type="submit" [loading]="saving" [disabled]="saving">
+        {{ profileExists ? 'Mettre a jour' : 'Enregistrer la fiche' }}
+      </app-ui-button>
+    </div>
+  </form>
+</app-ui-card>
