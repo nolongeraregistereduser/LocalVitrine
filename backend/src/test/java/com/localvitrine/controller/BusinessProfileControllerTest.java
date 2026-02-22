@@ -8,6 +8,9 @@ import com.localvitrine.entity.Role;
 import com.localvitrine.entity.RoleName;
 import com.localvitrine.entity.User;
 import com.localvitrine.entity.UserStatus;
+import com.localvitrine.enums.Goal;
+import com.localvitrine.enums.PrimaryCTA;
+import com.localvitrine.enums.Sector;
 import com.localvitrine.repository.BusinessProfileRepository;
 import com.localvitrine.repository.ProjectRepository;
 import com.localvitrine.repository.RoleRepository;
@@ -23,6 +26,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -108,13 +113,21 @@ class BusinessProfileControllerTest {
 
     private static BusinessProfileRequest sampleRequest() {
         return new BusinessProfileRequest(
-                "Boulangerie Dupont",
-                "Lyon",
-                "Artisan boulanger depuis 1990.",
-                "0478000000",
-                "contact@dupont.fr",
-                "Augmenter les visites en magasin",
-                "Alimentation"
+                "Boulangerie Dupont",           // businessName
+                "Lyon",                         // city
+                "123 Rue de la Paix, 69000 Lyon", // address
+                "Artisan boulanger depuis 1990.", // description
+                "Spécialisé en pain traditionnel avec des recettes ancestrales.", // detailedDescription
+                "Clients locaux et touristes",   // targetAudience
+                "0478000000",                   // phone
+                "contact@dupont.fr",            // email
+                "https://www.dupont-boulangerie.fr", // website
+                Goal.CALLS,                     // goal
+                Sector.RESTAURANT,              // sector
+                PrimaryCTA.CALL_NOW,            // primaryCTA
+                "https://facebook.com/dupont-boulangerie", // facebook
+                "https://instagram.com/dupont.boulangerie", // instagram
+                "https://wa.me/33478000000"     // whatsapp
         );
     }
 
@@ -143,13 +156,21 @@ class BusinessProfileControllerTest {
                 .andExpect(jsonPath("$.businessName").value("Boulangerie Dupont"));
 
         BusinessProfileRequest updated = new BusinessProfileRequest(
-                "Boulangerie Dupont SA",
-                "Lyon",
-                "Nouvelle description.",
-                "0478111111",
-                "hello@dupont.fr",
-                "Fideliser la clientele",
-                "Boulangerie"
+                "Boulangerie Dupont SA",        // businessName
+                "Lyon",                         // city
+                "456 Rue de la Liberté, 69000 Lyon", // address
+                "Nouvelle description.",        // description
+                "Double fournée quotidienne.",  // detailedDescription
+                "Clients professionnels",       // targetAudience
+                "0478111111",                   // phone
+                "hello@dupont.fr",              // email
+                "https://www.dupont-sa.fr",    // website
+                Goal.BOOKINGS,                  // goal
+                Sector.RESTAURANT,              // sector
+                PrimaryCTA.BOOK_NOW,            // primaryCTA
+                null,                           // facebook
+                "https://instagram.com/dupont.sa", // instagram
+                null                            // whatsapp
         );
 
         mockMvc.perform(put("/api/projects/" + projectId + "/business-profile")
@@ -187,4 +208,30 @@ class BusinessProfileControllerTest {
                         .content(objectMapper.writeValueAsString(sampleRequest())))
                 .andExpect(status().isNotFound());
     }
+
+        @Test
+        void createProfileWithInvalidEnumReturnsBadRequest() throws Exception {
+                long projectId = createProjectForUserA();
+                ObjectNode body = objectMapper.valueToTree(sampleRequest());
+                body.put("goal", "NOT_A_GOAL");
+
+                mockMvc.perform(post("/api/projects/" + projectId + "/business-profile")
+                                                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(objectMapper.writeValueAsString(body)))
+                                .andExpect(status().isBadRequest());
+        }
+
+        @Test
+        void createProfileWithInvalidSocialUrlReturnsBadRequest() throws Exception {
+                long projectId = createProjectForUserA();
+                ObjectNode body = objectMapper.valueToTree(sampleRequest());
+                body.put("facebook", "not-a-url");
+
+                mockMvc.perform(post("/api/projects/" + projectId + "/business-profile")
+                                                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(objectMapper.writeValueAsString(body)))
+                                .andExpect(status().isBadRequest());
+        }
 }

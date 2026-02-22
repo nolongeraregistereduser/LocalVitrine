@@ -1,7 +1,12 @@
 package com.localvitrine.entity;
 
+import com.localvitrine.enums.Goal;
+import com.localvitrine.enums.PrimaryCTA;
+import com.localvitrine.enums.Sector;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -42,8 +47,8 @@ public class BusinessProfile {
     @Column(nullable = false, length = 120)
     private String city;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String description;
+    @Column(nullable = false, length = 255)
+    private String address;
 
     @Column(nullable = false, length = 40)
     private String phone;
@@ -51,11 +56,38 @@ public class BusinessProfile {
     @Column(nullable = false, length = 190)
     private String email;
 
-    @Column(nullable = false, length = 200)
-    private String goal;
+    @Column(length = 255)
+    private String website;
 
-    @Column(nullable = false, length = 120)
-    private String sector;
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String description;
+
+    @Column(columnDefinition = "TEXT")
+    private String detailedDescription;
+
+    @Column(length = 500)
+    private String targetAudience;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Goal goal;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Sector sector;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private PrimaryCTA primaryCTA;
+
+    @Column(length = 255)
+    private String facebook;
+
+    @Column(length = 255)
+    private String instagram;
+
+    @Column(length = 255)
+    private String whatsapp;
 
     @Column(nullable = false, updatable = false)
     private Instant createdAt;

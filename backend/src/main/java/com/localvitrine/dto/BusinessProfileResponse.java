@@ -1,6 +1,9 @@
 package com.localvitrine.dto;
 
 import com.localvitrine.entity.BusinessProfile;
+import com.localvitrine.enums.Goal;
+import com.localvitrine.enums.PrimaryCTA;
+import com.localvitrine.enums.Sector;
 
 import java.time.Instant;
 
@@ -9,11 +12,19 @@ public record BusinessProfileResponse(
         Long projectId,
         String businessName,
         String city,
+        String address,
         String description,
+        String detailedDescription,
+        String targetAudience,
         String phone,
         String email,
-        String goal,
-        String sector,
+        String website,
+        Goal goal,
+        Sector sector,
+        PrimaryCTA primaryCTA,
+        String facebook,
+        String instagram,
+        String whatsapp,
         Instant createdAt,
         Instant updatedAt
 ) {
@@ -24,11 +35,19 @@ public record BusinessProfileResponse(
                 profile.getProject().getId(),
                 profile.getBusinessName(),
                 profile.getCity(),
+                profile.getAddress(),
                 profile.getDescription(),
+                profile.getDetailedDescription(),
+                profile.getTargetAudience(),
                 profile.getPhone(),
                 profile.getEmail(),
+                profile.getWebsite(),
                 profile.getGoal(),
                 profile.getSector(),
+                profile.getPrimaryCTA(),
+                profile.getFacebook(),
+                profile.getInstagram(),
+                profile.getWhatsapp(),
                 profile.getCreatedAt(),
                 profile.getUpdatedAt()
         );

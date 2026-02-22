@@ -8,11 +8,19 @@ export interface BusinessProfileDto {
   projectId: number;
   businessName: string;
   city: string;
+  address: string;
   description: string;
+  detailedDescription?: string;
+  targetAudience?: string;
   phone: string;
   email: string;
+  website?: string;
   goal: string;
   sector: string;
+  primaryCTA?: string;
+  facebook?: string;
+  instagram?: string;
+  whatsapp?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -20,11 +28,19 @@ export interface BusinessProfileDto {
 export interface BusinessProfilePayload {
   businessName: string;
   city: string;
+  address: string;
   description: string;
+  detailedDescription?: string | null;
+  targetAudience?: string | null;
   phone: string;
   email: string;
+  website?: string | null;
   goal: string;
   sector: string;
+  primaryCTA?: string | null;
+  facebook?: string | null;
+  instagram?: string | null;
+  whatsapp?: string | null;
 }
 
 @Injectable({ providedIn: 'root' })

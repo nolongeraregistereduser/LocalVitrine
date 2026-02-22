@@ -46,11 +46,19 @@ public class BusinessProfileServiceImpl implements BusinessProfileService {
                 .project(project)
                 .businessName(request.businessName().trim())
                 .city(request.city().trim())
+                .address(request.address().trim())
                 .description(request.description().trim())
+                .detailedDescription(request.detailedDescription() != null ? request.detailedDescription().trim() : null)
+                .targetAudience(request.targetAudience() != null ? request.targetAudience().trim() : null)
                 .phone(request.phone().trim())
                 .email(request.email().trim())
-                .goal(request.goal().trim())
-                .sector(request.sector().trim())
+                .website(request.website() != null ? request.website().trim() : null)
+                .goal(request.goal())
+                .sector(request.sector())
+                .primaryCTA(request.primaryCTA())
+                .facebook(request.facebook() != null ? request.facebook().trim() : null)
+                .instagram(request.instagram() != null ? request.instagram().trim() : null)
+                .whatsapp(request.whatsapp() != null ? request.whatsapp().trim() : null)
                 .build();
         businessProfileRepository.save(profile);
         return BusinessProfileResponse.fromEntity(profile);
@@ -73,11 +81,19 @@ public class BusinessProfileServiceImpl implements BusinessProfileService {
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Business profile not found"));
         profile.setBusinessName(request.businessName().trim());
         profile.setCity(request.city().trim());
+        profile.setAddress(request.address().trim());
         profile.setDescription(request.description().trim());
+        profile.setDetailedDescription(request.detailedDescription() != null ? request.detailedDescription().trim() : null);
+        profile.setTargetAudience(request.targetAudience() != null ? request.targetAudience().trim() : null);
         profile.setPhone(request.phone().trim());
         profile.setEmail(request.email().trim());
-        profile.setGoal(request.goal().trim());
-        profile.setSector(request.sector().trim());
+        profile.setWebsite(request.website() != null ? request.website().trim() : null);
+        profile.setGoal(request.goal());
+        profile.setSector(request.sector());
+        profile.setPrimaryCTA(request.primaryCTA());
+        profile.setFacebook(request.facebook() != null ? request.facebook().trim() : null);
+        profile.setInstagram(request.instagram() != null ? request.instagram().trim() : null);
+        profile.setWhatsapp(request.whatsapp() != null ? request.whatsapp().trim() : null);
         businessProfileRepository.save(profile);
         return BusinessProfileResponse.fromEntity(profile);
     }
