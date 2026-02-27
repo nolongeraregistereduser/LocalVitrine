@@ -16,4 +16,6 @@ public interface ProjectService {
     ProjectResponse updateProject(Long id, ProjectRequest request);
 
     void deleteProject(Long id);
+
+    ProjectResponse assignTemplateToProject(Long projectId, Long templateId);
 }

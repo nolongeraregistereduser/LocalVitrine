@@ -1,0 +1,25 @@
+<section class="tl-wrap" aria-labelledby="tl-heading">
+  <div class="tl-head">
+    <h2 id="tl-heading" class="tl-title">Modele de vitrine</h2>
+    <p class="tl-sub">Choisissez le design qui correspond le mieux a votre activite. Vous pourrez le modifier plus tard.</p>
+  </div>
+
+  <p *ngIf="loadError" class="tl-msg tl-msg--error">{{ loadError }}</p>
+  <p *ngIf="!loading && !loadError && templates.length === 0" class="tl-msg">Aucun modele disponible pour le moment.</p>
+  <p *ngIf="assignError" class="tl-msg tl-msg--error">{{ assignError }}</p>
+
+  <div *ngIf="loading" class="tl-skeleton" aria-busy="true">
+    <div class="tl-skel-card" *ngFor="let _ of [1, 2, 3]"></div>
+  </div>
+
+  <div *ngIf="!loading && !loadError && templates.length > 0" class="tl-grid">
+    <app-template-card
+      *ngFor="let t of templates; trackBy: trackById"
+      [template]="t"
+      [selected]="selectedId === t.id"
+      [disabled]="assignLoading"
+      [selectPulse]="pulseId === t.id"
+      (select)="onSelect($event)"
+    />
+  </div>
+</section>

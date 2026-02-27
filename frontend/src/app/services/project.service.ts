@@ -10,6 +10,9 @@ export interface ProjectDto {
   title: string;
   status: ProjectStatus;
   publicUrl: string | null;
+  templateId: number | null;
+  templateName: string | null;
+  templateCode: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -29,6 +32,10 @@ export class ProjectService {
     return this.http.get<ProjectDto[]>(this.baseUrl);
   }
 
+  getById(id: number): Observable<ProjectDto> {
+    return this.http.get<ProjectDto>(`${this.baseUrl}/${id}`);
+  }
+
   create(body: ProjectPayload): Observable<ProjectDto> {
     return this.http.post<ProjectDto>(this.baseUrl, body);
   }
@@ -39,5 +46,9 @@ export class ProjectService {
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  assignTemplate(projectId: number, templateId: number): Observable<ProjectDto> {
+    return this.http.put<ProjectDto>(`${this.baseUrl}/${projectId}/template/${templateId}`, null);
   }
 }

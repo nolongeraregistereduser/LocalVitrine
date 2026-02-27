@@ -1,0 +1,29 @@
+<article
+  class="tc-card"
+  [class.tc-card--selected]="selected"
+  [class.tc-card--pulse]="selectPulse"
+  [class.tc-card--disabled]="disabled"
+  [attr.aria-pressed]="selected"
+>
+  <button type="button" class="tc-card__hit" (click)="onSelect()" [disabled]="disabled">
+    <span class="tc-card__media">
+      <img
+        *ngIf="!imageError"
+        [src]="template.previewUrl"
+        [alt]="'Apercu ' + template.name"
+        loading="lazy"
+        (error)="onImgError()"
+      />
+      <div *ngIf="imageError" class="tc-card__placeholder" aria-hidden="true">
+        <span class="tc-card__placeholder-icon">◇</span>
+      </div>
+    </span>
+    <span class="tc-card__body">
+      <span class="tc-card__name">{{ template.name }}</span>
+      <span class="tc-card__desc">{{ template.description }}</span>
+      <span class="tc-card__cta">
+        {{ selected ? 'Selectionne' : 'Choisir ce modele' }}
+      </span>
+    </span>
+  </button>
+</article>

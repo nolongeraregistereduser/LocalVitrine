@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BusinessProfileFormComponent } from './business-profile-form/business-profile-form.component';
+import { TemplateListComponent } from './template-list/template-list.component';
 
 @Component({
   selector: 'app-project-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, BusinessProfileFormComponent],
+  imports: [CommonModule, RouterLink, TemplateListComponent, BusinessProfileFormComponent],
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss'
 })

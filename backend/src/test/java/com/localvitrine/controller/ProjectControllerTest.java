@@ -5,11 +5,14 @@ import com.localvitrine.dto.ProjectRequest;
 import com.localvitrine.entity.ProjectStatus;
 import com.localvitrine.entity.Role;
 import com.localvitrine.entity.RoleName;
+import com.localvitrine.entity.Template;
 import com.localvitrine.entity.User;
 import com.localvitrine.entity.UserStatus;
+import com.localvitrine.enums.ActivityType;
 import com.localvitrine.repository.BusinessProfileRepository;
 import com.localvitrine.repository.ProjectRepository;
 import com.localvitrine.repository.RoleRepository;
+import com.localvitrine.repository.TemplateRepository;
 import com.localvitrine.repository.UserRepository;
 import com.localvitrine.security.JwtService;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,6 +63,9 @@ class ProjectControllerTest {
     @Autowired
     private BusinessProfileRepository businessProfileRepository;
 
+    @Autowired
+    private TemplateRepository templateRepository;
+
     private User userA;
     private User userB;
     private String tokenA;
@@ -69,6 +75,7 @@ class ProjectControllerTest {
     void setUp() {
         businessProfileRepository.deleteAll();
         projectRepository.deleteAll();
+        templateRepository.deleteAll();
         userRepository.deleteAll();
 
         Role userRole = roleRepository.findByName(RoleName.USER).orElseGet(() ->
@@ -193,5 +200,98 @@ class ProjectControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].title").value("A1"));
+    }
+
+    @Test
+    void ownerCanAssignActiveTemplate() throws Exception {
+        Template template = templateRepository.save(Template.builder()
+                .name("T1")
+                .code("t1")
+                .description("D")
+                .activityType(ActivityType.RETAIL)
+                .previewUrl("https://example.com/p.png")
+                .isActive(true)
+                .build());
+
+        String createJson = objectMapper.writeValueAsString(new ProjectRequest(
+                "Proj", ProjectStatus.DRAFT, null));
+
+        String createResponse = mockMvc.perform(post("/api/projects")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createJson))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        long projectId = objectMapper.readTree(createResponse).get("id").asLong();
+
+        mockMvc.perform(put("/api/projects/" + projectId + "/template/" + template.getId())
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.templateId").value(template.getId()))
+                .andExpect(jsonPath("$.templateName").value("T1"))
+                .andExpect(jsonPath("$.templateCode").value("t1"));
+    }
+
+    @Test
+    void otherUserCannotAssignTemplateToForeignProject() throws Exception {
+        Template template = templateRepository.save(Template.builder()
+                .name("T2")
+                .code("t2")
+                .description("D")
+                .activityType(ActivityType.SERVICES)
+                .previewUrl("https://example.com/p2.png")
+                .isActive(true)
+                .build());
+
+        String createJson = objectMapper.writeValueAsString(new ProjectRequest(
+                "Mine", ProjectStatus.DRAFT, null));
+
+        String createResponse = mockMvc.perform(post("/api/projects")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createJson))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        long projectId = objectMapper.readTree(createResponse).get("id").asLong();
+
+        mockMvc.perform(put("/api/projects/" + projectId + "/template/" + template.getId())
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenB))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void assignTemplateReturns404ForInactiveTemplate() throws Exception {
+        Template inactive = templateRepository.save(Template.builder()
+                .name("Off")
+                .code("off")
+                .description("D")
+                .activityType(ActivityType.OTHER)
+                .previewUrl("https://example.com/h.png")
+                .isActive(false)
+                .build());
+
+        String createJson = objectMapper.writeValueAsString(new ProjectRequest(
+                "P", ProjectStatus.DRAFT, null));
+
+        String createResponse = mockMvc.perform(post("/api/projects")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createJson))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        long projectId = objectMapper.readTree(createResponse).get("id").asLong();
+
+        mockMvc.perform(put("/api/projects/" + projectId + "/template/" + inactive.getId())
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA))
+                .andExpect(status().isNotFound());
     }
 }

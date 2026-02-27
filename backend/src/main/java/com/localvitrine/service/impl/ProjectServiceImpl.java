@@ -3,8 +3,10 @@ package com.localvitrine.service.impl;
 import com.localvitrine.dto.ProjectRequest;
 import com.localvitrine.dto.ProjectResponse;
 import com.localvitrine.entity.Project;
+import com.localvitrine.entity.Template;
 import com.localvitrine.entity.User;
 import com.localvitrine.repository.ProjectRepository;
+import com.localvitrine.repository.TemplateRepository;
 import com.localvitrine.repository.UserRepository;
 import com.localvitrine.service.ProjectService;
 import org.springframework.security.core.Authentication;
@@ -23,10 +25,15 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final TemplateRepository templateRepository;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository, UserRepository userRepository) {
+    public ProjectServiceImpl(
+            ProjectRepository projectRepository,
+            UserRepository userRepository,
+            TemplateRepository templateRepository) {
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
+        this.templateRepository = templateRepository;
     }
 
     @Override
@@ -81,6 +88,19 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = projectRepository.findByIdAndOwnerId(id, owner.getId())
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Project not found"));
         projectRepository.delete(project);
+    }
+
+    @Override
+    @Transactional
+    public ProjectResponse assignTemplateToProject(Long projectId, Long templateId) {
+        User owner = requireCurrentUser();
+        Project project = projectRepository.findByIdAndOwnerId(projectId, owner.getId())
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Project not found"));
+        Template template = templateRepository.findByIdAndIsActiveTrue(templateId)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Template not found"));
+        project.setTemplate(template);
+        projectRepository.save(project);
+        return ProjectResponse.fromEntity(project);
     }
 
     private User requireCurrentUser() {

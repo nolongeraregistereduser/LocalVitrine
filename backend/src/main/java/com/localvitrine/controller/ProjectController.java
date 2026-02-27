@@ -43,6 +43,13 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getMyProjectById(id));
     }
 
+    @PutMapping("/{projectId}/template/{templateId}")
+    public ResponseEntity<ProjectResponse> assignTemplate(
+            @PathVariable Long projectId,
+            @PathVariable Long templateId) {
+        return ResponseEntity.ok(projectService.assignTemplateToProject(projectId, templateId));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<ProjectResponse> update(@PathVariable Long id, @Valid @RequestBody ProjectRequest request) {
         return ResponseEntity.ok(projectService.updateProject(id, request));

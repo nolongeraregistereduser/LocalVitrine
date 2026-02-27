@@ -1,0 +1,73 @@
+.tl-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.tl-head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tl-title {
+  margin: 0;
+  font-size: clamp(1.15rem, 1.5vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--lv-text);
+}
+
+.tl-sub {
+  margin: 0;
+  max-width: 52ch;
+  color: var(--lv-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.tl-msg {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: var(--lv-radius-sm);
+  font-size: 0.9rem;
+  background: var(--lv-surface-soft);
+  border: 1px solid var(--lv-border);
+  color: var(--lv-text-muted);
+
+  &--error {
+    background: var(--lv-danger-soft);
+    border-color: rgba(220, 38, 38, 0.25);
+    color: var(--lv-danger);
+  }
+}
+
+.tl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.tl-skeleton {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.tl-skel-card {
+  height: 320px;
+  border-radius: var(--lv-radius-md);
+  background: linear-gradient(90deg, var(--lv-surface-soft) 0%, #eef2f7 50%, var(--lv-surface-soft) 100%);
+  background-size: 200% 100%;
+  animation: tl-shimmer 1.2s ease-in-out infinite;
+}
+
+@keyframes tl-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
