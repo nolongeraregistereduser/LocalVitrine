@@ -21,4 +21,6 @@ public interface TemplateService {
     AdminTemplateResponse activateTemplate(Long id);
 
     AdminTemplateResponse deactivateTemplate(Long id);
+
+    void deleteTemplate(Long id);
 }

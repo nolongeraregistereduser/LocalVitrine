@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.localvitrine.dto.AdminTemplateRequest;
 import com.localvitrine.entity.Role;
 import com.localvitrine.entity.RoleName;
+import com.localvitrine.entity.Project;
+import com.localvitrine.entity.ProjectStatus;
 import com.localvitrine.entity.Template;
 import com.localvitrine.entity.User;
 import com.localvitrine.entity.UserStatus;
@@ -29,6 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -184,6 +187,46 @@ class AdminTemplateControllerTest {
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(duplicate)))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    void deleteTemplateWorksWhenNotInUse() throws Exception {
+        Template template = templateRepository.save(Template.builder()
+                .name("Del")
+                .code("del")
+                .description("desc")
+                .activityType(ActivityType.SERVICES)
+                .previewUrl("https://example.com/del.png")
+                .isActive(true)
+                .build());
+
+        mockMvc.perform(delete("/api/admin/templates/" + template.getId())
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void deleteTemplateReturnsConflictWhenInUse() throws Exception {
+        User owner = userRepository.findByEmail("user@test.com").orElseThrow();
+        Template template = templateRepository.save(Template.builder()
+                .name("Used")
+                .code("used")
+                .description("desc")
+                .activityType(ActivityType.SERVICES)
+                .previewUrl("https://example.com/used.png")
+                .isActive(true)
+                .build());
+
+        projectRepository.save(Project.builder()
+                .title("Project")
+                .status(ProjectStatus.DRAFT)
+                .owner(owner)
+                .template(template)
+                .build());
+
+        mockMvc.perform(delete("/api/admin/templates/" + template.getId())
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken))
                 .andExpect(status().isConflict());
     }
 }

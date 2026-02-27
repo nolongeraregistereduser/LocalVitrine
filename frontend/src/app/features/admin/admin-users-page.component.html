@@ -1,0 +1,39 @@
+<div class="users-page">
+  <h1 class="lv-page-title">Users Management</h1>
+  <p class="lv-subtitle">Gerez les comptes utilisateurs et leur statut.</p>
+
+  <p *ngIf="loading" class="muted">Chargement...</p>
+  <p *ngIf="error" class="error">{{ error }}</p>
+
+  <div class="table-wrap" *ngIf="!loading && !error">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Created</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.fullName }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+          <td>
+            <span class="status" [class.status--disabled]="user.status === 'DISABLED'">{{ user.status }}</span>
+          </td>
+          <td>{{ user.createdAt | date : 'short' }}</td>
+          <td class="actions">
+            <button type="button" (click)="toggleStatus(user)">
+              {{ user.status === 'ACTIVE' ? 'Disable' : 'Enable' }}
+            </button>
+            <button type="button" class="danger" (click)="remove(user)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

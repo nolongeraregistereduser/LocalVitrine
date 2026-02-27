@@ -4,6 +4,7 @@ import com.localvitrine.dto.AdminTemplateRequest;
 import com.localvitrine.dto.AdminTemplateResponse;
 import com.localvitrine.dto.TemplateResponse;
 import com.localvitrine.entity.Template;
+import com.localvitrine.repository.ProjectRepository;
 import com.localvitrine.repository.TemplateRepository;
 import com.localvitrine.service.TemplateService;
 import org.springframework.stereotype.Service;
@@ -20,9 +21,11 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class TemplateServiceImpl implements TemplateService {
 
     private final TemplateRepository templateRepository;
+    private final ProjectRepository projectRepository;
 
-    public TemplateServiceImpl(TemplateRepository templateRepository) {
+    public TemplateServiceImpl(TemplateRepository templateRepository, ProjectRepository projectRepository) {
         this.templateRepository = templateRepository;
+        this.projectRepository = projectRepository;
     }
 
     @Override
@@ -101,6 +104,16 @@ public class TemplateServiceImpl implements TemplateService {
         template.setIsActive(false);
         templateRepository.save(template);
         return AdminTemplateResponse.fromEntity(template);
+    }
+
+    @Override
+    @Transactional
+    public void deleteTemplate(Long id) {
+        Template template = requireTemplate(id);
+        if (projectRepository.existsByTemplateId(id)) {
+            throw new ResponseStatusException(CONFLICT, "Template is assigned to one or more projects");
+        }
+        templateRepository.delete(template);
     }
 
     private Template requireTemplate(Long id) {

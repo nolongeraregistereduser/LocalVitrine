@@ -1,0 +1,23 @@
+<div class="admin-shell">
+  <header class="admin-topbar">
+    <button class="menu-btn" type="button" (click)="sidebarOpen = !sidebarOpen">☰</button>
+    <div class="brand">LocalVitrine Admin</div>
+    <div class="top-actions">
+      <button class="logout-btn" type="button" (click)="logout()">Se deconnecter</button>
+    </div>
+  </header>
+
+  <div class="admin-body">
+    <aside class="admin-sidebar" [class.admin-sidebar--closed]="!sidebarOpen">
+      <a routerLink="/admin/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        Dashboard
+      </a>
+      <a routerLink="/admin/users" routerLinkActive="active">Users</a>
+      <a routerLink="/admin/templates" routerLinkActive="active">Templates</a>
+    </aside>
+
+    <main class="admin-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

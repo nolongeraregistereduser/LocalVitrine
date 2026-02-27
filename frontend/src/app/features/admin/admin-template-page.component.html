@@ -1,6 +1,6 @@
 <div class="admin-templates lv-container">
   <p class="back">
-    <a routerLink="/dashboard">Retour au tableau de bord</a>
+    <a routerLink="/admin/dashboard">Retour au dashboard admin</a>
   </p>
 
   <h1 class="lv-page-title">Administration des templates</h1>
@@ -64,6 +64,7 @@
               <button type="button" (click)="toggleActive(item)">
                 {{ item.isActive ? 'Desactiver' : 'Activer' }}
               </button>
+              <button type="button" class="danger" (click)="deleteTemplate(item)">Supprimer</button>
             </div>
           </div>
         </article>

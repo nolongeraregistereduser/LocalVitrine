@@ -1,0 +1,36 @@
+<div class="admin-dashboard lv-container">
+  <h1 class="lv-page-title">Admin Dashboard</h1>
+  <p class="lv-subtitle">Zone reservee a l'administration LocalVitrine.</p>
+
+  <p *ngIf="loading" class="muted">Chargement des indicateurs...</p>
+  <p *ngIf="error" class="error">{{ error }}</p>
+
+  <section *ngIf="stats && !loading" class="stats-grid">
+    <article class="stat-card">
+      <p class="label">Total users</p>
+      <p class="value">{{ stats.totalUsers }}</p>
+    </article>
+    <article class="stat-card">
+      <p class="label">Total projects</p>
+      <p class="value">{{ stats.totalProjects }}</p>
+    </article>
+    <article class="stat-card">
+      <p class="label">Active templates</p>
+      <p class="value">{{ stats.activeTemplates }}</p>
+    </article>
+  </section>
+
+  <section class="admin-panel">
+    <article class="admin-card">
+      <h2>Template Management</h2>
+      <p>Creer, modifier, activer et desactiver les templates de la plateforme.</p>
+      <a routerLink="/admin/templates" class="admin-link">Ouvrir la gestion des templates</a>
+    </article>
+
+    <article class="admin-card">
+      <h2>Controle d'acces</h2>
+      <p>Les endpoints `/api/admin/**` sont accessibles uniquement au role ADMIN.</p>
+      <a routerLink="/dashboard" class="admin-link admin-link--secondary">Voir le dashboard utilisateur</a>
+    </article>
+  </section>
+</div>

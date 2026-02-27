@@ -15,10 +15,19 @@ export class AppComponent {
   private readonly router = inject(Router);
   protected readonly auth = inject(AuthService);
 
-  protected readonly isAuthRoute$ = this.router.events.pipe(
+  protected readonly layoutMode$ = this.router.events.pipe(
     filter((event): event is NavigationEnd => event instanceof NavigationEnd),
     startWith({ urlAfterRedirects: this.router.url } as NavigationEnd),
-    map((event) => event.urlAfterRedirects.startsWith('/login') || event.urlAfterRedirects.startsWith('/register'))
+    map((event) => {
+      const url = event.urlAfterRedirects;
+      if (url.startsWith('/login') || url.startsWith('/register')) {
+        return 'auth' as const;
+      }
+      if (url.startsWith('/admin')) {
+        return 'admin' as const;
+      }
+      return 'app' as const;
+    })
   );
 
   protected logout(): void {

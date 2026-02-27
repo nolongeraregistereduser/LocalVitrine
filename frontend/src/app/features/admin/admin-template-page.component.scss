@@ -71,6 +71,10 @@ button:hover {
   background: var(--lv-primary-strong);
 }
 
+button.danger {
+  background: var(--lv-danger);
+}
+
 button.secondary {
   background: var(--lv-surface-soft);
   color: var(--lv-text);

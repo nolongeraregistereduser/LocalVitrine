@@ -11,4 +11,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     List<Project> findByOwnerIdOrderByCreatedAtDesc(Long ownerId);
 
     Optional<Project> findByIdAndOwnerId(Long id, Long ownerId);
+
+    boolean existsByTemplateId(Long templateId);
 }

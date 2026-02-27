@@ -3,7 +3,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { of } from 'rxjs';
 import { finalize } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { UiButtonComponent } from '../../components/ui/ui-button/ui-button.component';
 import { UiCardComponent } from '../../components/ui/ui-card/ui-card.component';
 import { readAuthApiMessage } from '../auth/auth-error.util';
@@ -51,8 +53,18 @@ export class LoginComponent {
       .pipe(finalize(() => (this.submitting = false)))
       .subscribe({
         next: () => {
-          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/dashboard';
-          void this.router.navigateByUrl(returnUrl);
+          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+          if (returnUrl) {
+            void this.router.navigateByUrl(returnUrl);
+            return;
+          }
+          this.auth
+            .me()
+            .pipe(catchError(() => of(null)))
+            .subscribe((me) => {
+              const target = me?.role === 'ADMIN' ? '/admin/dashboard' : '/dashboard';
+              void this.router.navigateByUrl(target);
+            });
         },
         error: (err: HttpErrorResponse) => {
           this.serverError = readAuthApiMessage(err, 'Impossible de se connecter. Reessayez.');

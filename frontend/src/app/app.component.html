@@ -1,11 +1,13 @@
-<ng-container *ngIf="isAuthRoute$ | async; else appShell">
-  <main class="auth-layout lv-container">
+<ng-container [ngSwitch]="layoutMode$ | async">
+  <main *ngSwitchCase="'auth'" class="auth-layout lv-container">
     <router-outlet></router-outlet>
   </main>
-</ng-container>
 
-<ng-template #appShell>
-  <div class="shell lv-container">
+  <ng-container *ngSwitchCase="'admin'">
+    <router-outlet></router-outlet>
+  </ng-container>
+
+  <div *ngSwitchDefault class="shell lv-container">
     <header class="shell__topbar">
       <a class="brand" routerLink="/dashboard">LocalVitrine</a>
       <div class="topbar__actions">
@@ -28,4 +30,4 @@
       </main>
     </div>
   </div>
-</ng-template>
+</ng-container>

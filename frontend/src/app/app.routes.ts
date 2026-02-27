@@ -22,10 +22,27 @@ export const routes: Routes = [
     loadComponent: () => import('./features/project/project-detail.component').then((m) => m.ProjectDetailComponent)
   },
   {
-    path: 'admin/templates',
+    path: 'admin',
     canActivate: [authGuard, adminGuard],
-    loadComponent: () =>
-      import('./features/admin/admin-template-page.component').then((m) => m.AdminTemplatePageComponent)
+    loadComponent: () => import('./features/admin/admin-layout.component').then((m) => m.AdminLayoutComponent),
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./features/admin/admin-dashboard.component').then((m) => m.AdminDashboardComponent)
+      },
+      {
+        path: 'users',
+        loadComponent: () =>
+          import('./features/admin/admin-users-page.component').then((m) => m.AdminUsersPageComponent)
+      },
+      {
+        path: 'templates',
+        loadComponent: () =>
+          import('./features/admin/admin-template-page.component').then((m) => m.AdminTemplatePageComponent)
+      },
+      { path: '', pathMatch: 'full', redirectTo: 'dashboard' }
+    ]
   },
   { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
   { path: '**', redirectTo: 'dashboard' }

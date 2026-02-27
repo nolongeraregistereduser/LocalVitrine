@@ -120,6 +120,18 @@ export class AdminTemplatePageComponent implements OnInit {
     });
   }
 
+  deleteTemplate(item: AdminTemplateDto): void {
+    if (!confirm(`Supprimer le template ${item.name} ?`)) {
+      return;
+    }
+    this.service.delete(item.id).subscribe({
+      next: () => this.load(),
+      error: (err: HttpErrorResponse) => {
+        this.loadingError = this.mapError(err, 'Suppression impossible.');
+      }
+    });
+  }
+
   private mapError(err: HttpErrorResponse, fallback: string): string {
     const body = err.error as { message?: string } | undefined;
     if (body?.message) {

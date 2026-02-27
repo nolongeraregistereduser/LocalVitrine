@@ -48,4 +48,8 @@ export class AdminTemplateService {
   deactivate(id: number): Observable<AdminTemplateDto> {
     return this.http.patch<AdminTemplateDto>(`${this.baseUrl}/${id}/deactivate`, null);
   }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 }
