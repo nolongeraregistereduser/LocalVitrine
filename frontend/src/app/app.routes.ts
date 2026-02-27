@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -19,6 +20,12 @@ export const routes: Routes = [
     path: 'projects/:projectId',
     canActivate: [authGuard],
     loadComponent: () => import('./features/project/project-detail.component').then((m) => m.ProjectDetailComponent)
+  },
+  {
+    path: 'admin/templates',
+    canActivate: [authGuard, adminGuard],
+    loadComponent: () =>
+      import('./features/admin/admin-template-page.component').then((m) => m.AdminTemplatePageComponent)
   },
   { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
   { path: '**', redirectTo: 'dashboard' }

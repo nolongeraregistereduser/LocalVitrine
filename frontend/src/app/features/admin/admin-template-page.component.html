@@ -1,0 +1,73 @@
+<div class="admin-templates lv-container">
+  <p class="back">
+    <a routerLink="/dashboard">Retour au tableau de bord</a>
+  </p>
+
+  <h1 class="lv-page-title">Administration des templates</h1>
+  <p class="lv-subtitle">Creer, modifier, activer ou desactiver les templates visibles aux utilisateurs.</p>
+
+  <div class="admin-grid">
+    <section class="admin-form-card">
+      <h2>{{ editingId == null ? 'Nouveau template' : 'Modifier le template' }}</h2>
+      <form (ngSubmit)="submit()" class="admin-form">
+        <label>
+          <span>Nom</span>
+          <input [(ngModel)]="formName" name="name" maxlength="200" required />
+        </label>
+        <label>
+          <span>Code unique</span>
+          <input [(ngModel)]="formCode" name="code" maxlength="80" required />
+        </label>
+        <label>
+          <span>Type d'activite</span>
+          <select [(ngModel)]="formActivityType" name="activityType">
+            <option *ngFor="let option of activityOptions" [ngValue]="option">{{ option }}</option>
+          </select>
+        </label>
+        <label>
+          <span>Image de preview (URL)</span>
+          <input [(ngModel)]="formPreviewUrl" name="previewUrl" maxlength="2000" required />
+        </label>
+        <label>
+          <span>Description</span>
+          <textarea [(ngModel)]="formDescription" name="description" rows="4" required></textarea>
+        </label>
+
+        <p *ngIf="formError" class="error">{{ formError }}</p>
+
+        <div class="actions">
+          <button type="button" class="secondary" (click)="startCreate()">Reinitialiser</button>
+          <button type="submit" [disabled]="saving">{{ editingId == null ? 'Creer' : 'Mettre a jour' }}</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="admin-list-card">
+      <h2>Templates</h2>
+      <p *ngIf="loading" class="muted">Chargement...</p>
+      <p *ngIf="loadingError" class="error">{{ loadingError }}</p>
+
+      <div class="template-list" *ngIf="!loading && !loadingError">
+        <article class="template-item" *ngFor="let item of templates">
+          <img [src]="item.previewUrl" [alt]="'Preview ' + item.name" />
+          <div class="template-meta">
+            <div class="template-head">
+              <h3>{{ item.name }}</h3>
+              <span class="badge" [class.badge--inactive]="!item.isActive">
+                {{ item.isActive ? 'ACTIVE' : 'INACTIVE' }}
+              </span>
+            </div>
+            <p class="code">{{ item.code }}</p>
+            <p>{{ item.description }}</p>
+            <div class="item-actions">
+              <button type="button" class="secondary" (click)="startEdit(item)">Editer</button>
+              <button type="button" (click)="toggleActive(item)">
+                {{ item.isActive ? 'Desactiver' : 'Activer' }}
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+</div>

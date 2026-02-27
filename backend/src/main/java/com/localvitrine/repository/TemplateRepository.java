@@ -11,4 +11,10 @@ public interface TemplateRepository extends JpaRepository<Template, Long> {
     List<Template> findByIsActiveTrueOrderByNameAsc();
 
     Optional<Template> findByIdAndIsActiveTrue(Long id);
+
+    List<Template> findAllByOrderByNameAsc();
+
+    boolean existsByCode(String code);
+
+    boolean existsByCodeAndIdNot(String code, Long id);
 }
