@@ -1,0 +1,15 @@
+<div class="setup-page setup-page--animated">
+  <p class="back"><a [routerLink]="['/projects', projectId, 'setup', 'business']">Back</a></p>
+  <h1 class="lv-page-title">Step 2 - Choose Template</h1>
+  <p class="lv-subtitle">Choose a template that fits your activity. You can always customize it in the editor.</p>
+
+  <p *ngIf="!projectId" class="lv-alert lv-alert--error">Projet invalide.</p>
+
+  <app-template-list *ngIf="projectId" [projectId]="projectId" (templateAssigned)="onTemplateAssigned()" />
+
+  <div class="setup-actions" *ngIf="projectId">
+    <a class="setup-link setup-link--secondary" [routerLink]="['/projects', projectId, 'setup', 'business']">Back</a>
+    <app-ui-button [disabled]="!canContinue" (click)="continue()">Continue to editor</app-ui-button>
+  </div>
+</div>
+

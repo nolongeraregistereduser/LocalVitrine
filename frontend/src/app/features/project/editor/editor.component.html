@@ -1,4 +1,4 @@
-<div class="editor-page lv-container">
+<div class="editor-page">
   <header class="editor-topbar">
     <a [routerLink]="['/projects', projectId]" class="back-link">Retour au projet</a>
     <div class="editor-actions">
@@ -6,6 +6,7 @@
       <span *ngIf="saving" class="saving-state">Saving...</span>
       <span *ngIf="saveMessage" class="saved-state">{{ saveMessage }}</span>
       <button type="button" class="save-btn" (click)="saveManual()" [disabled]="saving || loading">Enregistrer</button>
+      <a [routerLink]="['/projects', projectId, 'setup', 'publish']" class="flow-link">Continue</a>
     </div>
   </header>
 

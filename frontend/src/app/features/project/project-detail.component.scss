@@ -1,7 +1,7 @@
 .project-detail {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .back {
@@ -22,4 +22,66 @@
 .error {
   color: var(--lv-danger);
   margin: 0;
+}
+
+.muted {
+  margin: 0;
+  color: var(--lv-text-muted);
+}
+
+.hub-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.card-title {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.status-text {
+  margin: 0 0 12px;
+  color: var(--lv-text-muted);
+  min-height: 38px;
+}
+
+.status-text.ok {
+  color: var(--lv-success);
+  font-weight: 600;
+}
+
+.next-step {
+  margin: 0;
+}
+
+.next-step a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: var(--lv-primary);
+  color: #fff;
+  border-radius: var(--lv-radius-sm);
+  padding: 10px 16px;
+  font-weight: 600;
+}
+
+.action-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-decoration: none;
+  color: #fff;
+  background: var(--lv-primary);
+  border-radius: var(--lv-radius-sm);
+  padding: 10px 14px;
+  font-weight: 600;
+}
+
+@media (max-width: 860px) {
+  .hub-grid {
+    grid-template-columns: 1fr;
+  }
 }

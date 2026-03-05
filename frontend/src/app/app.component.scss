@@ -17,6 +17,11 @@
   display: grid;
   place-items: center;
   padding: 24px 16px;
+  background: radial-gradient(circle at 20% 20%, #f5ebff 0%, #f5f3ff 40%, #f8fafc 100%);
+}
+
+.editor-layout {
+  min-height: 100vh;
 }
 
 .shell__topbar {
@@ -71,6 +76,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin-top: 12px;
 }
 
 .sidebar__nav a {
@@ -84,7 +90,7 @@
 
 .sidebar__nav a.active,
 .sidebar__nav a:hover {
-  background: #dbeafe;
+  background: #ede9fe;
 }
 
 .shell__content {

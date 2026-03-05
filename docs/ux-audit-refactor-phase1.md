@@ -58,3 +58,14 @@
 
 - Phase 1 audit and quick wins: completed.
 - Remaining phases proceed incrementally to avoid regressions in existing EPIC 5/6 flows.
+
+## Premium UX Baseline (User Flow Only)
+
+- Auth pages should stay minimal (no journey preview, no dashboard context) to reduce cognitive load.
+- Onboarding should remain linear and explicit with 4 steps:
+  1. Business Info
+  2. Template
+  3. Editor
+  4. Publish
+- Business profile should be completed through short multi-step chunks instead of one long form.
+- Editor route should be immersive fullscreen with shell distractions hidden.

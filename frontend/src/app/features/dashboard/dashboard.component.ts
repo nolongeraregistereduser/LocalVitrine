@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { StatusBadgeComponent } from '../../components/ui/status-badge/status-badge.component';
 import { UiButtonComponent } from '../../components/ui/ui-button/ui-button.component';
 import { UiCardComponent } from '../../components/ui/ui-card/ui-card.component';
@@ -19,6 +19,7 @@ import { ProjectDto, ProjectPayload, ProjectService, ProjectStatus } from '../..
 export class DashboardComponent implements OnInit {
   private readonly healthService = inject(HealthService);
   private readonly projectService = inject(ProjectService);
+  private readonly router = inject(Router);
 
   health?: HealthResponse;
   loadingHealth = true;
@@ -127,10 +128,14 @@ export class DashboardComponent implements OnInit {
         : this.projectService.update(this.editingId as number, payload);
 
     request$.subscribe({
-      next: () => {
+      next: (project) => {
         this.modalSubmitting = false;
         this.modalOpen = false;
         this.projectsSuccess = this.modalMode === 'create' ? 'Projet cree avec succes.' : 'Projet mis a jour.';
+        if (this.modalMode === 'create') {
+          this.router.navigate(['/projects', project.id, 'setup', 'business']);
+          return;
+        }
         this.refreshProjects();
       },
       error: (err: HttpErrorResponse) => {
@@ -159,6 +164,16 @@ export class DashboardComponent implements OnInit {
         this.projectsError = this.mapProjectsError(err);
       }
     });
+  }
+
+  setupRoute(project: ProjectDto): string[] {
+    if (project.status === 'PUBLISHED') {
+      return ['/projects', String(project.id), 'setup', 'publish'];
+    }
+    if (project.templateId == null) {
+      return ['/projects', String(project.id), 'setup', 'template'];
+    }
+    return ['/projects', String(project.id), 'setup', 'editor'];
   }
 
   private mapProjectsError(err: HttpErrorResponse): string {

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnChanges, OnInit, SimpleChanges, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { forkJoin, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { ProjectService } from '../../../services/project.service';
@@ -19,6 +19,7 @@ export class TemplateListComponent implements OnInit, OnChanges {
   private readonly projectService = inject(ProjectService);
 
   @Input({ required: true }) projectId!: number;
+  @Output() templateAssigned = new EventEmitter<number>();
 
   templates: TemplateDto[] = [];
   selectedId: number | null = null;
@@ -80,6 +81,9 @@ export class TemplateListComponent implements OnInit, OnChanges {
       .subscribe({
         next: (project) => {
           this.selectedId = project.templateId;
+          if (project.templateId != null) {
+            this.templateAssigned.emit(project.templateId);
+          }
           this.pulseId = template.id;
           window.setTimeout(() => {
             this.pulseId = null;

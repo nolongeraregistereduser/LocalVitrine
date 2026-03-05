@@ -1,0 +1,28 @@
+<div class="setup-page setup-page--animated">
+  <p class="back"><a [routerLink]="['/projects', projectId, 'setup', 'editor']">Back</a></p>
+  <h1 class="lv-page-title">Step 4 - Publish</h1>
+  <p class="lv-subtitle">Review your project and publish it so customers can access your landing page.</p>
+
+  <p *ngIf="loading" class="muted">Chargement du projet...</p>
+  <p *ngIf="error" class="lv-alert lv-alert--error">{{ error }}</p>
+  <p *ngIf="success" class="lv-alert lv-alert--success">{{ success }}</p>
+
+  <div class="setup-card" *ngIf="project && !loading">
+    <h2>Project summary</h2>
+    <p><strong>Title:</strong> {{ project.title }}</p>
+    <p><strong>Status:</strong> {{ project.status }}</p>
+    <p><strong>Template:</strong> {{ project.templateName || 'Aucun template selectionne' }}</p>
+
+    <label class="field">
+      <span>Public URL (optional)</span>
+      <input [(ngModel)]="publicUrl" maxlength="500" placeholder="https://..." />
+    </label>
+
+    <div class="setup-actions">
+      <a class="setup-link setup-link--secondary" [routerLink]="['/projects', projectId, 'editor']">Back to editor</a>
+      <app-ui-button [loading]="publishing" (click)="publish()">Publish now</app-ui-button>
+      <app-ui-button variant="secondary" [disabled]="!success" (click)="finish()">Finish</app-ui-button>
+    </div>
+  </div>
+</div>
+

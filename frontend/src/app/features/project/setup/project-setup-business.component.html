@@ -1,0 +1,15 @@
+<div class="setup-page setup-page--animated">
+  <p class="back"><a [routerLink]="['/projects', projectId]">Back</a></p>
+  <h1 class="lv-page-title">Step 1 - Business Information</h1>
+  <p class="lv-subtitle">Start by entering your core business information.</p>
+
+  <p *ngIf="!projectId" class="lv-alert lv-alert--error">Projet invalide.</p>
+
+  <app-business-profile-form *ngIf="projectId" [projectId]="projectId" (saved)="onSaved()" />
+
+  <div class="setup-actions" *ngIf="projectId">
+    <a class="setup-link setup-link--secondary" [routerLink]="['/projects', projectId]">Back</a>
+    <app-ui-button [disabled]="!canContinue" (click)="continue()">Continue to template</app-ui-button>
+  </div>
+</div>
+

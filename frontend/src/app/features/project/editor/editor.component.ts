@@ -71,7 +71,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     this.editor = grapesjs.init({
       container: this.editorHost.nativeElement,
       fromElement: false,
-      height: 'calc(100vh - 180px)',
+      height: 'calc(100vh - 70px)',
       storageManager: false,
       blockManager: {
         appendTo: '.gjs-blocks-c',

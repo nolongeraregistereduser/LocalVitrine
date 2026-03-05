@@ -1,13 +1,18 @@
 <app-ui-card>
   <p *ngIf="loading" class="muted">Chargement de la fiche...</p>
-  <p *ngIf="error" class="error">{{ error }}</p>
+  <p *ngIf="error" class="lv-alert lv-alert--error">{{ error }}</p>
   <div *ngIf="success" class="success-banner" role="status">Fiche enregistree.</div>
 
   <form *ngIf="!loading" [formGroup]="form" class="bp-form" (ngSubmit)="submit()">
-    <!-- Section 1: Basic Info -->
-    <div class="bp-section">
-      <h2 class="bp-section-title">Informations de Base</h2>
+    <div class="wizard-head">
+      <p class="wizard-kicker">Etape {{ currentStep }}/{{ totalSteps }}</p>
+      <h2 class="wizard-title">{{ stepLabel(currentStep) }}</h2>
+      <div class="wizard-progress" aria-hidden="true">
+        <span [style.width.%]="(currentStep / totalSteps) * 100"></span>
+      </div>
+    </div>
 
+    <div class="bp-section" *ngIf="isStep(1)">
       <label class="field">
         <span>Nom de l'entreprise *</span>
         <input
@@ -53,19 +58,44 @@
           formControlName="address"
           type="text"
           maxlength="255"
-          placeholder="Entrez votre adresse complète"
+          placeholder="Entrez votre adresse complete"
           [disabled]="saving"
         />
         <div *ngIf="form.get('address')?.invalid && form.get('address')?.touched" class="error-text">
-          L'adresse est requise (max 255 caractères)
+          L'adresse est requise (max 255 caracteres)
         </div>
       </label>
     </div>
 
-    <!-- Section 2: Contact -->
-    <div class="bp-section">
-      <h2 class="bp-section-title">Contact</h2>
+    <div class="bp-section" *ngIf="isStep(2)">
 
+      <label class="field">
+        <span>Description Courte *</span>
+        <textarea
+          formControlName="description"
+          rows="4"
+          maxlength="10000"
+          placeholder="Décrivez votre activité en quelques lignes..."
+          [disabled]="saving"
+        ></textarea>
+        <div *ngIf="form.get('description')?.invalid && form.get('description')?.touched" class="error-text">
+          La description est requise (max 10000 caractères)
+        </div>
+      </label>
+
+      <label class="field">
+        <span>Objectif Principal *</span>
+        <select formControlName="goal" [disabled]="saving">
+          <option value="">-- Sélectionner un objectif --</option>
+          <option *ngFor="let goal of goals" [value]="goal.value">{{ goal.label }}</option>
+        </select>
+        <div *ngIf="form.get('goal')?.invalid && form.get('goal')?.touched" class="error-text">
+          L'objectif est requis
+        </div>
+      </label>
+    </div>
+
+    <div class="bp-section" *ngIf="isStep(3)">
       <label class="field">
         <span>Téléphone *</span>
         <input
@@ -103,72 +133,6 @@
           placeholder="https://www.exemple.com"
           [disabled]="saving"
         />
-        <div *ngIf="form.get('website')?.invalid && form.get('website')?.touched" class="error-text">
-          Format URL invalide
-        </div>
-      </label>
-    </div>
-
-    <!-- Section 3: Business Info -->
-    <div class="bp-section">
-      <h2 class="bp-section-title">Informations Métier</h2>
-
-      <label class="field">
-        <span>Description Courte *</span>
-        <textarea
-          formControlName="description"
-          rows="4"
-          maxlength="10000"
-          placeholder="Décrivez votre activité en quelques lignes..."
-          [disabled]="saving"
-        ></textarea>
-        <div *ngIf="form.get('description')?.invalid && form.get('description')?.touched" class="error-text">
-          La description est requise (max 10000 caractères)
-        </div>
-      </label>
-
-      <label class="field">
-        <span>Description Détaillée</span>
-        <textarea
-          formControlName="detailedDescription"
-          rows="3"
-          maxlength="2000"
-          placeholder="Détails supplémentaires sur votre activité..."
-          [disabled]="saving"
-        ></textarea>
-        <div *ngIf="form.get('detailedDescription')?.invalid && form.get('detailedDescription')?.touched" class="error-text">
-          Max 2000 caractères
-        </div>
-      </label>
-
-      <label class="field">
-        <span>Public Cible</span>
-        <input
-          formControlName="targetAudience"
-          type="text"
-          maxlength="500"
-          placeholder="Ex: Professionnels, Particuliers, Touristes..."
-          [disabled]="saving"
-        />
-        <div *ngIf="form.get('targetAudience')?.invalid && form.get('targetAudience')?.touched" class="error-text">
-          Max 500 caractères
-        </div>
-      </label>
-    </div>
-
-    <!-- Section 4: Marketing -->
-    <div class="bp-section">
-      <h2 class="bp-section-title">Marketing</h2>
-
-      <label class="field">
-        <span>Objectif Principal *</span>
-        <select formControlName="goal" [disabled]="saving">
-          <option value="">-- Sélectionner un objectif --</option>
-          <option *ngFor="let goal of goals" [value]="goal.value">{{ goal.label }}</option>
-        </select>
-        <div *ngIf="form.get('goal')?.invalid && form.get('goal')?.touched" class="error-text">
-          L'objectif est requis
-        </div>
       </label>
 
       <label class="field">
@@ -179,11 +143,6 @@
         </select>
         <p class="help-text">Défini automatiquement en fonction de l'objectif sélectionné.</p>
       </label>
-    </div>
-
-    <!-- Section 5: Social Media -->
-    <div class="bp-section">
-      <h2 class="bp-section-title">Réseaux Sociaux (Optionnel)</h2>
 
       <label class="field">
         <span>Facebook</span>
@@ -194,9 +153,6 @@
           placeholder="https://www.facebook.com/..."
           [disabled]="saving"
         />
-        <div *ngIf="form.get('facebook')?.invalid && form.get('facebook')?.touched" class="error-text">
-          Format URL invalide
-        </div>
       </label>
 
       <label class="field">
@@ -208,9 +164,6 @@
           placeholder="https://www.instagram.com/..."
           [disabled]="saving"
         />
-        <div *ngIf="form.get('instagram')?.invalid && form.get('instagram')?.touched" class="error-text">
-          Format URL invalide
-        </div>
       </label>
 
       <label class="field">
@@ -222,14 +175,17 @@
           placeholder="https://wa.me/..."
           [disabled]="saving"
         />
-        <div *ngIf="form.get('whatsapp')?.invalid && form.get('whatsapp')?.touched" class="error-text">
-          Format URL invalide
-        </div>
       </label>
     </div>
 
-    <div class="bp-actions">
-      <app-ui-button type="submit" [loading]="saving" [disabled]="saving || !form.valid">
+    <div class="bp-actions wizard-actions">
+      <app-ui-button *ngIf="currentStep > 1" type="button" variant="secondary" [disabled]="saving" (click)="goBack()">
+        Back
+      </app-ui-button>
+      <app-ui-button *ngIf="currentStep < totalSteps" type="button" [disabled]="saving" (click)="goNext()">
+        Continue
+      </app-ui-button>
+      <app-ui-button *ngIf="currentStep === totalSteps" type="submit" [loading]="saving" [disabled]="saving || !form.valid">
         {{ profileExists ? 'Mettre à jour' : 'Enregistrer la fiche' }}
       </app-ui-button>
     </div>

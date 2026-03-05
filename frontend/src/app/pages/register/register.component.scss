@@ -1,8 +1,12 @@
+:host {
+  width: min(460px, 100%);
+}
+
 .auth-header {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .auth-banner {
@@ -17,8 +21,8 @@
 
 .auth-form {
   display: grid;
-  gap: 14px;
-  margin-top: 14px;
+  gap: 16px;
+  margin-top: 8px;
 }
 
 .auth-field {
@@ -30,9 +34,9 @@
 }
 
 input {
-  padding: 11px 12px;
+  padding: 12px 13px;
   border-radius: var(--lv-radius-sm);
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--lv-border);
   font-size: 14px;
   background: #fff;
 }
@@ -40,7 +44,7 @@ input {
 input:focus-visible {
   border-color: var(--lv-primary);
   outline: 0;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.16);
 }
 
 small {
@@ -48,9 +52,10 @@ small {
 }
 
 .auth-footer {
-  margin: 14px 0 0;
+  margin: 10px 0 0;
   font-size: 14px;
   color: var(--lv-text-muted);
+  text-align: center;
 }
 
 .auth-footer a {

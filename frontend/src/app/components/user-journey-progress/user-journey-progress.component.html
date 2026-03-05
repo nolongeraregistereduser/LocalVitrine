@@ -1,0 +1,15 @@
+<section *ngIf="progress" class="journey" [class.journey--compact]="compact" aria-label="Progression utilisateur">
+  <div class="journey__head">
+    <p class="journey__kicker">Parcours principal</p>
+    <h2 class="journey__title">Etape {{ progress.currentStepId }}/{{ progress.steps.length }}: {{ progress.currentLabel }}</h2>
+    <p class="journey__hint">{{ progress.currentHint }}</p>
+  </div>
+
+  <ol class="journey__steps">
+    <li *ngFor="let step of progress.steps" class="journey__step" [class.is-current]="step.state === 'current'" [class.is-done]="step.state === 'done'">
+      <span class="journey__dot" aria-hidden="true"></span>
+      <span class="journey__label">{{ step.id }}. {{ step.label }}</span>
+    </li>
+  </ol>
+</section>
+

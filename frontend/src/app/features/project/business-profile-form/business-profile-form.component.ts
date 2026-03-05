@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, OnDestroy, Output, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -25,6 +25,7 @@ export class BusinessProfileFormComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   @Input({ required: true }) projectId!: number;
+  @Output() saved = new EventEmitter<BusinessProfileDto>();
 
   form!: FormGroup;
 
@@ -32,6 +33,8 @@ export class BusinessProfileFormComponent implements OnInit, OnDestroy {
   saving = false;
   error?: string;
   success = false;
+  currentStep = 1;
+  readonly totalSteps = 3;
 
   /** True when GET returned 200 (profile exists). */
   profileExists = false;
@@ -175,6 +178,7 @@ export class BusinessProfileFormComponent implements OnInit, OnDestroy {
         this.success = true;
         this.profileExists = true;
         this.applyDto(dto);
+        this.saved.emit(dto);
         window.setTimeout(() => (this.success = false), 4000);
       },
       error: (err: HttpErrorResponse) => {
@@ -182,6 +186,64 @@ export class BusinessProfileFormComponent implements OnInit, OnDestroy {
         this.error = this.mapError(err);
       }
     });
+  }
+
+  goNext(): void {
+    if (this.currentStep >= this.totalSteps) {
+      return;
+    }
+    if (!this.isCurrentStepValid()) {
+      this.error = 'Veuillez completer les champs requis avant de continuer.';
+      return;
+    }
+    this.error = undefined;
+    this.currentStep += 1;
+  }
+
+  goBack(): void {
+    if (this.currentStep <= 1) {
+      return;
+    }
+    this.error = undefined;
+    this.currentStep -= 1;
+  }
+
+  isStep(step: number): boolean {
+    return this.currentStep === step;
+  }
+
+  stepLabel(step: number): string {
+    if (step === 1) {
+      return 'Informations de base';
+    }
+    if (step === 2) {
+      return 'Message et objectif';
+    }
+    return 'Contact';
+  }
+
+  private isCurrentStepValid(): boolean {
+    const fields = this.currentStepFields();
+    let valid = true;
+    fields.forEach((name) => {
+      const control = this.form.get(name);
+      control?.markAsTouched();
+      control?.updateValueAndValidity();
+      if (control?.invalid) {
+        valid = false;
+      }
+    });
+    return valid;
+  }
+
+  private currentStepFields(): string[] {
+    if (this.currentStep === 1) {
+      return ['businessName', 'sector', 'city', 'address'];
+    }
+    if (this.currentStep === 2) {
+      return ['description', 'goal'];
+    }
+    return ['phone', 'email'];
   }
 
   private applyDto(dto: BusinessProfileDto): void {

@@ -1,7 +1,41 @@
 .bp-form {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
+}
+
+.wizard-head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wizard-kicker {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--lv-text-muted);
+}
+
+.wizard-title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.wizard-progress {
+  height: 8px;
+  border-radius: 999px;
+  background: #ede9fe;
+  overflow: hidden;
+}
+
+.wizard-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--lv-primary), var(--lv-primary-strong));
+  transition: width 200ms ease;
 }
 
 .bp-section {
@@ -95,10 +129,15 @@
 
 .bp-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  gap: 10px;
   margin-top: 8px;
   padding-top: 16px;
   border-top: 1px solid var(--lv-border);
+}
+
+.wizard-actions app-ui-button {
+  width: 170px;
 }
 
 .muted {

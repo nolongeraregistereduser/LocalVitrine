@@ -7,6 +7,10 @@
     <router-outlet></router-outlet>
   </ng-container>
 
+  <main *ngSwitchCase="'editor'" class="editor-layout">
+    <router-outlet></router-outlet>
+  </main>
+
   <div *ngSwitchDefault class="shell lv-container">
     <header class="shell__topbar">
       <a class="brand" routerLink="/dashboard">LocalVitrine</a>
@@ -17,6 +21,7 @@
 
     <div class="shell__body">
       <aside class="sidebar" aria-label="Navigation principale">
+        <app-user-journey-progress [progress]="journeyProgress$ | async" [compact]="true" />
         <nav class="sidebar__nav">
           <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             Tableau de bord

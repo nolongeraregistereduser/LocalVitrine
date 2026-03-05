@@ -1,0 +1,25 @@
+<div class="setup-page setup-page--animated">
+  <p class="back"><a [routerLink]="['/projects', projectId, 'setup', 'template']">Back</a></p>
+  <h1 class="lv-page-title">Step 3 - Editor</h1>
+  <p class="lv-subtitle">Open the visual editor, customize your page, then continue to publish.</p>
+
+  <div class="setup-card" *ngIf="projectId">
+    <h2>Customize your page</h2>
+    <p>Use the visual editor to change text, images, sections and your call-to-action.</p>
+    <div class="setup-actions">
+      <app-ui-button (click)="openEditor()">Open visual editor</app-ui-button>
+      <label class="check">
+        <input type="checkbox" [(ngModel)]="customizationDone" />
+        I finished my customization
+      </label>
+    </div>
+  </div>
+
+  <p *ngIf="!projectId" class="lv-alert lv-alert--error">Projet invalide.</p>
+
+  <div class="setup-actions" *ngIf="projectId">
+    <a class="setup-link setup-link--secondary" [routerLink]="['/projects', projectId, 'setup', 'template']">Back</a>
+    <app-ui-button [disabled]="!customizationDone" (click)="continue()">Continue to publish</app-ui-button>
+  </div>
+</div>
+

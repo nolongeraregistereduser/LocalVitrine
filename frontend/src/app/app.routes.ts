@@ -27,6 +27,30 @@ export const routes: Routes = [
     loadComponent: () => import('./features/project/editor/editor.component').then((m) => m.EditorComponent)
   },
   {
+    path: 'projects/:projectId/setup/business',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/project/setup/project-setup-business.component').then((m) => m.ProjectSetupBusinessComponent)
+  },
+  {
+    path: 'projects/:projectId/setup/template',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/project/setup/project-setup-template.component').then((m) => m.ProjectSetupTemplateComponent)
+  },
+  {
+    path: 'projects/:projectId/setup/editor',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/project/setup/project-setup-editor.component').then((m) => m.ProjectSetupEditorComponent)
+  },
+  {
+    path: 'projects/:projectId/setup/publish',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/project/setup/project-setup-publish.component').then((m) => m.ProjectSetupPublishComponent)
+  },
+  {
     path: 'admin',
     canActivate: [authGuard, adminGuard],
     loadComponent: () => import('./features/admin/admin-layout.component').then((m) => m.AdminLayoutComponent),

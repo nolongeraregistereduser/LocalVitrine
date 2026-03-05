@@ -3,15 +3,49 @@
     <a routerLink="/dashboard">Retour au tableau de bord</a>
   </p>
 
-  <h1 class="lv-page-title">Fiche entreprise</h1>
-  <p class="lv-subtitle">Choisissez un modele puis renseignez les informations liees a ce projet.</p>
+  <h1 class="lv-page-title">Project Hub</h1>
+  <p class="lv-subtitle">Follow the guided steps to complete your landing page from setup to publication.</p>
 
-  <p *ngIf="!projectId" class="error">Projet invalide.</p>
-  <p *ngIf="projectId" class="back">
-    <a [routerLink]="['/projects', projectId, 'editor']">Ouvrir l'editeur visuel</a>
+  <p *ngIf="loading" class="muted">Chargement du projet...</p>
+  <p *ngIf="error" class="lv-alert lv-alert--error">{{ error }}</p>
+
+  <div *ngIf="project && !loading" class="hub-grid">
+    <app-ui-card>
+      <h2 class="card-title">Business Info</h2>
+      <p class="status-text" [class.ok]="businessInfoReady">
+        {{ businessInfoReady ? 'Completed' : 'Missing information' }}
+      </p>
+      <a class="action-link" [routerLink]="['/projects', projectId, 'setup', 'business']">
+        {{ businessInfoReady ? 'Update business info' : 'Start business info' }}
+      </a>
+    </app-ui-card>
+
+    <app-ui-card>
+      <h2 class="card-title">Template</h2>
+      <p class="status-text" [class.ok]="hasTemplate">
+        {{ hasTemplate ? project.templateName : 'No template selected yet' }}
+      </p>
+      <a class="action-link" [routerLink]="['/projects', projectId, 'setup', 'template']">
+        {{ hasTemplate ? 'Change template' : 'Choose template' }}
+      </a>
+    </app-ui-card>
+
+    <app-ui-card>
+      <h2 class="card-title">Editor</h2>
+      <p class="status-text">Open the visual editor to customize your page content and sections.</p>
+      <a class="action-link" [routerLink]="['/projects', projectId, 'setup', 'editor']">Open editor flow</a>
+    </app-ui-card>
+
+    <app-ui-card>
+      <h2 class="card-title">Publish</h2>
+      <p class="status-text" [class.ok]="isPublished">
+        {{ isPublished ? 'Published' : 'Draft - ready when setup is complete' }}
+      </p>
+      <a class="action-link" [routerLink]="['/projects', projectId, 'setup', 'publish']">Go to publish step</a>
+    </app-ui-card>
+  </div>
+
+  <p *ngIf="project && !loading" class="next-step">
+    <a [routerLink]="nextStepRoute">Next step</a>
   </p>
-
-  <app-template-list *ngIf="projectId" [projectId]="projectId" />
-
-  <app-business-profile-form *ngIf="projectId" [projectId]="projectId" />
 </div>
