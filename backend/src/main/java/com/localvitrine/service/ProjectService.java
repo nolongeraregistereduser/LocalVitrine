@@ -1,5 +1,7 @@
 package com.localvitrine.service;
 
+import com.localvitrine.dto.ProjectContentRequest;
+import com.localvitrine.dto.ProjectContentResponse;
 import com.localvitrine.dto.ProjectRequest;
 import com.localvitrine.dto.ProjectResponse;
 
@@ -18,4 +20,8 @@ public interface ProjectService {
     void deleteProject(Long id);
 
     ProjectResponse assignTemplateToProject(Long projectId, Long templateId);
+
+    ProjectContentResponse getProjectContent(Long id);
+
+    ProjectContentResponse updateProjectContent(Long id, ProjectContentRequest request);
 }

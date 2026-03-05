@@ -46,6 +46,12 @@ public class Project {
     @Column(length = 500)
     private String publicUrl;
 
+    @Column(columnDefinition = "TEXT")
+    private String htmlContent;
+
+    @Column(columnDefinition = "TEXT")
+    private String cssContent;
+
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 

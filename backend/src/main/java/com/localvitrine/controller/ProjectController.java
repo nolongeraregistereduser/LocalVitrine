@@ -1,5 +1,7 @@
 package com.localvitrine.controller;
 
+import com.localvitrine.dto.ProjectContentRequest;
+import com.localvitrine.dto.ProjectContentResponse;
 import com.localvitrine.dto.ProjectRequest;
 import com.localvitrine.dto.ProjectResponse;
 import com.localvitrine.service.ProjectService;
@@ -43,6 +45,11 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getMyProjectById(id));
     }
 
+    @GetMapping("/{id}/content")
+    public ResponseEntity<ProjectContentResponse> getContent(@PathVariable Long id) {
+        return ResponseEntity.ok(projectService.getProjectContent(id));
+    }
+
     @PutMapping("/{projectId}/template/{templateId}")
     public ResponseEntity<ProjectResponse> assignTemplate(
             @PathVariable Long projectId,
@@ -53,6 +60,13 @@ public class ProjectController {
     @PutMapping("/{id}")
     public ResponseEntity<ProjectResponse> update(@PathVariable Long id, @Valid @RequestBody ProjectRequest request) {
         return ResponseEntity.ok(projectService.updateProject(id, request));
+    }
+
+    @PutMapping("/{id}/content")
+    public ResponseEntity<ProjectContentResponse> updateContent(
+            @PathVariable Long id,
+            @Valid @RequestBody ProjectContentRequest request) {
+        return ResponseEntity.ok(projectService.updateProjectContent(id, request));
     }
 
     @DeleteMapping("/{id}")

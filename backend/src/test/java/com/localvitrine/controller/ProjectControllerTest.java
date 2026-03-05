@@ -1,6 +1,7 @@
 package com.localvitrine.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.localvitrine.dto.ProjectContentRequest;
 import com.localvitrine.dto.ProjectRequest;
 import com.localvitrine.entity.ProjectStatus;
 import com.localvitrine.entity.Role;
@@ -293,5 +294,79 @@ class ProjectControllerTest {
         mockMvc.perform(put("/api/projects/" + projectId + "/template/" + inactive.getId())
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void ownerCanSaveAndLoadProjectContent() throws Exception {
+        String createResponse = mockMvc.perform(post("/api/projects")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(
+                                new ProjectRequest("Editor", ProjectStatus.DRAFT, null))))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        long projectId = objectMapper.readTree(createResponse).get("id").asLong();
+
+        ProjectContentRequest content = new ProjectContentRequest(
+                "<section><h1>Welcome</h1></section>",
+                "h1{color:red;}");
+
+        mockMvc.perform(put("/api/projects/" + projectId + "/content")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(content)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.projectId").value(projectId))
+                .andExpect(jsonPath("$.htmlContent").value("<section><h1>Welcome</h1></section>"))
+                .andExpect(jsonPath("$.cssContent").value("h1{color:red;}"));
+
+        mockMvc.perform(get("/api/projects/" + projectId + "/content")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.projectId").value(projectId))
+                .andExpect(jsonPath("$.htmlContent").value("<section><h1>Welcome</h1></section>"));
+    }
+
+    @Test
+    void otherUserCannotAccessProjectContent() throws Exception {
+        String createResponse = mockMvc.perform(post("/api/projects")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(
+                                new ProjectRequest("Editor2", ProjectStatus.DRAFT, null))))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        long projectId = objectMapper.readTree(createResponse).get("id").asLong();
+
+        mockMvc.perform(get("/api/projects/" + projectId + "/content")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenB))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void unauthenticatedCannotSaveProjectContent() throws Exception {
+        String createResponse = mockMvc.perform(post("/api/projects")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(
+                                new ProjectRequest("Editor3", ProjectStatus.DRAFT, null))))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        long projectId = objectMapper.readTree(createResponse).get("id").asLong();
+
+        ProjectContentRequest content = new ProjectContentRequest("<section>x</section>", null);
+        mockMvc.perform(put("/api/projects/" + projectId + "/content")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(content)))
+                .andExpect(status().isUnauthorized());
     }
 }

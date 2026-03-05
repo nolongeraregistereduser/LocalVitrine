@@ -1,0 +1,80 @@
+.editor-page {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 0 24px;
+}
+
+.editor-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid var(--lv-border);
+  border-radius: var(--lv-radius-md);
+  padding: 12px 14px;
+  box-shadow: var(--lv-shadow-sm);
+}
+
+.editor-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-link {
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.save-btn {
+  border: none;
+  background: var(--lv-primary);
+  color: #fff;
+  border-radius: 10px;
+  padding: 9px 14px;
+  cursor: pointer;
+  transition: transform 0.18s ease, background-color 0.18s ease;
+}
+
+.save-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: var(--lv-primary-strong);
+}
+
+.save-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.saving-state,
+.saved-state {
+  font-size: 0.86rem;
+  color: var(--lv-text-muted);
+}
+
+.saved-state {
+  color: var(--lv-success);
+  font-weight: 600;
+}
+
+.editor-shell {
+  background: #fff;
+  border: 1px solid var(--lv-border);
+  border-radius: var(--lv-radius-md);
+  overflow: hidden;
+  box-shadow: var(--lv-shadow-md);
+}
+
+.editor-shell.hidden {
+  display: none;
+}
+
+.loading-msg {
+  color: var(--lv-text-muted);
+}
+
+.error-msg {
+  color: var(--lv-danger);
+  margin: 0;
+}

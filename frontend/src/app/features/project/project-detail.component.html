@@ -7,6 +7,9 @@
   <p class="lv-subtitle">Choisissez un modele puis renseignez les informations liees a ce projet.</p>
 
   <p *ngIf="!projectId" class="error">Projet invalide.</p>
+  <p *ngIf="projectId" class="back">
+    <a [routerLink]="['/projects', projectId, 'editor']">Ouvrir l'editeur visuel</a>
+  </p>
 
   <app-template-list *ngIf="projectId" [projectId]="projectId" />
 

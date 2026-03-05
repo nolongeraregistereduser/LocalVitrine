@@ -1,5 +1,7 @@
 package com.localvitrine.service.impl;
 
+import com.localvitrine.dto.ProjectContentRequest;
+import com.localvitrine.dto.ProjectContentResponse;
 import com.localvitrine.dto.ProjectRequest;
 import com.localvitrine.dto.ProjectResponse;
 import com.localvitrine.entity.Project;
@@ -101,6 +103,27 @@ public class ProjectServiceImpl implements ProjectService {
         project.setTemplate(template);
         projectRepository.save(project);
         return ProjectResponse.fromEntity(project);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ProjectContentResponse getProjectContent(Long id) {
+        User owner = requireCurrentUser();
+        Project project = projectRepository.findByIdAndOwnerId(id, owner.getId())
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Project not found"));
+        return ProjectContentResponse.fromEntity(project);
+    }
+
+    @Override
+    @Transactional
+    public ProjectContentResponse updateProjectContent(Long id, ProjectContentRequest request) {
+        User owner = requireCurrentUser();
+        Project project = projectRepository.findByIdAndOwnerId(id, owner.getId())
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Project not found"));
+        project.setHtmlContent(request.htmlContent());
+        project.setCssContent(request.cssContent());
+        projectRepository.save(project);
+        return ProjectContentResponse.fromEntity(project);
     }
 
     private User requireCurrentUser() {

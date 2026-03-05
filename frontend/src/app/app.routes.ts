@@ -22,6 +22,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/project/project-detail.component').then((m) => m.ProjectDetailComponent)
   },
   {
+    path: 'projects/:projectId/editor',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/project/editor/editor.component').then((m) => m.EditorComponent)
+  },
+  {
     path: 'admin',
     canActivate: [authGuard, adminGuard],
     loadComponent: () => import('./features/admin/admin-layout.component').then((m) => m.AdminLayoutComponent),

@@ -41,6 +41,7 @@
             </p>
             <div class="project-actions">
               <a class="project-nav-link" [routerLink]="['/projects', project.id]">Fiche entreprise</a>
+              <a class="project-nav-link" [routerLink]="['/projects', project.id, 'editor']">Editeur visuel</a>
               <app-ui-button variant="secondary" [disabled]="projectsLoading" (click)="openEditModal(project)">
                 Modifier
               </app-ui-button>
