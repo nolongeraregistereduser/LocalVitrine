@@ -2,25 +2,26 @@
   <header class="landing-nav">
     <a class="brand" href="#">LocalVitrine</a>
     <nav class="nav-links">
-      <a href="#features">Features</a>
-      <a href="#how">How it works</a>
-      <a href="#pricing">Pricing</a>
-      <a routerLink="/login">Login</a>
+      <a href="#features">Fonctionnalites</a>
+      <a href="#how">Parcours</a>
+      <a href="#pricing">Tarifs</a>
+      <a routerLink="/login">Connexion</a>
     </nav>
-    <a class="cta cta--small" routerLink="/register">Start for free</a>
+    <a class="cta cta--small" routerLink="/register">Commencer gratuitement</a>
   </header>
 
   <section class="hero">
     <div class="hero-copy">
-      <p class="kicker">Built for local businesses</p>
-      <h1>Turn visitors into real customers with a professional landing page.</h1>
+      <p class="kicker">Concu pour les entreprises locales</p>
+      <h1>Transformez votre audience en clients avec une page premium.</h1>
       <p class="subtitle">
-        LocalVitrine helps non-technical owners launch and manage a premium online presence with a guided flow, AI content and a visual editor.
+        LocalVitrine vous aide a creer une presence en ligne credibile, elegante et performante sans complexite technique.
       </p>
       <div class="hero-actions">
-        <a class="cta" routerLink="/register">Start for free</a>
-        <a class="ghost" href="#how">See how it works</a>
+        <a class="cta" routerLink="/register">Creer ma page gratuitement</a>
+        <a class="ghost" href="#how">Voir le parcours</a>
       </div>
+      <p class="microcopy">Aucune carte requise. Configuration en quelques minutes.</p>
       <div class="steps" style="margin-top:14px;">
         <article class="step" *ngFor="let b of trustBadges">
           <span>✓</span>
@@ -39,7 +40,8 @@
   </section>
 
   <section class="section">
-    <h2>Why business owners choose LocalVitrine</h2>
+    <h2>Pourquoi les entrepreneurs choisissent LocalVitrine</h2>
+    <p class="microcopy">Une plateforme orientee resultat, pas juste un editeur de plus.</p>
     <div class="feature-grid">
       <article class="feature" *ngFor="let s of stats">
         <h3>{{ s.value }}</h3>
@@ -49,7 +51,8 @@
   </section>
 
   <section id="features" class="section">
-    <h2>Everything you need to launch faster</h2>
+    <h2>Tout ce qu il faut pour lancer plus vite</h2>
+    <p class="microcopy">Chaque fonctionnalite est pensee pour faciliter la conversion.</p>
     <div class="feature-grid">
       <article class="feature" *ngFor="let feature of features">
         <h3>{{ feature.title }}</h3>
@@ -59,7 +62,8 @@
   </section>
 
   <section id="how" class="section">
-    <h2>How it works</h2>
+    <h2>Comment ca marche</h2>
+    <p class="microcopy">Un parcours guide, clair et rassurant du debut a la publication.</p>
     <div class="steps">
       <article class="step" *ngFor="let step of steps; let i = index">
         <span>{{ i + 1 }}</span>
@@ -69,7 +73,8 @@
   </section>
 
   <section class="section">
-    <h2>Business outcomes you can expect</h2>
+    <h2>Les resultats que vous pouvez viser</h2>
+    <p class="microcopy">Une meilleure image, plus de demandes et une execution plus rapide.</p>
     <div class="feature-grid">
       <article class="feature" *ngFor="let o of outcomes">
         <h3>{{ o.title }}</h3>
@@ -79,7 +84,7 @@
   </section>
 
   <section class="section">
-    <h2>Trusted by growing local teams</h2>
+    <h2>Ils nous font confiance pour leur croissance locale</h2>
     <div class="testimonials">
       <article class="testimonial" *ngFor="let t of testimonials">
         <p>"{{ t.quote }}"</p>
@@ -89,23 +94,24 @@
   </section>
 
   <section id="pricing" class="section pricing">
-    <h2>Simple, transparent pricing</h2>
+    <h2>Tarification simple et transparente</h2>
     <div class="pricing-card">
-      <p class="plan">Starter</p>
-      <p class="price">19 EUR<span>/month</span></p>
+      <p class="plan">Plan Starter</p>
+      <p class="price">19 EUR<span>/mois</span></p>
       <ul>
-        <li>Up to 3 active projects</li>
-        <li>Full premium template library</li>
-        <li>Visual editor + autosave</li>
-        <li>AI-generated copy suggestions</li>
-        <li>Priority email support</li>
+        <li>Jusqu a 3 projets actifs</li>
+        <li>Bibliotheque complete de templates premium</li>
+        <li>Editeur visuel avec sauvegarde automatique</li>
+        <li>Suggestions de texte assistees par IA</li>
+        <li>Support email prioritaire</li>
       </ul>
-      <a class="cta" routerLink="/register">Start for free</a>
+      <a class="cta" routerLink="/register">Commencer mon essai gratuit</a>
+      <p class="microcopy">Sans engagement. Annulation possible a tout moment.</p>
     </div>
   </section>
 
   <section class="section">
-    <h2>Frequently asked questions</h2>
+    <h2>Questions frequentes</h2>
     <div class="testimonials">
       <article class="testimonial" *ngFor="let faq of faqs">
         <strong>{{ faq.question }}</strong>
@@ -115,16 +121,17 @@
   </section>
 
   <section class="final-cta">
-    <h2>Ready to grow your local business online?</h2>
-    <p>Launch your first high-end landing page today and start collecting real leads fast.</p>
-    <a class="cta" routerLink="/register">Start for free</a>
+    <h2>Pret a accelerer votre presence en ligne ?</h2>
+    <p>Lancez votre premiere page premium aujourd hui et commencez a generer de vraies opportunites.</p>
+    <a class="cta" routerLink="/register">Demarrer maintenant</a>
+    <p class="microcopy">Configuration guidee. Resultat visible des la premiere semaine.</p>
   </section>
 
   <footer class="footer">
-    <p>© {{ 2026 }} LocalVitrine. Built for local growth.</p>
+    <p>© {{ 2026 }} LocalVitrine. Concu pour la croissance locale.</p>
     <div>
-      <a routerLink="/login">Login</a>
-      <a routerLink="/register">Register</a>
+      <a routerLink="/login">Connexion</a>
+      <a routerLink="/register">Inscription</a>
     </div>
   </footer>
 </div>

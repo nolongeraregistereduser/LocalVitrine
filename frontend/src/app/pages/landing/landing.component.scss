@@ -64,6 +64,12 @@ h1 {
   max-width: 620px;
 }
 
+.microcopy {
+  margin: 10px 0 0;
+  color: var(--lv-text-muted);
+  font-size: 0.9rem;
+}
+
 .hero-actions {
   margin-top: 22px;
   display: flex;
@@ -252,6 +258,7 @@ h1 {
 .pricing-card li {
   margin: 6px 0;
 }
+
 
 .final-cta {
   margin-top: clamp(44px, 7vw, 78px);
