@@ -39,6 +39,7 @@ export class DashboardComponent implements OnInit {
   formPublicUrl = '';
   modalSubmitting = false;
   modalError?: string;
+  modalTouched = false;
 
   readonly statusOptions: ProjectStatus[] = ['DRAFT', 'PUBLISHED'];
 
@@ -84,6 +85,7 @@ export class DashboardComponent implements OnInit {
     this.formStatus = 'DRAFT';
     this.formPublicUrl = '';
     this.modalError = undefined;
+    this.modalTouched = false;
     this.projectsSuccess = undefined;
     this.modalOpen = true;
   }
@@ -95,6 +97,7 @@ export class DashboardComponent implements OnInit {
     this.formStatus = project.status;
     this.formPublicUrl = project.publicUrl ?? '';
     this.modalError = undefined;
+    this.modalTouched = false;
     this.projectsSuccess = undefined;
     this.modalOpen = true;
   }
@@ -105,11 +108,13 @@ export class DashboardComponent implements OnInit {
     }
     this.modalOpen = false;
     this.modalError = undefined;
+    this.modalTouched = false;
   }
 
   submitModal(): void {
     const title = this.formTitle.trim();
-    if (!title || this.modalSubmitting) {
+    this.modalTouched = true;
+    if (!title || this.modalSubmitting || !this.isPublicUrlValid()) {
       return;
     }
 
@@ -188,5 +193,31 @@ export class DashboardComponent implements OnInit {
       return 'Projet introuvable ou plus accessible.';
     }
     return 'Impossible de mettre à jour les projets pour le moment.';
+  }
+
+  get titleInvalid(): boolean {
+    const title = this.formTitle.trim();
+    return this.modalTouched && title.length < 3;
+  }
+
+  get publicUrlInvalid(): boolean {
+    return this.modalTouched && !this.isPublicUrlValid();
+  }
+
+  get canSubmitModal(): boolean {
+    return this.formTitle.trim().length >= 3 && this.isPublicUrlValid() && !this.modalSubmitting;
+  }
+
+  private isPublicUrlValid(): boolean {
+    const value = this.formPublicUrl.trim();
+    if (!value) {
+      return true;
+    }
+    try {
+      const parsed = new URL(value);
+      return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+    } catch {
+      return false;
+    }
   }
 }

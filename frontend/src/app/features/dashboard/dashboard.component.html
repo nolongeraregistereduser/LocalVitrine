@@ -69,8 +69,18 @@
 
     <form class="modal-form" (ngSubmit)="submitModal()">
       <label class="field">
-        <span>Titre</span>
-        <input name="title" [(ngModel)]="formTitle" required maxlength="200" [disabled]="modalSubmitting" />
+        <span>Titre du projet</span>
+        <input
+          name="title"
+          [(ngModel)]="formTitle"
+          required
+          minlength="3"
+          maxlength="200"
+          [disabled]="modalSubmitting"
+          placeholder="Ex: Salon Bella - Vitrine locale"
+        />
+        <small class="hint">Donnez un nom clair a votre projet (min 3 caracteres).</small>
+        <small *ngIf="titleInvalid" class="field-error">Le titre doit contenir au moins 3 caracteres.</small>
       </label>
 
       <label class="field">
@@ -89,6 +99,8 @@
           placeholder="https://..."
           [disabled]="modalSubmitting"
         />
+        <small class="hint">Ajoutez une URL uniquement si vous en avez deja une.</small>
+        <small *ngIf="publicUrlInvalid" class="field-error">Entrez une URL valide commencant par http:// ou https://</small>
       </label>
 
       <p *ngIf="modalError" class="error">{{ modalError }}</p>
@@ -97,7 +109,7 @@
         <app-ui-button type="button" variant="secondary" [disabled]="modalSubmitting" (click)="closeModal()">
           Annuler
         </app-ui-button>
-        <app-ui-button type="submit" [loading]="modalSubmitting" [disabled]="!formTitle.trim()">
+        <app-ui-button type="submit" [loading]="modalSubmitting" [disabled]="!canSubmitModal">
           Enregistrer
         </app-ui-button>
       </div>

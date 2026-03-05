@@ -9,7 +9,7 @@
 
   <div class="setup-actions" *ngIf="projectId">
     <a class="setup-link setup-link--secondary" [routerLink]="['/projects', projectId]">Back</a>
-    <app-ui-button [disabled]="!canContinue" (click)="continue()">Continue to template</app-ui-button>
+    <p class="auto-next-msg">After save, you will be redirected automatically to the Template step.</p>
   </div>
 </div>
 
