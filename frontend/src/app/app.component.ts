@@ -18,12 +18,19 @@ export class AppComponent {
   private readonly router = inject(Router);
   protected readonly auth = inject(AuthService);
   private readonly journeyService = inject(UserJourneyService);
+  protected sidebarCollapsed = false;
+  protected mobileNavOpen = false;
+  protected pageTitle = 'Dashboard';
+  protected userInitial = 'U';
 
   protected readonly layoutMode$ = this.router.events.pipe(
     filter((event): event is NavigationEnd => event instanceof NavigationEnd),
     startWith({ urlAfterRedirects: this.router.url } as NavigationEnd),
     map((event): ShellMode => {
       const url = event.urlAfterRedirects;
+      if (url === '/' || url.startsWith('/#')) {
+        return 'marketing';
+      }
       if (url.startsWith('/login') || url.startsWith('/register')) {
         return 'auth';
       }
@@ -40,10 +47,60 @@ export class AppComponent {
   protected readonly journeyProgress$ = this.router.events.pipe(
     filter((event): event is NavigationEnd => event instanceof NavigationEnd),
     startWith({ urlAfterRedirects: this.router.url } as NavigationEnd),
-    map((event) => this.journeyService.getProgressForUrl(event.urlAfterRedirects))
+    map((event) => {
+      this.pageTitle = this.resolvePageTitle(event.urlAfterRedirects);
+      this.mobileNavOpen = false;
+      return this.journeyService.getProgressForUrl(event.urlAfterRedirects);
+    })
   );
+
+  constructor() {
+    if (!this.auth.isAuthenticated()) {
+      this.userInitial = 'U';
+      return;
+    }
+    this.auth.me().subscribe({
+      next: (me) => {
+        this.userInitial = (me.fullName || me.email || 'U').trim().charAt(0).toUpperCase();
+      },
+      error: () => {
+        this.userInitial = 'U';
+      }
+    });
+  }
 
   protected logout(): void {
     this.auth.logout();
+  }
+
+  protected toggleSidebarCollapse(): void {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
+  }
+
+  protected openMobileNav(): void {
+    this.mobileNavOpen = true;
+  }
+
+  protected closeMobileNav(): void {
+    this.mobileNavOpen = false;
+  }
+
+  private resolvePageTitle(url: string): string {
+    if (url.startsWith('/dashboard')) {
+      return 'Dashboard';
+    }
+    if (url.startsWith('/templates')) {
+      return 'Templates';
+    }
+    if (/^\/projects\/\d+\/setup/.test(url)) {
+      return 'Project Setup';
+    }
+    if (/^\/projects\/\d+\/editor/.test(url)) {
+      return 'Visual Editor';
+    }
+    if (/^\/projects\/\d+/.test(url)) {
+      return 'Project';
+    }
+    return 'Workspace';
   }
 }

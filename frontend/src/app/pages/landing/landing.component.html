@@ -1,0 +1,94 @@
+<div class="landing">
+  <header class="landing-nav">
+    <a class="brand" href="#">LocalVitrine</a>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a routerLink="/login">Login</a>
+    </nav>
+    <a class="cta cta--small" routerLink="/register">Start for free</a>
+  </header>
+
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="kicker">Built for local businesses</p>
+      <h1>Create a premium landing page for your business in minutes.</h1>
+      <p class="subtitle">
+        LocalVitrine helps non-technical owners launch a polished online presence with templates, AI content and a visual editor.
+      </p>
+      <div class="hero-actions">
+        <a class="cta" routerLink="/register">Start for free</a>
+        <a class="ghost" href="#how">See how it works</a>
+      </div>
+    </div>
+    <div class="hero-mockup" aria-hidden="true">
+      <div class="mockup-card">
+        <p class="mockup-tag">Live Preview</p>
+        <h3>Bella Studio</h3>
+        <p>Beauty services in your city, online booking and instant contact.</p>
+        <button>Book now</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="section">
+    <h2>Everything you need to launch faster</h2>
+    <div class="feature-grid">
+      <article class="feature" *ngFor="let feature of features">
+        <h3>{{ feature.title }}</h3>
+        <p>{{ feature.description }}</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="how" class="section">
+    <h2>How it works</h2>
+    <div class="steps">
+      <article class="step" *ngFor="let step of steps; let i = index">
+        <span>{{ i + 1 }}</span>
+        <p>{{ step }}</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Trusted by growing local teams</h2>
+    <div class="testimonials">
+      <article class="testimonial" *ngFor="let t of testimonials">
+        <p>"{{ t.quote }}"</p>
+        <strong>{{ t.author }}</strong>
+      </article>
+    </div>
+  </section>
+
+  <section id="pricing" class="section pricing">
+    <h2>Simple pricing</h2>
+    <div class="pricing-card">
+      <p class="plan">Starter</p>
+      <p class="price">19 EUR<span>/month</span></p>
+      <ul>
+        <li>1 active project</li>
+        <li>Template library</li>
+        <li>Visual editor</li>
+        <li>Email support</li>
+      </ul>
+      <a class="cta" routerLink="/register">Start for free</a>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <h2>Ready to launch your page?</h2>
+    <p>Create your first project today and publish in minutes.</p>
+    <a class="cta" routerLink="/register">Start for free</a>
+  </section>
+
+  <footer class="footer">
+    <p>© {{ 2026 }} LocalVitrine. Built for local growth.</p>
+    <div>
+      <a routerLink="/login">Login</a>
+      <a routerLink="/register">Register</a>
+    </div>
+  </footer>
+</div>
+

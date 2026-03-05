@@ -26,6 +26,7 @@ export class LoginComponent {
 
   submitting = false;
   serverError?: string;
+  successMessage?: string;
 
   form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -48,14 +49,18 @@ export class LoginComponent {
     const { email, password } = this.form.getRawValue();
     this.submitting = true;
     this.serverError = undefined;
+    this.successMessage = undefined;
     this.auth
       .login(email, password)
       .pipe(finalize(() => (this.submitting = false)))
       .subscribe({
         next: () => {
+          this.successMessage = 'Connexion reussie. Redirection en cours...';
           const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
           if (returnUrl) {
-            void this.router.navigateByUrl(returnUrl);
+            window.setTimeout(() => {
+              void this.router.navigateByUrl(returnUrl);
+            }, 350);
             return;
           }
           this.auth
@@ -63,7 +68,9 @@ export class LoginComponent {
             .pipe(catchError(() => of(null)))
             .subscribe((me) => {
               const target = me?.role === 'ADMIN' ? '/admin/dashboard' : '/dashboard';
-              void this.router.navigateByUrl(target);
+              window.setTimeout(() => {
+                void this.router.navigateByUrl(target);
+              }, 350);
             });
         },
         error: (err: HttpErrorResponse) => {

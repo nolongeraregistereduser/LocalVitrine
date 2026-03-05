@@ -1,4 +1,8 @@
 <ng-container [ngSwitch]="layoutMode$ | async">
+  <main *ngSwitchCase="'marketing'" class="marketing-layout">
+    <router-outlet></router-outlet>
+  </main>
+
   <main *ngSwitchCase="'auth'" class="auth-layout lv-container">
     <router-outlet></router-outlet>
   </main>
@@ -13,22 +17,38 @@
 
   <div *ngSwitchDefault class="shell lv-container">
     <header class="shell__topbar">
-      <a class="brand" routerLink="/dashboard">LocalVitrine</a>
+      <div class="topbar__left">
+        <button class="icon-button hide-desktop" type="button" (click)="openMobileNav()" aria-label="Ouvrir navigation">
+          ☰
+        </button>
+        <button class="icon-button hide-mobile" type="button" (click)="toggleSidebarCollapse()" aria-label="Replier navigation">
+          ≡
+        </button>
+        <a class="brand" routerLink="/dashboard">LocalVitrine</a>
+        <h1 class="page-title">{{ pageTitle }}</h1>
+      </div>
       <div class="topbar__actions">
+        <span class="avatar" [attr.aria-label]="'Profil ' + userInitial">{{ userInitial }}</span>
         <button class="ghost-button" type="button" (click)="logout()">Se déconnecter</button>
       </div>
     </header>
 
     <div class="shell__body">
-      <aside class="sidebar" aria-label="Navigation principale">
+      <aside class="sidebar" aria-label="Navigation principale" [class.sidebar--collapsed]="sidebarCollapsed" [class.sidebar--mobile-open]="mobileNavOpen">
         <app-user-journey-progress [progress]="journeyProgress$ | async" [compact]="true" />
         <nav class="sidebar__nav">
-          <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-            Tableau de bord
+          <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMobileNav()">
+            <span class="nav-icon">◼</span><span class="nav-label">Dashboard</span>
           </a>
-          <a routerLink="/dashboard" routerLinkActive="active">Projets</a>
+          <a routerLink="/dashboard" routerLinkActive="active" (click)="closeMobileNav()">
+            <span class="nav-icon">▣</span><span class="nav-label">Projects</span>
+          </a>
+          <a routerLink="/templates" routerLinkActive="active" (click)="closeMobileNav()">
+            <span class="nav-icon">◇</span><span class="nav-label">Templates</span>
+          </a>
         </nav>
       </aside>
+      <button class="sidebar-overlay" *ngIf="mobileNavOpen" type="button" (click)="closeMobileNav()" aria-label="Fermer navigation"></button>
 
       <main class="shell__content">
         <router-outlet></router-outlet>

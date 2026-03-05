@@ -32,6 +32,10 @@ body {
   min-height: 100%;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--lv-bg);
   color: var(--lv-text);

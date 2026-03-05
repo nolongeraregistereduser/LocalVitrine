@@ -1,0 +1,23 @@
+<div class="templates-page">
+  <h1 class="lv-page-title">Templates</h1>
+  <p class="lv-subtitle">Explore template styles to prepare your next project.</p>
+
+  <p *ngIf="loading" class="muted">Chargement des templates...</p>
+  <p *ngIf="error" class="lv-alert lv-alert--error">{{ error }}</p>
+
+  <div *ngIf="!loading && !error && !templates.length" class="empty">
+    <p>Aucun template disponible pour le moment.</p>
+  </div>
+
+  <div *ngIf="!loading && templates.length" class="grid">
+    <app-ui-card *ngFor="let t of templates">
+      <div class="thumb-wrap">
+        <img [src]="t.previewUrl" [alt]="t.name" loading="lazy" />
+      </div>
+      <h3>{{ t.name }}</h3>
+      <p>{{ t.description }}</p>
+      <span class="tag">{{ t.activityType }}</span>
+    </app-ui-card>
+  </div>
+</div>
+
