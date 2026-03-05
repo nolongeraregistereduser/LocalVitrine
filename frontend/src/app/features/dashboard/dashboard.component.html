@@ -20,7 +20,8 @@
       </div>
 
       <p *ngIf="projectsLoading" class="muted">Chargement de vos projets...</p>
-      <p *ngIf="projectsError" class="error">{{ projectsError }}</p>
+      <p *ngIf="projectsError" class="lv-alert lv-alert--error">{{ projectsError }}</p>
+      <p *ngIf="projectsSuccess" class="lv-alert lv-alert--success">{{ projectsSuccess }}</p>
 
       <div *ngIf="!projectsLoading && !projects.length && !projectsError" class="empty-state">
         <p class="muted">Aucun projet pour l'instant. Creez votre premiere vitrine locale.</p>
@@ -45,7 +46,12 @@
               <app-ui-button variant="secondary" [disabled]="projectsLoading" (click)="openEditModal(project)">
                 Modifier
               </app-ui-button>
-              <app-ui-button variant="secondary" [disabled]="projectsLoading" (click)="deleteProject(project)">
+              <app-ui-button
+                variant="secondary"
+                [disabled]="projectsLoading || deletingProjectId === project.id"
+                [loading]="deletingProjectId === project.id"
+                (click)="deleteProject(project)"
+              >
                 Supprimer
               </app-ui-button>
             </div>

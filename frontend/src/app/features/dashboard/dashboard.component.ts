@@ -27,6 +27,8 @@ export class DashboardComponent implements OnInit {
   projects: ProjectDto[] = [];
   projectsLoading = true;
   projectsError?: string;
+  projectsSuccess?: string;
+  deletingProjectId?: number;
 
   modalOpen = false;
   modalMode: 'create' | 'edit' = 'create';
@@ -81,6 +83,7 @@ export class DashboardComponent implements OnInit {
     this.formStatus = 'DRAFT';
     this.formPublicUrl = '';
     this.modalError = undefined;
+    this.projectsSuccess = undefined;
     this.modalOpen = true;
   }
 
@@ -91,6 +94,7 @@ export class DashboardComponent implements OnInit {
     this.formStatus = project.status;
     this.formPublicUrl = project.publicUrl ?? '';
     this.modalError = undefined;
+    this.projectsSuccess = undefined;
     this.modalOpen = true;
   }
 
@@ -126,6 +130,7 @@ export class DashboardComponent implements OnInit {
       next: () => {
         this.modalSubmitting = false;
         this.modalOpen = false;
+        this.projectsSuccess = this.modalMode === 'create' ? 'Projet cree avec succes.' : 'Projet mis a jour.';
         this.refreshProjects();
       },
       error: (err: HttpErrorResponse) => {
@@ -136,14 +141,21 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteProject(project: ProjectDto): void {
-    if (!confirm(`Supprimer le projet « ${project.title} » ?`)) {
+    if (!confirm(`Supprimer le projet « ${project.title} » ? Cette action est definitive.`)) {
       return;
     }
+    this.deletingProjectId = project.id;
+    this.projectsSuccess = undefined;
 
     this.projectsError = undefined;
     this.projectService.delete(project.id).subscribe({
-      next: () => this.refreshProjects(),
+      next: () => {
+        this.deletingProjectId = undefined;
+        this.projectsSuccess = 'Projet supprime avec succes.';
+        this.refreshProjects();
+      },
       error: (err: HttpErrorResponse) => {
+        this.deletingProjectId = undefined;
         this.projectsError = this.mapProjectsError(err);
       }
     });

@@ -64,3 +64,31 @@ a {
   width: min(1200px, 100%);
   margin-inline: auto;
 }
+
+.lv-alert {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: var(--lv-radius-sm);
+  border: 1px solid var(--lv-border);
+  background: var(--lv-surface-soft);
+}
+
+.lv-alert--error {
+  border-color: #fecaca;
+  background: var(--lv-danger-soft);
+  color: #991b1b;
+}
+
+.lv-alert--success {
+  border-color: #bbf7d0;
+  background: var(--lv-success-soft);
+  color: #166534;
+}
+
+.lv-card-table-wrap {
+  background: #fff;
+  border: 1px solid var(--lv-border);
+  border-radius: var(--lv-radius-md);
+  box-shadow: var(--lv-shadow-sm);
+  overflow: auto;
+}

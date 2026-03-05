@@ -25,6 +25,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   saving = false;
   saveMessage = '';
   errorMessage = '';
+  hasPendingChanges = false;
 
   private editor?: Editor;
   private autosaveSub?: Subscription;
@@ -85,6 +86,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.editor.on('update', () => {
       this.hasUnsavedChanges = true;
+      this.hasPendingChanges = true;
     });
   }
 
@@ -103,6 +105,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         this.editor?.setComponents(html);
         this.editor?.setStyle(css);
         this.hasUnsavedChanges = false;
+        this.hasPendingChanges = false;
         this.loading = false;
       });
   }
@@ -119,14 +122,15 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       next: () => {
         this.saving = false;
         this.hasUnsavedChanges = false;
-        this.saveMessage = showMessage ? 'Saved successfully' : 'Auto-saved';
+        this.hasPendingChanges = false;
+        this.saveMessage = showMessage ? 'Enregistre avec succes' : 'Sauvegarde auto';
         setTimeout(() => {
           this.saveMessage = '';
         }, 2200);
       },
       error: (err: HttpErrorResponse) => {
         this.saving = false;
-        this.errorMessage = err.error?.message ?? 'Save failed. Please retry.';
+        this.errorMessage = err.error?.message ?? 'Echec de sauvegarde. Reessayez.';
       }
     });
   }

@@ -36,8 +36,10 @@
         <p *ngIf="formError" class="error">{{ formError }}</p>
 
         <div class="actions">
-          <button type="button" class="secondary" (click)="startCreate()">Reinitialiser</button>
-          <button type="submit" [disabled]="saving">{{ editingId == null ? 'Creer' : 'Mettre a jour' }}</button>
+          <app-ui-button type="button" variant="secondary" (click)="startCreate()">Reinitialiser</app-ui-button>
+          <app-ui-button type="submit" [loading]="saving" [disabled]="saving">
+            {{ editingId == null ? 'Creer' : 'Mettre a jour' }}
+          </app-ui-button>
         </div>
       </form>
     </section>
@@ -45,7 +47,8 @@
     <section class="admin-list-card">
       <h2>Templates</h2>
       <p *ngIf="loading" class="muted">Chargement...</p>
-      <p *ngIf="loadingError" class="error">{{ loadingError }}</p>
+      <p *ngIf="loadingError" class="lv-alert lv-alert--error">{{ loadingError }}</p>
+      <p *ngIf="successMessage" class="lv-alert lv-alert--success">{{ successMessage }}</p>
 
       <div class="template-list" *ngIf="!loading && !loadingError">
         <article class="template-item" *ngFor="let item of templates">
@@ -60,11 +63,11 @@
             <p class="code">{{ item.code }}</p>
             <p>{{ item.description }}</p>
             <div class="item-actions">
-              <button type="button" class="secondary" (click)="startEdit(item)">Editer</button>
-              <button type="button" (click)="toggleActive(item)">
+              <app-ui-button type="button" variant="secondary" (click)="startEdit(item)">Editer</app-ui-button>
+              <app-ui-button type="button" (click)="toggleActive(item)">
                 {{ item.isActive ? 'Desactiver' : 'Activer' }}
-              </button>
-              <button type="button" class="danger" (click)="deleteTemplate(item)">Supprimer</button>
+              </app-ui-button>
+              <app-ui-button type="button" (click)="deleteTemplate(item)">Supprimer</app-ui-button>
             </div>
           </div>
         </article>

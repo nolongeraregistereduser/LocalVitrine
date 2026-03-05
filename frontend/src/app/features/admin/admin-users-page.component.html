@@ -1,11 +1,12 @@
-<div class="users-page">
+<div class="users-page lv-container">
   <h1 class="lv-page-title">Users Management</h1>
   <p class="lv-subtitle">Gerez les comptes utilisateurs et leur statut.</p>
 
   <p *ngIf="loading" class="muted">Chargement...</p>
-  <p *ngIf="error" class="error">{{ error }}</p>
+  <p *ngIf="error" class="lv-alert lv-alert--error">{{ error }}</p>
+  <p *ngIf="success" class="lv-alert lv-alert--success">{{ success }}</p>
 
-  <div class="table-wrap" *ngIf="!loading && !error">
+  <div class="lv-card-table-wrap" *ngIf="!loading">
     <table>
       <thead>
         <tr>
@@ -27,10 +28,21 @@
           </td>
           <td>{{ user.createdAt | date : 'short' }}</td>
           <td class="actions">
-            <button type="button" (click)="toggleStatus(user)">
+            <app-ui-button
+              variant="secondary"
+              [disabled]="busyUserId != null && busyUserId !== user.id"
+              [loading]="busyUserId === user.id"
+              (click)="toggleStatus(user)"
+            >
               {{ user.status === 'ACTIVE' ? 'Disable' : 'Enable' }}
-            </button>
-            <button type="button" class="danger" (click)="remove(user)">Delete</button>
+            </app-ui-button>
+            <app-ui-button
+              [disabled]="busyUserId != null && busyUserId !== user.id"
+              [loading]="busyUserId === user.id"
+              (click)="remove(user)"
+            >
+              Delete
+            </app-ui-button>
           </td>
         </tr>
       </tbody>

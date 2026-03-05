@@ -1,15 +1,16 @@
 <div class="editor-page lv-container">
   <header class="editor-topbar">
-    <a [routerLink]="['/projects', projectId]" class="back-link">Back</a>
+    <a [routerLink]="['/projects', projectId]" class="back-link">Retour au projet</a>
     <div class="editor-actions">
+      <span *ngIf="hasPendingChanges && !saving" class="saving-state">Modifications non sauvegardees</span>
       <span *ngIf="saving" class="saving-state">Saving...</span>
       <span *ngIf="saveMessage" class="saved-state">{{ saveMessage }}</span>
-      <button type="button" class="save-btn" (click)="saveManual()" [disabled]="saving || loading">Save</button>
+      <button type="button" class="save-btn" (click)="saveManual()" [disabled]="saving || loading">Enregistrer</button>
     </div>
   </header>
 
   <p *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</p>
-  <p *ngIf="loading" class="loading-msg">Loading editor...</p>
+  <p *ngIf="loading" class="loading-msg">Chargement de l'editeur...</p>
 
   <section class="editor-shell" [class.hidden]="loading">
     <div #editorHost id="gjs"></div>

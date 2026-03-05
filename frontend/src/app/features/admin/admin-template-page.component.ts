@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { UiButtonComponent } from '../../components/ui/ui-button/ui-button.component';
 import {
   AdminTemplateDto,
   AdminTemplatePayload,
@@ -13,7 +14,7 @@ import { ActivityType } from '../../services/template.service';
 @Component({
   selector: 'app-admin-template-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, UiButtonComponent],
   templateUrl: './admin-template-page.component.html',
   styleUrl: './admin-template-page.component.scss'
 })
@@ -23,6 +24,7 @@ export class AdminTemplatePageComponent implements OnInit {
   templates: AdminTemplateDto[] = [];
   loading = true;
   loadingError?: string;
+  successMessage?: string;
   formError?: string;
 
   editingId: number | null = null;
@@ -92,7 +94,9 @@ export class AdminTemplatePageComponent implements OnInit {
     }
 
     this.formError = undefined;
+    this.successMessage = undefined;
     this.saving = true;
+    const isCreate = this.editingId == null;
 
     const request$ =
       this.editingId == null ? this.service.create(payload) : this.service.update(this.editingId, payload);
@@ -101,6 +105,7 @@ export class AdminTemplatePageComponent implements OnInit {
       next: () => {
         this.saving = false;
         this.startCreate();
+        this.successMessage = isCreate ? 'Template cree avec succes.' : 'Template mis a jour.';
         this.load();
       },
       error: (err: HttpErrorResponse) => {
@@ -111,9 +116,14 @@ export class AdminTemplatePageComponent implements OnInit {
   }
 
   toggleActive(item: AdminTemplateDto): void {
+    this.loadingError = undefined;
+    this.successMessage = undefined;
     const request$ = item.isActive ? this.service.deactivate(item.id) : this.service.activate(item.id);
     request$.subscribe({
-      next: () => this.load(),
+      next: () => {
+        this.successMessage = item.isActive ? 'Template desactive.' : 'Template active.';
+        this.load();
+      },
       error: (err: HttpErrorResponse) => {
         this.loadingError = this.mapError(err, 'Mise a jour du statut impossible.');
       }
@@ -121,11 +131,16 @@ export class AdminTemplatePageComponent implements OnInit {
   }
 
   deleteTemplate(item: AdminTemplateDto): void {
-    if (!confirm(`Supprimer le template ${item.name} ?`)) {
+    if (!confirm(`Supprimer le template ${item.name} ? Cette action est definitive.`)) {
       return;
     }
+    this.loadingError = undefined;
+    this.successMessage = undefined;
     this.service.delete(item.id).subscribe({
-      next: () => this.load(),
+      next: () => {
+        this.successMessage = 'Template supprime.';
+        this.load();
+      },
       error: (err: HttpErrorResponse) => {
         this.loadingError = this.mapError(err, 'Suppression impossible.');
       }
