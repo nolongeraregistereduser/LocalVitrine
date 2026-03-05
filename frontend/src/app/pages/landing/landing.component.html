@@ -13,13 +13,19 @@
   <section class="hero">
     <div class="hero-copy">
       <p class="kicker">Built for local businesses</p>
-      <h1>Create a premium landing page for your business in minutes.</h1>
+      <h1>Turn visitors into real customers with a professional landing page.</h1>
       <p class="subtitle">
-        LocalVitrine helps non-technical owners launch a polished online presence with templates, AI content and a visual editor.
+        LocalVitrine helps non-technical owners launch and manage a premium online presence with a guided flow, AI content and a visual editor.
       </p>
       <div class="hero-actions">
         <a class="cta" routerLink="/register">Start for free</a>
         <a class="ghost" href="#how">See how it works</a>
+      </div>
+      <div class="steps" style="margin-top:14px;">
+        <article class="step" *ngFor="let b of trustBadges">
+          <span>✓</span>
+          <p>{{ b }}</p>
+        </article>
       </div>
     </div>
     <div class="hero-mockup" aria-hidden="true">
@@ -27,8 +33,18 @@
         <p class="mockup-tag">Live Preview</p>
         <h3>Bella Studio</h3>
         <p>Beauty services in your city, online booking and instant contact.</p>
-        <button>Book now</button>
+        <p><strong>+37% booking requests in 30 days</strong></p>
       </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Why business owners choose LocalVitrine</h2>
+    <div class="feature-grid">
+      <article class="feature" *ngFor="let s of stats">
+        <h3>{{ s.value }}</h3>
+        <p>{{ s.label }}</p>
+      </article>
     </div>
   </section>
 
@@ -53,6 +69,16 @@
   </section>
 
   <section class="section">
+    <h2>Business outcomes you can expect</h2>
+    <div class="feature-grid">
+      <article class="feature" *ngFor="let o of outcomes">
+        <h3>{{ o.title }}</h3>
+        <p>{{ o.description }}</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
     <h2>Trusted by growing local teams</h2>
     <div class="testimonials">
       <article class="testimonial" *ngFor="let t of testimonials">
@@ -63,23 +89,34 @@
   </section>
 
   <section id="pricing" class="section pricing">
-    <h2>Simple pricing</h2>
+    <h2>Simple, transparent pricing</h2>
     <div class="pricing-card">
       <p class="plan">Starter</p>
       <p class="price">19 EUR<span>/month</span></p>
       <ul>
-        <li>1 active project</li>
-        <li>Template library</li>
-        <li>Visual editor</li>
-        <li>Email support</li>
+        <li>Up to 3 active projects</li>
+        <li>Full premium template library</li>
+        <li>Visual editor + autosave</li>
+        <li>AI-generated copy suggestions</li>
+        <li>Priority email support</li>
       </ul>
       <a class="cta" routerLink="/register">Start for free</a>
     </div>
   </section>
 
+  <section class="section">
+    <h2>Frequently asked questions</h2>
+    <div class="testimonials">
+      <article class="testimonial" *ngFor="let faq of faqs">
+        <strong>{{ faq.question }}</strong>
+        <p style="margin-top:8px;">{{ faq.answer }}</p>
+      </article>
+    </div>
+  </section>
+
   <section class="final-cta">
-    <h2>Ready to launch your page?</h2>
-    <p>Create your first project today and publish in minutes.</p>
+    <h2>Ready to grow your local business online?</h2>
+    <p>Launch your first high-end landing page today and start collecting real leads fast.</p>
     <a class="cta" routerLink="/register">Start for free</a>
   </section>
 
