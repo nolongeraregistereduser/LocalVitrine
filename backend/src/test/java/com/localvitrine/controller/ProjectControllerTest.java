@@ -1,6 +1,7 @@
 package com.localvitrine.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.localvitrine.entity.BusinessProfile;
 import com.localvitrine.dto.ProjectContentRequest;
 import com.localvitrine.dto.ProjectRequest;
 import com.localvitrine.entity.ProjectStatus;
@@ -10,6 +11,9 @@ import com.localvitrine.entity.Template;
 import com.localvitrine.entity.User;
 import com.localvitrine.entity.UserStatus;
 import com.localvitrine.enums.ActivityType;
+import com.localvitrine.enums.Goal;
+import com.localvitrine.enums.PrimaryCTA;
+import com.localvitrine.enums.Sector;
 import com.localvitrine.repository.BusinessProfileRepository;
 import com.localvitrine.repository.ProjectRepository;
 import com.localvitrine.repository.RoleRepository;
@@ -328,6 +332,115 @@ class ProjectControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.projectId").value(projectId))
                 .andExpect(jsonPath("$.htmlContent").value("<section><h1>Welcome</h1></section>"));
+    }
+
+    @Test
+    void assignTemplateSeedsStarterContentWithResolvedPlaceholders() throws Exception {
+        Template template = templateRepository.save(Template.builder()
+                .name("Starter")
+                .code("starter")
+                .description("D")
+                .activityType(ActivityType.SERVICES)
+                .previewUrl("https://example.com/t.png")
+                .starterHtml("<section><h1>{{businessName}}</h1><p>{{email}}</p><a>{{ctaPrimary}}</a></section>")
+                .starterCss("h1{color:#111;}")
+                .isActive(true)
+                .build());
+
+        String createResponse = mockMvc.perform(post("/api/projects")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(
+                                new ProjectRequest("Mon projet", ProjectStatus.DRAFT, null))))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        long projectId = objectMapper.readTree(createResponse).get("id").asLong();
+        var project = projectRepository.findById(projectId).orElseThrow();
+        businessProfileRepository.save(BusinessProfile.builder()
+                .project(project)
+                .businessName("Atlas Studio")
+                .city("Casablanca")
+                .address("Rue Hassan II")
+                .phone("+212600000000")
+                .email("hello@atlas.test")
+                .description("Studio creatif local")
+                .goal(Goal.LEADS)
+                .sector(Sector.SERVICES)
+                .primaryCTA(PrimaryCTA.CONTACT_US)
+                .build());
+
+        mockMvc.perform(put("/api/projects/" + projectId + "/template/" + template.getId())
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.templateCode").value("starter"));
+
+        mockMvc.perform(get("/api/projects/" + projectId + "/content")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.htmlContent").value(org.hamcrest.Matchers.containsString("Atlas Studio")))
+                .andExpect(jsonPath("$.htmlContent").value(org.hamcrest.Matchers.containsString("hello@atlas.test")))
+                .andExpect(jsonPath("$.htmlContent").value(org.hamcrest.Matchers.containsString("Contact us")))
+                .andExpect(jsonPath("$.cssContent").value("h1{color:#111;}"));
+    }
+
+    @Test
+    void assignTemplateDoesNotOverwriteCustomizedContent() throws Exception {
+        Template first = templateRepository.save(Template.builder()
+                .name("First")
+                .code("first")
+                .description("D")
+                .activityType(ActivityType.RETAIL)
+                .previewUrl("https://example.com/f.png")
+                .starterHtml("<section><h1>FIRST</h1></section>")
+                .starterCss("h1{color:blue;}")
+                .isActive(true)
+                .build());
+        Template second = templateRepository.save(Template.builder()
+                .name("Second")
+                .code("second")
+                .description("D")
+                .activityType(ActivityType.RETAIL)
+                .previewUrl("https://example.com/s.png")
+                .starterHtml("<section><h1>SECOND</h1></section>")
+                .starterCss("h1{color:green;}")
+                .isActive(true)
+                .build());
+
+        String createResponse = mockMvc.perform(post("/api/projects")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(
+                                new ProjectRequest("Editor Flow", ProjectStatus.DRAFT, null))))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        long projectId = objectMapper.readTree(createResponse).get("id").asLong();
+
+        mockMvc.perform(put("/api/projects/" + projectId + "/template/" + first.getId())
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA))
+                .andExpect(status().isOk());
+
+        ProjectContentRequest custom = new ProjectContentRequest("<section><h1>MY CUSTOM PAGE</h1></section>", "h1{color:red;}");
+        mockMvc.perform(put("/api/projects/" + projectId + "/content")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(custom)))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(put("/api/projects/" + projectId + "/template/" + second.getId())
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.templateCode").value("second"));
+
+        mockMvc.perform(get("/api/projects/" + projectId + "/content")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenA))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.htmlContent").value("<section><h1>MY CUSTOM PAGE</h1></section>"))
+                .andExpect(jsonPath("$.cssContent").value("h1{color:red;}"));
     }
 
     @Test

@@ -13,7 +13,17 @@
   <p *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</p>
   <p *ngIf="loading" class="loading-msg">Chargement de l'editeur...</p>
 
-  <section class="editor-shell" [class.hidden]="loading">
-    <div #editorHost id="gjs"></div>
+  <section class="editor-shell" [class.hidden]="loading" aria-label="Editeur visuel">
+    <aside class="editor-blocks" aria-label="Blocs a ajouter">
+      <p class="editor-blocks__title">Blocs</p>
+      <p class="editor-blocks__hint">
+        Utilisez <strong>Landing complete</strong> pour une page entiere, ou <strong>Landing sections</strong> pour ajouter
+        des blocs un par un.
+      </p>
+      <div #blocksHost class="gjs-blocks-c"></div>
+    </aside>
+    <div class="editor-canvas">
+      <div #editorHost id="gjs"></div>
+    </div>
   </section>
 </div>

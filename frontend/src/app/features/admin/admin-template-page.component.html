@@ -32,6 +32,14 @@
           <span>Description</span>
           <textarea [(ngModel)]="formDescription" name="description" rows="4" required></textarea>
         </label>
+        <label>
+          <span>Starter HTML (avec placeholders)</span>
+          <textarea [(ngModel)]="formStarterHtml" name="starterHtml" rows="8" required></textarea>
+        </label>
+        <label>
+          <span>Starter CSS</span>
+          <textarea [(ngModel)]="formStarterCss" name="starterCss" rows="6"></textarea>
+        </label>
 
         <p *ngIf="formError" class="error">{{ formError }}</p>
 

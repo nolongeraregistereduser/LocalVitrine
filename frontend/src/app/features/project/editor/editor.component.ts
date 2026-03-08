@@ -6,6 +6,7 @@ import { interval, of, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import grapesjs, { Editor } from 'grapesjs';
 import { ProjectEditorService } from '../../../services/project-editor.service';
+import { getLandingPageBlocks } from './editor-landing-blocks';
 
 @Component({
   selector: 'app-editor',
@@ -19,6 +20,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly editorService = inject(ProjectEditorService);
 
   @ViewChild('editorHost', { static: true }) editorHost!: ElementRef<HTMLDivElement>;
+  @ViewChild('blocksHost', { static: true }) blocksHost!: ElementRef<HTMLDivElement>;
 
   projectId = 0;
   loading = true;
@@ -30,10 +32,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   private editor?: Editor;
   private autosaveSub?: Subscription;
   private hasUnsavedChanges = false;
-  private readonly starterHtml = `<section>
-  <h1>Welcome to your business</h1>
-  <p>Edit this content</p>
-</section>`;
+  private readonly starterHtml = `<section><h1>Welcome to your business</h1><p>Edit this content.</p></section>`;
 
   ngOnInit(): void {
     const raw = this.route.snapshot.paramMap.get('projectId');
@@ -74,12 +73,18 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       height: 'calc(100vh - 70px)',
       storageManager: false,
       blockManager: {
-        appendTo: '.gjs-blocks-c',
+        appendTo: this.blocksHost.nativeElement,
         blocks: [
-          { id: 'text', label: 'Text', content: '<p>Insert your text here</p>', category: 'Basic' },
-          { id: 'image', label: 'Image', content: { type: 'image' }, category: 'Basic' },
-          { id: 'button', label: 'Button', content: '<button class="btn">Click me</button>', category: 'Basic' },
-          { id: 'section', label: 'Section', content: '<section><h2>Section title</h2><p>Section text</p></section>', category: 'Basic' }
+          ...getLandingPageBlocks(),
+          { id: 'text', label: 'Texte', content: '<p>Votre texte ici</p>', category: 'Base' },
+          { id: 'image', label: 'Image', content: { type: 'image' }, category: 'Base' },
+          { id: 'button', label: 'Bouton', content: '<a class="lv-block-btn" href="#">Votre action</a>', category: 'Base' },
+          {
+            id: 'section',
+            label: 'Section',
+            content: '<section class="lv-block-section"><h2>Titre de section</h2><p>Paragraphe descriptif.</p></section>',
+            category: 'Base'
+          }
         ]
       }
     });

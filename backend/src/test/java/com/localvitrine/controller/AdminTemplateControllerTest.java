@@ -109,7 +109,9 @@ class AdminTemplateControllerTest {
                 "nova",
                 "Template moderne",
                 ActivityType.SERVICES,
-                "https://example.com/nova.png");
+                "https://example.com/nova.png",
+                "<section><h1>{{businessName}}</h1></section>",
+                "h1{color:#222;}");
 
         String createRes = mockMvc.perform(post("/api/admin/templates")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken)
@@ -118,6 +120,7 @@ class AdminTemplateControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.code").value("nova"))
+                .andExpect(jsonPath("$.starterHtml").value("<section><h1>{{businessName}}</h1></section>"))
                 .andExpect(jsonPath("$.isActive").value(true))
                 .andReturn()
                 .getResponse()
@@ -136,7 +139,9 @@ class AdminTemplateControllerTest {
                 "nova-prime",
                 "Template modernise",
                 ActivityType.RETAIL,
-                "https://example.com/nova-prime.png");
+                "https://example.com/nova-prime.png",
+                "<section><h1>Updated {{businessName}}</h1></section>",
+                "h1{color:#333;}");
 
         mockMvc.perform(put("/api/admin/templates/" + id)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken)
@@ -145,6 +150,7 @@ class AdminTemplateControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Nova Prime"))
                 .andExpect(jsonPath("$.code").value("nova-prime"))
+                .andExpect(jsonPath("$.starterCss").value("h1{color:#333;}"))
                 .andExpect(jsonPath("$.activityType").value("RETAIL"));
 
         mockMvc.perform(patch("/api/admin/templates/" + id + "/deactivate")
@@ -181,7 +187,9 @@ class AdminTemplateControllerTest {
                 "base",
                 "desc",
                 ActivityType.RESTAURANT,
-                "https://example.com/a.png");
+                "https://example.com/a.png",
+                "<section>dup</section>",
+                "");
 
         mockMvc.perform(post("/api/admin/templates")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken)

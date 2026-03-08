@@ -6,6 +6,7 @@
 
   <p *ngIf="loadError" class="tl-msg tl-msg--error">{{ loadError }}</p>
   <p *ngIf="!loading && !loadError && templates.length === 0" class="tl-msg">Aucun modele disponible pour le moment.</p>
+  <p *ngIf="assignInfo" class="tl-msg tl-msg--success">{{ assignInfo }}</p>
   <p *ngIf="assignError" class="tl-msg tl-msg--error">{{ assignError }}</p>
 
   <div *ngIf="loading" class="tl-skeleton" aria-busy="true">

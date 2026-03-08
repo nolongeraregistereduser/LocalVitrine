@@ -12,6 +12,8 @@ public record AdminTemplateResponse(
         String description,
         ActivityType activityType,
         String previewUrl,
+        String starterHtml,
+        String starterCss,
         Boolean isActive,
         Instant createdAt,
         Instant updatedAt
@@ -24,6 +26,8 @@ public record AdminTemplateResponse(
                 template.getDescription(),
                 template.getActivityType(),
                 template.getPreviewUrl(),
+                template.getStarterHtml(),
+                template.getStarterCss(),
                 template.getIsActive(),
                 template.getCreatedAt(),
                 template.getUpdatedAt()

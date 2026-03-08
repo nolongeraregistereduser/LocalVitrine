@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { UiCardComponent } from '../../components/ui/ui-card/ui-card.component';
 import { TemplateDto, TemplateService } from '../../services/template.service';
 
 @Component({
   selector: 'app-templates-page',
   standalone: true,
-  imports: [CommonModule, UiCardComponent],
+  imports: [CommonModule, RouterLink, UiCardComponent],
   templateUrl: './templates-page.component.html',
   styleUrl: './templates-page.component.scss'
 })

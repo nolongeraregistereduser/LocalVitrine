@@ -10,6 +10,8 @@ public record AdminTemplateRequest(
         @NotBlank @Size(max = 80) String code,
         @NotBlank String description,
         @NotNull ActivityType activityType,
-        @NotBlank @Size(max = 2000) String previewUrl
+        @NotBlank @Size(max = 2000) String previewUrl,
+        @NotBlank String starterHtml,
+        @NotNull String starterCss
 ) {
 }

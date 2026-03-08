@@ -67,6 +67,12 @@
   font-weight: 600;
 }
 
+.hub-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .action-link {
   display: inline-flex;
   align-items: center;
@@ -78,6 +84,16 @@
   border-radius: var(--lv-radius-sm);
   padding: 10px 14px;
   font-weight: 600;
+}
+
+.action-link--primary {
+  box-shadow: 0 8px 22px rgba(124, 58, 237, 0.25);
+}
+
+.hub-actions .action-link:not(.action-link--primary) {
+  background: transparent;
+  color: var(--lv-primary);
+  border: 1px solid var(--lv-border);
 }
 
 @media (max-width: 860px) {

@@ -1,6 +1,10 @@
 <div class="templates-page">
-  <h1 class="lv-page-title">Templates</h1>
-  <p class="lv-subtitle">Explore template styles to prepare your next project.</p>
+  <h1 class="lv-page-title">Bibliotheque de modeles</h1>
+  <p class="lv-subtitle">
+    Decouvrez les styles disponibles. Pour <strong>personnaliser votre landing page</strong>, ouvrez un
+    <a routerLink="/dashboard">projet</a>, completez l'etape <strong>Template</strong>, puis allez dans
+    <strong>Personnaliser ma page</strong> (editeur GrapesJS) — le contenu de la page est lie a chaque projet.
+  </p>
 
   <p *ngIf="loading" class="muted">Chargement des templates...</p>
   <p *ngIf="error" class="lv-alert lv-alert--error">{{ error }}</p>

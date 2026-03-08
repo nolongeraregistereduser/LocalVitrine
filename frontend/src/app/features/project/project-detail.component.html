@@ -3,8 +3,11 @@
     <a routerLink="/dashboard">Retour au tableau de bord</a>
   </p>
 
-  <h1 class="lv-page-title">Project Hub</h1>
-  <p class="lv-subtitle">Follow the guided steps to complete your landing page from setup to publication.</p>
+  <h1 class="lv-page-title">Votre vitrine</h1>
+  <p class="lv-subtitle">
+    C'est ici que vous pilotez votre landing page : infos entreprise, choix du modele, puis personnalisation dans l'editeur
+    visuel (contenu enregistre pour ce projet).
+  </p>
 
   <p *ngIf="loading" class="muted">Chargement du projet...</p>
   <p *ngIf="error" class="lv-alert lv-alert--error">{{ error }}</p>
@@ -31,9 +34,15 @@
     </app-ui-card>
 
     <app-ui-card>
-      <h2 class="card-title">Editor</h2>
-      <p class="status-text">Open the visual editor to customize your page content and sections.</p>
-      <a class="action-link" [routerLink]="['/projects', projectId, 'setup', 'editor']">Open editor flow</a>
+      <h2 class="card-title">Landing page</h2>
+      <p class="status-text">
+        Ouvrez l'editeur pour modifier textes, blocs et mise en page. Le modele choisi a l'etape Template pre-remplit votre
+        page (si vous n'avez pas encore personnalise le contenu).
+      </p>
+      <div class="hub-actions">
+        <a class="action-link action-link--primary" [routerLink]="['/projects', projectId, 'editor']">Personnaliser ma page</a>
+        <a class="action-link" [routerLink]="['/projects', projectId, 'setup', 'editor']">Parcours guide (etape 3)</a>
+      </div>
     </app-ui-card>
 
     <app-ui-card>

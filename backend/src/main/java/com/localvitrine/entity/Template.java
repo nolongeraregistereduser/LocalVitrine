@@ -48,6 +48,12 @@ public class Template {
     @Column(nullable = false, length = 2000)
     private String previewUrl;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String starterHtml;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String starterCss;
+
     @Column(nullable = false)
     private Boolean isActive;
 
@@ -64,6 +70,12 @@ public class Template {
         this.updatedAt = now;
         if (this.isActive == null) {
             this.isActive = true;
+        }
+        if (this.starterHtml == null) {
+            this.starterHtml = "";
+        }
+        if (this.starterCss == null) {
+            this.starterCss = "";
         }
     }
 

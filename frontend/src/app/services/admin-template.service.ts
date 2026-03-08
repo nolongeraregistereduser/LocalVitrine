@@ -11,6 +11,8 @@ export interface AdminTemplateDto {
   description: string;
   activityType: ActivityType;
   previewUrl: string;
+  starterHtml: string;
+  starterCss: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -22,6 +24,8 @@ export interface AdminTemplatePayload {
   description: string;
   activityType: ActivityType;
   previewUrl: string;
+  starterHtml: string;
+  starterCss: string;
 }
 
 @Injectable({ providedIn: 'root' })

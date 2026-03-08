@@ -65,6 +65,8 @@ public class TemplateServiceImpl implements TemplateService {
                 .description(request.description().trim())
                 .activityType(request.activityType())
                 .previewUrl(request.previewUrl().trim())
+                .starterHtml(request.starterHtml().trim())
+                .starterCss(request.starterCss())
                 .isActive(true)
                 .build();
         templateRepository.save(template);
@@ -84,6 +86,8 @@ public class TemplateServiceImpl implements TemplateService {
         template.setDescription(request.description().trim());
         template.setActivityType(request.activityType());
         template.setPreviewUrl(request.previewUrl().trim());
+        template.setStarterHtml(request.starterHtml().trim());
+        template.setStarterCss(request.starterCss());
         templateRepository.save(template);
         return AdminTemplateResponse.fromEntity(template);
     }

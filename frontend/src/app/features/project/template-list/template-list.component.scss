@@ -41,6 +41,12 @@
     border-color: rgba(220, 38, 38, 0.25);
     color: var(--lv-danger);
   }
+
+  &--success {
+    background: #eefcf4;
+    border-color: #b7ebcc;
+    color: #1f7a45;
+  }
 }
 
 .tl-grid {

@@ -35,6 +35,8 @@ export class AdminTemplatePageComponent implements OnInit {
   formDescription = '';
   formActivityType: ActivityType = 'SERVICES';
   formPreviewUrl = '';
+  formStarterHtml = '';
+  formStarterCss = '';
 
   readonly activityOptions: ActivityType[] = ['RESTAURANT', 'RETAIL', 'SERVICES', 'OTHER'];
 
@@ -64,6 +66,8 @@ export class AdminTemplatePageComponent implements OnInit {
     this.formDescription = '';
     this.formActivityType = 'SERVICES';
     this.formPreviewUrl = '';
+    this.formStarterHtml = '';
+    this.formStarterCss = '';
     this.formError = undefined;
   }
 
@@ -74,6 +78,8 @@ export class AdminTemplatePageComponent implements OnInit {
     this.formDescription = item.description;
     this.formActivityType = item.activityType;
     this.formPreviewUrl = item.previewUrl;
+    this.formStarterHtml = item.starterHtml;
+    this.formStarterCss = item.starterCss;
     this.formError = undefined;
   }
 
@@ -86,9 +92,11 @@ export class AdminTemplatePageComponent implements OnInit {
       code: this.formCode.trim(),
       description: this.formDescription.trim(),
       activityType: this.formActivityType,
-      previewUrl: this.formPreviewUrl.trim()
+      previewUrl: this.formPreviewUrl.trim(),
+      starterHtml: this.formStarterHtml.trim(),
+      starterCss: this.formStarterCss
     };
-    if (!payload.name || !payload.code || !payload.description || !payload.previewUrl) {
+    if (!payload.name || !payload.code || !payload.description || !payload.previewUrl || !payload.starterHtml) {
       this.formError = 'Tous les champs sont obligatoires.';
       return;
     }

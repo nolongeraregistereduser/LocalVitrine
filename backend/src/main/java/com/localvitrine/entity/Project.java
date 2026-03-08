@@ -52,6 +52,9 @@ public class Project {
     @Column(columnDefinition = "TEXT")
     private String cssContent;
 
+    @Column(nullable = false)
+    private Boolean contentCustomized;
+
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
@@ -76,6 +79,9 @@ public class Project {
         this.updatedAt = now;
         if (this.status == null) {
             this.status = ProjectStatus.DRAFT;
+        }
+        if (this.contentCustomized == null) {
+            this.contentCustomized = false;
         }
     }
 
