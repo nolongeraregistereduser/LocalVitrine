@@ -27,12 +27,13 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   saving = false;
   saveMessage = '';
   errorMessage = '';
+  noContentMessage = '';
   hasPendingChanges = false;
+  templateReadyMessage = '';
 
   private editor?: Editor;
   private autosaveSub?: Subscription;
   private hasUnsavedChanges = false;
-  private readonly starterHtml = `<section><h1>Welcome to your business</h1><p>Edit this content.</p></section>`;
 
   ngOnInit(): void {
     const raw = this.route.snapshot.paramMap.get('projectId');
@@ -41,6 +42,12 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.projectId) {
       this.errorMessage = 'Projet invalide.';
       this.loading = false;
+    }
+    if (this.route.snapshot.queryParamMap.get('templateReady') === '1') {
+      this.templateReadyMessage = 'Your template is ready. Start customizing your page.';
+      window.setTimeout(() => {
+        this.templateReadyMessage = '';
+      }, 5000);
     }
   }
 
@@ -105,10 +112,17 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         return of(null);
       }))
       .subscribe((content) => {
-        const html = content?.htmlContent?.trim() ? content.htmlContent : this.starterHtml;
+        const html = content?.htmlContent?.trim() ? content.htmlContent : '';
         const css = content?.cssContent ?? '';
-        this.editor?.setComponents(html);
-        this.editor?.setStyle(css);
+        if (!html) {
+          this.noContentMessage = 'No content found';
+          this.editor?.setComponents('');
+          this.editor?.setStyle('');
+        } else {
+          this.noContentMessage = '';
+          this.editor?.setComponents(html);
+          this.editor?.setStyle(css);
+        }
         this.hasUnsavedChanges = false;
         this.hasPendingChanges = false;
         this.loading = false;

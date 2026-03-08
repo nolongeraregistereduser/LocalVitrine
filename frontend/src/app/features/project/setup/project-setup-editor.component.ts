@@ -17,18 +17,22 @@ export class ProjectSetupEditorComponent implements OnInit {
 
   projectId = 0;
   customizationDone = false;
+  templateReady = false;
 
   ngOnInit(): void {
     const raw = this.route.snapshot.paramMap.get('projectId');
     const parsed = raw ? Number(raw) : NaN;
     this.projectId = Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+    this.templateReady = this.route.snapshot.queryParamMap.get('templateReady') === '1';
   }
 
   openEditor(): void {
     if (!this.projectId) {
       return;
     }
-    this.router.navigate(['/projects', this.projectId, 'editor']);
+    this.router.navigate(['/projects', this.projectId, 'editor'], {
+      queryParams: this.templateReady ? { templateReady: '1' } : undefined
+    });
   }
 
   continue(): void {

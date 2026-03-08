@@ -19,4 +19,6 @@ public interface TemplateRepository extends JpaRepository<Template, Long> {
     boolean existsByCodeAndIdNot(String code, Long id);
 
     long countByIsActiveTrue();
+
+    Optional<Template> findByCode(String code);
 }

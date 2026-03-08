@@ -63,6 +63,15 @@
   color: var(--lv-text-muted);
 }
 
+.template-ready-state {
+  font-size: 0.86rem;
+  color: #1f7a45;
+  background: #eefcf4;
+  border: 1px solid #b7ebcc;
+  border-radius: 999px;
+  padding: 6px 10px;
+}
+
 .saved-state {
   color: var(--lv-success);
   font-weight: 600;

@@ -2,6 +2,7 @@
   <header class="editor-topbar">
     <a [routerLink]="['/projects', projectId]" class="back-link">Retour au projet</a>
     <div class="editor-actions">
+      <span *ngIf="templateReadyMessage" class="template-ready-state">{{ templateReadyMessage }}</span>
       <span *ngIf="hasPendingChanges && !saving" class="saving-state">Modifications non sauvegardees</span>
       <span *ngIf="saving" class="saving-state">Saving...</span>
       <span *ngIf="saveMessage" class="saved-state">{{ saveMessage }}</span>
@@ -11,6 +12,7 @@
   </header>
 
   <p *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</p>
+  <p *ngIf="noContentMessage" class="loading-msg">{{ noContentMessage }}</p>
   <p *ngIf="loading" class="loading-msg">Chargement de l'editeur...</p>
 
   <section class="editor-shell" [class.hidden]="loading" aria-label="Editeur visuel">

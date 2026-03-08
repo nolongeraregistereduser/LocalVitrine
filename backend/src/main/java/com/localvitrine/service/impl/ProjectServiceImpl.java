@@ -142,7 +142,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     private static boolean shouldApplyTemplateStarter(Project project) {
-        return !Boolean.TRUE.equals(project.getContentCustomized());
+        String html = project.getHtmlContent();
+        return html == null || html.trim().isEmpty();
     }
 
     private static String applyPlaceholders(String source, Project project, Template template) {

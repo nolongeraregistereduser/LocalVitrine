@@ -19,6 +19,7 @@ export class ProjectSetupTemplateComponent implements OnInit {
 
   projectId = 0;
   canContinue = false;
+  templateReady = false;
 
   ngOnInit(): void {
     const raw = this.route.snapshot.paramMap.get('projectId');
@@ -39,13 +40,16 @@ export class ProjectSetupTemplateComponent implements OnInit {
 
   onTemplateAssigned(): void {
     this.canContinue = true;
+    this.templateReady = true;
   }
 
   continue(): void {
     if (!this.projectId || !this.canContinue) {
       return;
     }
-    this.router.navigate(['/projects', this.projectId, 'setup', 'editor']);
+    this.router.navigate(['/projects', this.projectId, 'setup', 'editor'], {
+      queryParams: this.templateReady ? { templateReady: '1' } : undefined
+    });
   }
 }
 

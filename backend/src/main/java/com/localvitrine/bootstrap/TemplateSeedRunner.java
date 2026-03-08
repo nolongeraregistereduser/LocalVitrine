@@ -21,39 +21,50 @@ public class TemplateSeedRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (templateRepository.count() > 0) {
-            return;
-        }
-        templateRepository.save(Template.builder()
-                .name("Aurore")
-                .code("aurore")
-                .description("Mise en page aeree, typographie elegante, ideal pour services et creatifs.")
-                .activityType(ActivityType.SERVICES)
-                .previewUrl("https://picsum.photos/seed/aurore/800/500")
-                .starterHtml(auroreHtml())
-                .starterCss(auroreCss())
-                .isActive(true)
-                .build());
-        templateRepository.save(Template.builder()
-                .name("Bistro")
-                .code("bistro")
-                .description("Ambiance chaleureuse, photos mises en avant, parfait pour la restauration.")
-                .activityType(ActivityType.RESTAURANT)
-                .previewUrl("https://picsum.photos/seed/bistro/800/500")
-                .starterHtml(bistroHtml())
-                .starterCss(bistroCss())
-                .isActive(true)
-                .build());
-        templateRepository.save(Template.builder()
-                .name("Vitrine")
-                .code("vitrine")
-                .description("Grille produits claire, appels a l action visibles, oriente commerce.")
-                .activityType(ActivityType.RETAIL)
-                .previewUrl("https://picsum.photos/seed/vitrine/800/500")
-                .starterHtml(vitrineHtml())
-                .starterCss(vitrineCss())
-                .isActive(true)
-                .build());
+        upsertTemplate(
+                "Aurore",
+                "aurore",
+                "Mise en page aeree, typographie elegante, ideal pour services et creatifs.",
+                ActivityType.SERVICES,
+                "https://picsum.photos/seed/aurore/800/500",
+                auroreHtml(),
+                auroreCss());
+        upsertTemplate(
+                "Bistro",
+                "bistro",
+                "Ambiance chaleureuse, photos mises en avant, parfait pour la restauration.",
+                ActivityType.RESTAURANT,
+                "https://picsum.photos/seed/bistro/800/500",
+                bistroHtml(),
+                bistroCss());
+        upsertTemplate(
+                "Vitrine",
+                "vitrine",
+                "Grille produits claire, appels a l action visibles, oriente commerce.",
+                ActivityType.RETAIL,
+                "https://picsum.photos/seed/vitrine/800/500",
+                vitrineHtml(),
+                vitrineCss());
+    }
+
+    private void upsertTemplate(
+            String name,
+            String code,
+            String description,
+            ActivityType activityType,
+            String previewUrl,
+            String starterHtml,
+            String starterCss) {
+        Template template = templateRepository.findByCode(code).orElseGet(Template::new);
+        template.setName(name);
+        template.setCode(code);
+        template.setDescription(description);
+        template.setActivityType(activityType);
+        template.setPreviewUrl(previewUrl);
+        template.setStarterHtml(starterHtml);
+        template.setStarterCss(starterCss);
+        template.setIsActive(true);
+        templateRepository.save(template);
     }
 
     private static String auroreHtml() {
