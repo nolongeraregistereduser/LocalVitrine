@@ -9,210 +9,172 @@ const wrap = (inner: string) =>
 export function getLandingPageBlocks(): BlockProperties[] {
   return [
     {
-      id: 'lp-full-minimal',
-      label: 'Page entiere (modele)',
-      category: 'Landing complete',
+      id: 'aurore-full-page',
+      label: 'Aurore - Page complete',
+      category: 'Template kit: Aurore',
       content: wrap(`
-        <section style="padding:72px 24px;background:linear-gradient(180deg,#f4f0ff,#fff);text-align:center;">
-          <p style="margin:0 0 12px;font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#7c3aed;">Votre activite</p>
-          <h1 style="margin:0 0 16px;font-size:clamp(2rem,5vw,3rem);line-height:1.08;max-width:720px;margin-inline:auto;">Slogan percutant pour votre entreprise locale</h1>
-          <p style="margin:0 auto 24px;max-width:560px;font-size:18px;line-height:1.55;color:#64748b;">Une phrase claire sur votre valeur et votre zone d'intervention.</p>
-          <a href="#" style="display:inline-block;padding:14px 22px;border-radius:12px;background:#7c3aed;color:#fff;text-decoration:none;font-weight:700;">Action principale</a>
-        </section>
-        <section style="padding:56px 24px;background:#fff;">
-          <h2 style="margin:0 0 28px;text-align:center;font-size:1.5rem;">Pourquoi nous choisir</h2>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;max-width:1000px;margin:0 auto;">
-            <div style="padding:20px;border-radius:14px;border:1px solid #e9d5ff;background:#faf5ff;"><h3 style="margin:0 0 8px;font-size:1.05rem;">Avantage 1</h3><p style="margin:0;color:#64748b;font-size:0.95rem;line-height:1.5;">Court descriptif.</p></div>
-            <div style="padding:20px;border-radius:14px;border:1px solid #e9d5ff;background:#faf5ff;"><h3 style="margin:0 0 8px;font-size:1.05rem;">Avantage 2</h3><p style="margin:0;color:#64748b;font-size:0.95rem;line-height:1.5;">Court descriptif.</p></div>
-            <div style="padding:20px;border-radius:14px;border:1px solid #e9d5ff;background:#faf5ff;"><h3 style="margin:0 0 8px;font-size:1.05rem;">Avantage 3</h3><p style="margin:0;color:#64748b;font-size:0.95rem;line-height:1.5;">Court descriptif.</p></div>
+        <section style="padding:80px 24px;background:radial-gradient(circle at 14% -12%,#efe7ff 0,#f9f6ff 45%,#fff 100%);">
+          <div style="max-width:1120px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:28px;align-items:center;">
+            <div>
+              <p style="margin:0 0 12px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#7c3aed;">Creative agency</p>
+              <h1 style="margin:0 0 14px;font-size:clamp(2.1rem,4.8vw,3.4rem);line-height:1.06;">We design premium digital experiences for modern brands.</h1>
+              <p style="margin:0 0 22px;color:#625b7f;font-size:18px;line-height:1.6;max-width:620px;">From strategy to launch, we build high-converting websites with a clear business impact.</p>
+              <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                <a href="#" style="padding:12px 18px;border-radius:12px;background:linear-gradient(180deg,#7c3aed,#5b21b6);color:#fff;text-decoration:none;font-weight:700;">Book a strategy call</a>
+                <a href="#" style="padding:12px 18px;border-radius:12px;border:1px solid #ddd6fe;color:#5b21b6;text-decoration:none;font-weight:700;background:#fff;">See portfolio</a>
+              </div>
+            </div>
+            <div style="padding:22px;border-radius:18px;background:#fff;border:1px solid #e9ddff;box-shadow:0 24px 48px rgba(91,33,182,.12);">
+              <h3 style="margin:0 0 8px;font-size:1.2rem;">Launch sprint</h3>
+              <p style="margin:0;color:#625b7f;line-height:1.6;">Brand system, landing page and conversion copy delivered in 14 days.</p>
+            </div>
           </div>
         </section>
-        <section style="padding:56px 24px;background:#f8fafc;">
-          <h2 style="margin:0 0 20px;text-align:center;">Ils nous font confiance</h2>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;max-width:960px;margin:0 auto;">
-            <blockquote style="margin:0;padding:20px;border-radius:14px;background:#fff;border:1px solid #e2e8f0;"><p style="margin:0 0 10px;color:#475569;font-style:italic;">"Temoignage client reel a remplacer."</p><cite style="font-style:normal;font-weight:600;font-size:0.9rem;">Prenom N., Ville</cite></blockquote>
-            <blockquote style="margin:0;padding:20px;border-radius:14px;background:#fff;border:1px solid #e2e8f0;"><p style="margin:0 0 10px;color:#475569;font-style:italic;">"Deuxieme avis pour renforcer la confiance."</p><cite style="font-style:normal;font-weight:600;font-size:0.9rem;">Prenom N., Ville</cite></blockquote>
+        <section style="padding:64px 24px;background:#fff;">
+          <div style="max-width:1120px;margin:0 auto;">
+            <h2 style="margin:0 0 20px;font-size:clamp(1.6rem,3vw,2.2rem);">Creative services</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;">
+              <article style="padding:20px;border-radius:16px;border:1px solid #ebe4ff;background:#fff;"><h3 style="margin:0 0 8px;">Brand strategy</h3><p style="margin:0;color:#625b7f;line-height:1.6;">Positioning, messaging and market-fit narrative.</p></article>
+              <article style="padding:20px;border-radius:16px;border:1px solid #ebe4ff;background:#fff;"><h3 style="margin:0 0 8px;">SaaS web design</h3><p style="margin:0;color:#625b7f;line-height:1.6;">Clean, modern interfaces inspired by Stripe and Webflow.</p></article>
+              <article style="padding:20px;border-radius:16px;border:1px solid #ebe4ff;background:#fff;"><h3 style="margin:0 0 8px;">Growth launch</h3><p style="margin:0;color:#625b7f;line-height:1.6;">Assets and experiments to accelerate acquisition.</p></article>
+            </div>
           </div>
         </section>
-        <section style="padding:56px 24px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;text-align:center;">
-          <h2 style="margin:0 0 12px;font-size:1.6rem;">Passez a l'action</h2>
-          <p style="margin:0 0 20px;opacity:0.95;">Reservez, demandez un devis ou contactez-nous aujourd'hui.</p>
-          <a href="#" style="display:inline-block;padding:12px 20px;border-radius:10px;background:#fff;color:#5b21b6;font-weight:700;text-decoration:none;">Contact</a>
+        <section style="padding:64px 24px;background:#faf7ff;">
+          <div style="max-width:1120px;margin:0 auto;">
+            <h2 style="margin:0 0 20px;font-size:clamp(1.6rem,3vw,2.2rem);">Portfolio highlights</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;">
+              <article style="padding:14px;border-radius:16px;background:#fff;border:1px solid #ebe4ff;"><img src="https://picsum.photos/seed/aurore-block-1/420/250" alt="Fintech redesign" style="width:100%;display:block;border-radius:12px;"><h3 style="margin:12px 0 6px;">Fintech onboarding redesign</h3><p style="margin:0;color:#625b7f;">Drop-off reduced by 34%.</p></article>
+              <article style="padding:14px;border-radius:16px;background:#fff;border:1px solid #ebe4ff;"><img src="https://picsum.photos/seed/aurore-block-2/420/250" alt="SaaS launch" style="width:100%;display:block;border-radius:12px;"><h3 style="margin:12px 0 6px;">Subscription launch page</h3><p style="margin:0;color:#625b7f;">Higher signup conversion in 3 weeks.</p></article>
+              <article style="padding:14px;border-radius:16px;background:#fff;border:1px solid #ebe4ff;"><img src="https://picsum.photos/seed/aurore-block-3/420/250" alt="B2B site" style="width:100%;display:block;border-radius:12px;"><h3 style="margin:12px 0 6px;">B2B demand generation site</h3><p style="margin:0;color:#625b7f;">Qualified lead volume doubled.</p></article>
+            </div>
+          </div>
         </section>
-        <footer style="padding:28px 24px;background:#0f172a;color:#94a3b8;font-size:0.9rem;text-align:center;">
-          <p style="margin:0 0 8px;"><strong style="color:#e2e8f8;">Nom de l'entreprise</strong> — Adresse, ville</p>
-          <p style="margin:0;">© ${new Date().getFullYear()} — Tous droits reserves</p>
-        </footer>
       `)
     },
     {
-      id: 'lp-hero-split',
-      label: 'Hero (image + texte)',
-      category: 'Landing sections',
+      id: 'bistro-full-page',
+      label: 'Bistro - Page complete',
+      category: 'Template kit: Bistro',
       content: `
-        <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:32px;align-items:center;padding:56px 24px;max-width:1100px;margin:0 auto;">
-          <div>
-            <p style="margin:0 0 10px;font-size:12px;font-weight:700;text-transform:uppercase;color:#7c3aed;">Nouveau</p>
-            <h1 style="margin:0 0 14px;font-size:clamp(1.75rem,4vw,2.5rem);line-height:1.1;">Titre hero accrocheur</h1>
-            <p style="margin:0 0 20px;color:#64748b;line-height:1.6;">Sous-titre : expliquez en une phrase ce que vous offrez.</p>
-            <div style="display:flex;flex-wrap:wrap;gap:12px;">
-              <a href="#" style="padding:12px 18px;border-radius:10px;background:#7c3aed;color:#fff;text-decoration:none;font-weight:700;">Commencer</a>
-              <a href="#" style="padding:12px 18px;border-radius:10px;border:1px solid #cbd5e1;color:#475569;text-decoration:none;font-weight:600;">En savoir plus</a>
+        <section style="position:relative;min-height:68vh;background:url('https://picsum.photos/seed/bistro-block-hero/1600/980') center/cover no-repeat;padding:96px 24px;display:flex;align-items:center;">
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(25,15,11,.35),rgba(25,15,11,.62));"></div>
+          <div style="position:relative;max-width:1120px;margin:0 auto;width:100%;">
+            <p style="margin:0 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#f7c58a;font-weight:700;">Fine dining</p>
+            <h1 style="margin:0 0 12px;color:#fff;font-size:clamp(2.1rem,5vw,3.6rem);max-width:760px;line-height:1.06;">A warm culinary experience for unforgettable evenings.</h1>
+            <p style="margin:0 0 22px;color:#f9e7d7;max-width:620px;font-size:18px;line-height:1.6;">Seasonal menu, elegant ambiance, and service designed around your moments.</p>
+            <a href="#" style="padding:12px 18px;border-radius:12px;background:#f59e0b;color:#2c170f;text-decoration:none;font-weight:800;">Reserve your table</a>
+          </div>
+        </section>
+        <section style="padding:64px 24px;background:#fffaf5;">
+          <div style="max-width:1120px;margin:0 auto;">
+            <h2 style="margin:0 0 20px;font-size:clamp(1.6rem,3vw,2.2rem);">Menu highlights</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;">
+              <article style="padding:20px;border:1px solid #f1dcc8;border-radius:16px;background:#fff;"><h3 style="margin:0 0 8px;">Truffle Risotto</h3><p style="margin:0;color:#6b4f41;line-height:1.6;">Arborio rice, aged parmesan and wild mushrooms.</p></article>
+              <article style="padding:20px;border:1px solid #f1dcc8;border-radius:16px;background:#fff;"><h3 style="margin:0 0 8px;">Sea Bass Grill</h3><p style="margin:0;color:#6b4f41;line-height:1.6;">Lemon herb glaze and saffron emulsion.</p></article>
+              <article style="padding:20px;border:1px solid #f1dcc8;border-radius:16px;background:#fff;"><h3 style="margin:0 0 8px;">Chocolate Souffle</h3><p style="margin:0;color:#6b4f41;line-height:1.6;">Warm center, vanilla cream, caramelized hazelnuts.</p></article>
             </div>
           </div>
-          <div>
-            <img src="https://picsum.photos/seed/hero-lp/640/420" alt="" style="width:100%;border-radius:16px;border:1px solid #e2e8f0;object-fit:cover;" />
-          </div>
-        </section>`
-    },
-    {
-      id: 'lp-stats',
-      label: 'Bande chiffres / preuves',
-      category: 'Landing sections',
-      content: `
-        <section style="padding:40px 24px;background:#f1f5f9;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;">
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:24px;max-width:900px;margin:0 auto;text-align:center;">
-            <div><p style="margin:0;font-size:1.75rem;font-weight:800;color:#7c3aed;">10+</p><p style="margin:4px 0 0;font-size:0.85rem;color:#64748b;">Annees d'experience</p></div>
-            <div><p style="margin:0;font-size:1.75rem;font-weight:800;color:#7c3aed;">500+</p><p style="margin:4px 0 0;font-size:0.85rem;color:#64748b;">Clients satisfaits</p></div>
-            <div><p style="margin:0;font-size:1.75rem;font-weight:800;color:#7c3aed;">24h</p><p style="margin:4px 0 0;font-size:0.85rem;color:#64748b;">Delai de reponse</p></div>
-          </div>
-        </section>`
-    },
-    {
-      id: 'lp-features-6',
-      label: 'Features (6 cartes)',
-      category: 'Landing sections',
-      content: `
-        <section style="padding:56px 24px;background:#fff;">
-          <h2 style="margin:0 0 8px;text-align:center;font-size:1.5rem;">Fonctionnalites / services</h2>
-          <p style="margin:0 auto 32px;text-align:center;max-width:520px;color:#64748b;">Resumez ce qui rend votre offre unique.</p>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:1100px;margin:0 auto;">
-            ${[1, 2, 3, 4, 5, 6]
-              .map(
-                (i) =>
-                  `<div style="padding:20px;border-radius:14px;border:1px solid #e2e8f0;"><h3 style="margin:0 0 8px;font-size:1rem;">Service ${i}</h3><p style="margin:0;color:#64748b;font-size:0.92rem;line-height:1.5;">Description courte du benefice client.</p></div>`
-              )
-              .join('')}
-          </div>
-        </section>`
-    },
-    {
-      id: 'lp-steps',
-      label: 'Comment ca marche (etapes)',
-      category: 'Landing sections',
-      content: `
-        <section style="padding:56px 24px;background:#faf5ff;">
-          <h2 style="margin:0 0 28px;text-align:center;">Comment ca marche</h2>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;max-width:960px;margin:0 auto;">
-            ${['Creez votre projet', 'Ajoutez vos infos', 'Personnalisez', 'Publiez']
-              .map(
-                (t, i) =>
-                  `<div style="text-align:center;padding:16px;"><span style="display:inline-flex;width:36px;height:36px;border-radius:50%;background:#7c3aed;color:#fff;font-weight:800;align-items:center;justify-content:center;margin-bottom:10px;">${i + 1}</span><p style="margin:0;font-weight:600;">${t}</p><p style="margin:6px 0 0;color:#64748b;font-size:0.88rem;">Detail optionnel.</p></div>`
-              )
-              .join('')}
-          </div>
-        </section>`
-    },
-    {
-      id: 'lp-pricing',
-      label: 'Offres / tarifs (3 colonnes)',
-      category: 'Landing sections',
-      content: `
-        <section style="padding:56px 24px;background:#fff;">
-          <h2 style="margin:0 0 28px;text-align:center;">Tarifs simples</h2>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;max-width:1000px;margin:0 auto;align-items:stretch;">
-            <div style="padding:24px;border-radius:16px;border:1px solid #e2e8f0;">
-              <p style="margin:0 0 6px;font-weight:700;color:#64748b;">Starter</p>
-              <p style="margin:0 0 16px;font-size:2rem;font-weight:800;">19€<span style="font-size:1rem;font-weight:500;color:#94a3b8;">/mois</span></p>
-              <ul style="margin:0 0 20px;padding-left:18px;color:#475569;font-size:0.92rem;line-height:1.6;"><li>Point fort A</li><li>Point fort B</li></ul>
-              <a href="#" style="display:block;text-align:center;padding:12px;border-radius:10px;border:1px solid #cbd5e1;color:#334155;font-weight:600;text-decoration:none;">Choisir</a>
-            </div>
-            <div style="padding:24px;border-radius:16px;border:2px solid #7c3aed;background:linear-gradient(180deg,#faf5ff,#fff);transform:scale(1.02);">
-              <p style="margin:0 0 6px;font-weight:700;color:#7c3aed;">Populaire</p>
-              <p style="margin:0 0 16px;font-size:2rem;font-weight:800;">39€<span style="font-size:1rem;font-weight:500;color:#94a3b8;">/mois</span></p>
-              <ul style="margin:0 0 20px;padding-left:18px;color:#475569;font-size:0.92rem;line-height:1.6;"><li>Tout Starter</li><li>Plus de valeur</li></ul>
-              <a href="#" style="display:block;text-align:center;padding:12px;border-radius:10px;background:#7c3aed;color:#fff;font-weight:700;text-decoration:none;">Choisir</a>
-            </div>
-            <div style="padding:24px;border-radius:16px;border:1px solid #e2e8f0;">
-              <p style="margin:0 0 6px;font-weight:700;color:#64748b;">Pro</p>
-              <p style="margin:0 0 16px;font-size:2rem;font-weight:800;">79€<span style="font-size:1rem;font-weight:500;color:#94a3b8;">/mois</span></p>
-              <ul style="margin:0 0 20px;padding-left:18px;color:#475569;font-size:0.92rem;line-height:1.6;"><li>Premium</li><li>Support prioritaire</li></ul>
-              <a href="#" style="display:block;text-align:center;padding:12px;border-radius:10px;border:1px solid #cbd5e1;color:#334155;font-weight:600;text-decoration:none;">Choisir</a>
+        </section>
+        <section style="padding:64px 24px;background:#fff3e9;">
+          <div style="max-width:1120px;margin:0 auto;">
+            <h2 style="margin:0 0 20px;font-size:clamp(1.6rem,3vw,2.2rem);">Gallery</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;">
+              <img src="https://picsum.photos/seed/bistro-gallery-a/420/260" alt="Dish plating" style="width:100%;display:block;border-radius:14px;border:1px solid #efd8c5;">
+              <img src="https://picsum.photos/seed/bistro-gallery-b/420/260" alt="Restaurant interior" style="width:100%;display:block;border-radius:14px;border:1px solid #efd8c5;">
+              <img src="https://picsum.photos/seed/bistro-gallery-c/420/260" alt="Dessert table" style="width:100%;display:block;border-radius:14px;border:1px solid #efd8c5;">
             </div>
           </div>
         </section>`
     },
     {
-      id: 'lp-faq',
-      label: 'FAQ',
-      category: 'Landing sections',
+      id: 'vitrine-full-page',
+      label: 'Vitrine - Page complete',
+      category: 'Template kit: Vitrine',
       content: `
-        <section style="padding:56px 24px;background:#f8fafc;">
-          <h2 style="margin:0 0 24px;text-align:center;">Questions frequentes</h2>
-          <div style="max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:12px;">
-            ${['Proposez-vous un essai ?', 'Comment puis-je vous contacter ?', 'Intervenez-vous ailleurs ?']
-              .map(
-                (q) =>
-                  `<div style="padding:16px 18px;border-radius:12px;background:#fff;border:1px solid #e2e8f0;"><p style="margin:0 0 8px;font-weight:700;">${q}</p><p style="margin:0;color:#64748b;font-size:0.92rem;line-height:1.5;">Reponse courte a personnaliser.</p></div>`
-              )
-              .join('')}
+        <section style="padding:80px 24px;background:radial-gradient(circle at 12% -10%,#dbeafe 0,#eef5ff 44%,#fff 100%);">
+          <div style="max-width:1120px;margin:0 auto;">
+            <p style="margin:0 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#2563eb;font-weight:700;">Trusted local business</p>
+            <h1 style="margin:0 0 14px;font-size:clamp(2rem,4.8vw,3.3rem);line-height:1.08;max-width:880px;">Professional services that help your business move faster.</h1>
+            <p style="margin:0 0 22px;color:#4f6382;font-size:18px;line-height:1.6;max-width:640px;">Reliable execution, transparent communication and measurable outcomes.</p>
+            <a href="#" style="padding:12px 18px;border-radius:12px;background:linear-gradient(180deg,#2563eb,#1d4ed8);color:#fff;text-decoration:none;font-weight:700;">Request a quote</a>
+          </div>
+        </section>
+        <section style="padding:64px 24px;background:#fff;">
+          <div style="max-width:1120px;margin:0 auto;">
+            <h2 style="margin:0 0 20px;font-size:clamp(1.6rem,3vw,2.2rem);">Core services</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;">
+              <article style="padding:20px;border-radius:16px;border:1px solid #dbe8ff;background:#fff;"><h3 style="margin:0 0 8px;">Consulting</h3><p style="margin:0;color:#4f6382;line-height:1.6;">Actionable guidance for better decisions and execution.</p></article>
+              <article style="padding:20px;border-radius:16px;border:1px solid #dbe8ff;background:#fff;"><h3 style="margin:0 0 8px;">Implementation</h3><p style="margin:0;color:#4f6382;line-height:1.6;">Hands-on delivery with clear milestones.</p></article>
+              <article style="padding:20px;border-radius:16px;border:1px solid #dbe8ff;background:#fff;"><h3 style="margin:0 0 8px;">Support</h3><p style="margin:0;color:#4f6382;line-height:1.6;">Continuous optimization as your business grows.</p></article>
+            </div>
+          </div>
+        </section>
+        <section style="padding:64px 24px;background:#f8fbff;">
+          <div style="max-width:1120px;margin:0 auto;">
+            <h2 style="margin:0 0 20px;font-size:clamp(1.6rem,3vw,2.2rem);">Why choose us</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;">
+              <article style="padding:18px;border-radius:14px;border:1px solid #dbe8ff;background:#fff;"><strong style="font-size:1.4rem;color:#2563eb;">98%</strong><p style="margin:8px 0 0;color:#4f6382;">Client satisfaction rate</p></article>
+              <article style="padding:18px;border-radius:14px;border:1px solid #dbe8ff;background:#fff;"><strong style="font-size:1.4rem;color:#2563eb;">24h</strong><p style="margin:8px 0 0;color:#4f6382;">Average first-response time</p></article>
+              <article style="padding:18px;border-radius:14px;border:1px solid #dbe8ff;background:#fff;"><strong style="font-size:1.4rem;color:#2563eb;">500+</strong><p style="margin:8px 0 0;color:#4f6382;">Projects delivered</p></article>
+            </div>
           </div>
         </section>`
     },
     {
-      id: 'lp-cta-banner',
-      label: 'Banniere CTA',
-      category: 'Landing sections',
+      id: 'aurore-service-cards',
+      label: 'Aurore - Services',
+      category: 'Template kit: Aurore',
       content: `
-        <section style="padding:44px 24px;background:#1e293b;color:#f8fafc;text-align:center;">
-          <h2 style="margin:0 0 10px;font-size:1.4rem;">Pret a demarrer ?</h2>
-          <p style="margin:0 0 18px;opacity:0.9;">Une phrase d'urgence et de benefice.</p>
-          <a href="#" style="display:inline-block;padding:12px 22px;border-radius:10px;background:#7c3aed;color:#fff;font-weight:700;text-decoration:none;">Je reserve / Je contacte</a>
-        </section>`
-    },
-    {
-      id: 'lp-contact',
-      label: 'Contact (coordonnees)',
-      category: 'Landing sections',
-      content: `
-        <section id="contact" style="padding:56px 24px;background:#fff;">
-          <h2 style="margin:0 0 20px;text-align:center;">Contact</h2>
-          <div style="max-width:640px;margin:0 auto;text-align:center;color:#475569;line-height:1.7;">
-            <p style="margin:0 0 6px;"><strong>Adresse :</strong> Votre rue, ville</p>
-            <p style="margin:0 0 6px;"><strong>Telephone :</strong> +212 ...</p>
-            <p style="margin:0 0 6px;"><strong>Email :</strong> contact@entreprise.com</p>
-            <p style="margin:20px 0 0;"><strong>Horaires :</strong> Lun–Ven 9h–18h</p>
+        <section style="padding:64px 24px;background:#fff;">
+          <div style="max-width:1120px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;">
+            <article style="padding:20px;border:1px solid #ebe4ff;border-radius:16px;background:#fff;"><h3 style="margin:0 0 8px;">Brand strategy</h3><p style="margin:0;color:#625b7f;">Positioning and messaging that create clear market differentiation.</p></article>
+            <article style="padding:20px;border:1px solid #ebe4ff;border-radius:16px;background:#fff;"><h3 style="margin:0 0 8px;">Web design</h3><p style="margin:0;color:#625b7f;">Premium interfaces built for conversion and trust.</p></article>
+            <article style="padding:20px;border:1px solid #ebe4ff;border-radius:16px;background:#fff;"><h3 style="margin:0 0 8px;">Launch support</h3><p style="margin:0;color:#625b7f;">Campaign assets and optimization after go-live.</p></article>
           </div>
         </section>`
     },
     {
-      id: 'lp-footer',
-      label: 'Pied de page',
-      category: 'Landing sections',
+      id: 'bistro-menu-grid',
+      label: 'Bistro - Menu highlights',
+      category: 'Template kit: Bistro',
       content: `
-        <footer style="padding:32px 24px;background:#0f172a;color:#94a3b8;font-size:0.88rem;">
-          <div style="max-width:960px;margin:0 auto;display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:center;">
-            <strong style="color:#e2e8f8;">Nom entreprise</strong>
-            <nav style="display:flex;gap:16px;flex-wrap:wrap;"><a href="#" style="color:#94a3b8;">Accueil</a><a href="#" style="color:#94a3b8;">Services</a><a href="#" style="color:#94a3b8;">Contact</a><a href="#" style="color:#94a3b8;">Mentions</a></nav>
+        <section style="padding:64px 24px;background:#fffaf5;">
+          <div style="max-width:1120px;margin:0 auto;">
+            <h2 style="margin:0 0 20px;">Menu highlights</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;">
+              <article style="padding:20px;border:1px solid #f1dcc8;border-radius:16px;background:#fff;"><h3 style="margin:0 0 8px;">Chef tasting starter</h3><p style="margin:0;color:#6b4f41;">Seasonal vegetables, herbs and citrus vinaigrette.</p></article>
+              <article style="padding:20px;border:1px solid #f1dcc8;border-radius:16px;background:#fff;"><h3 style="margin:0 0 8px;">Woodfire mains</h3><p style="margin:0;color:#6b4f41;">Daily fish and premium cuts with house sauces.</p></article>
+              <article style="padding:20px;border:1px solid #f1dcc8;border-radius:16px;background:#fff;"><h3 style="margin:0 0 8px;">Signature desserts</h3><p style="margin:0;color:#6b4f41;">Modern classics with locally sourced ingredients.</p></article>
+            </div>
           </div>
-          <p style="margin:20px 0 0;text-align:center;">© ${new Date().getFullYear()} Nom entreprise</p>
+        </section>`
+    },
+    {
+      id: 'vitrine-cta-band',
+      label: 'Vitrine - CTA section',
+      category: 'Template kit: Vitrine',
+      content: `
+        <section style="padding:64px 24px;background:linear-gradient(135deg,#1d4ed8,#1e40af);color:#fff;text-align:center;">
+          <h2 style="margin:0 0 10px;font-size:clamp(1.5rem,3vw,2rem);">Need a reliable partner for your next project?</h2>
+          <p style="margin:0 auto 18px;max-width:640px;line-height:1.6;color:#dbeafe;">Book a quick call to discuss your goals and receive a practical action plan.</p>
+          <a href="#" style="display:inline-block;padding:12px 20px;border-radius:12px;background:#fff;color:#1d4ed8;text-decoration:none;font-weight:700;">Start now</a>
+        </section>`
+    },
+    {
+      id: 'shared-contact-footer',
+      label: 'Contact + Footer (shared)',
+      category: 'Shared utility blocks',
+      content: `
+        <section style="padding:56px 24px;background:#fff;text-align:center;">
+          <h2 style="margin:0 0 16px;">Contact</h2>
+          <p style="margin:6px 0;color:#475569;"><strong>Phone:</strong> +212 600 000 000</p>
+          <p style="margin:6px 0;color:#475569;"><strong>Email:</strong> contact@business.com</p>
+          <p style="margin:6px 0;color:#475569;"><strong>Address:</strong> Your address, city</p>
+        </section>
+        <footer style="padding:28px 24px;background:#0f172a;color:#94a3b8;font-size:14px;text-align:center;">
+          <p style="margin:0;">© ${new Date().getFullYear()} Your business name. All rights reserved.</p>
         </footer>`
-    },
-    {
-      id: 'lp-newsletter',
-      label: 'Newsletter (champs)',
-      category: 'Landing sections',
-      content: `
-        <section style="padding:40px 24px;background:#ede9fe;">
-          <div style="max-width:560px;margin:0 auto;text-align:center;">
-            <h2 style="margin:0 0 8px;font-size:1.25rem;">Restez informes</h2>
-            <p style="margin:0 0 16px;color:#64748b;font-size:0.95rem;">Une offre ou actu par email (remplacer le texte).</p>
-            <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
-              <input type="email" placeholder="Votre email" style="flex:1;min-width:200px;padding:12px 14px;border-radius:10px;border:1px solid #c4b5fd;" />
-              <button type="button" style="padding:12px 20px;border-radius:10px;border:none;background:#7c3aed;color:#fff;font-weight:700;cursor:pointer;">S'inscrire</button>
-            </div>
-          </div>
-        </section>`
     }
   ];
 }
