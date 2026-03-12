@@ -9,6 +9,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/landing/landing.component').then((m) => m.LandingComponent)
   },
   {
+    path: 'p/:slug',
+    loadComponent: () => import('./pages/public-landing/public-landing.component').then((m) => m.PublicLandingComponent)
+  },
+  {
     path: 'login',
     loadComponent: () => import('./pages/login/login.component').then((m) => m.LoginComponent)
   },

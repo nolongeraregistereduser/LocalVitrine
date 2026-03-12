@@ -28,7 +28,7 @@ export class AppComponent {
     startWith({ urlAfterRedirects: this.router.url } as NavigationEnd),
     map((event): ShellMode => {
       const url = event.urlAfterRedirects;
-      if (url === '/' || url.startsWith('/#')) {
+      if (url === '/' || url.startsWith('/#') || url.startsWith('/p/')) {
         return 'marketing';
       }
       if (url.startsWith('/login') || url.startsWith('/register')) {

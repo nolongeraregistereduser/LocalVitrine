@@ -4,6 +4,8 @@ import com.localvitrine.dto.ProjectContentRequest;
 import com.localvitrine.dto.ProjectContentResponse;
 import com.localvitrine.dto.ProjectRequest;
 import com.localvitrine.dto.ProjectResponse;
+import com.localvitrine.dto.PublishProjectRequest;
+import com.localvitrine.dto.PublishedProjectResponse;
 import com.localvitrine.service.ProjectService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -67,6 +69,14 @@ public class ProjectController {
             @PathVariable Long id,
             @Valid @RequestBody ProjectContentRequest request) {
         return ResponseEntity.ok(projectService.updateProjectContent(id, request));
+    }
+
+    @PostMapping("/{id}/publish")
+    public ResponseEntity<PublishedProjectResponse> publish(
+            @PathVariable Long id,
+            @RequestBody(required = false) PublishProjectRequest request) {
+        String requestedSlug = request != null ? request.slug() : null;
+        return ResponseEntity.ok(projectService.publishProject(id, requestedSlug));
     }
 
     @DeleteMapping("/{id}")

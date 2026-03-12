@@ -14,9 +14,13 @@
     <p><strong>Template:</strong> {{ project.templateName || 'Aucun template selectionne' }}</p>
 
     <label class="field">
-      <span>Public URL (optional)</span>
-      <input [(ngModel)]="publicUrl" maxlength="500" placeholder="https://..." />
+      <span>Public slug (optional)</span>
+      <input [(ngModel)]="slug" maxlength="200" placeholder="mon-business-premium" />
     </label>
+
+    <p class="muted" *ngIf="published">
+      Public page: <a [href]="published.publicUrl" target="_blank" rel="noopener">{{ published.publicUrl }}</a>
+    </p>
 
     <div class="setup-actions">
       <a class="setup-link setup-link--secondary" [routerLink]="['/projects', projectId, 'editor']">Back to editor</a>

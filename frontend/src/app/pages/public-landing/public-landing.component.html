@@ -1,0 +1,9 @@
+<div class="public-page" *ngIf="loading">Loading page...</div>
+<div class="public-page public-page--error" *ngIf="!loading && error">{{ error }}</div>
+
+<iframe
+  #publicFrame
+  class="public-frame"
+  [class.public-frame--hidden]="loading || !!error"
+  [attr.title]="title || 'Public landing page'">
+</iframe>

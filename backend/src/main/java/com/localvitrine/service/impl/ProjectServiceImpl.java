@@ -4,8 +4,11 @@ import com.localvitrine.dto.ProjectContentRequest;
 import com.localvitrine.dto.ProjectContentResponse;
 import com.localvitrine.dto.ProjectRequest;
 import com.localvitrine.dto.ProjectResponse;
+import com.localvitrine.dto.PublicLandingPageResponse;
+import com.localvitrine.dto.PublishedProjectResponse;
 import com.localvitrine.entity.BusinessProfile;
 import com.localvitrine.entity.Project;
+import com.localvitrine.entity.ProjectStatus;
 import com.localvitrine.entity.Template;
 import com.localvitrine.entity.User;
 import com.localvitrine.repository.ProjectRepository;
@@ -23,12 +26,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
+    private static final Pattern NON_SLUG_CHARS = Pattern.compile("[^a-z0-9-]");
+    private static final Pattern MULTI_DASH = Pattern.compile("-{2,}");
 
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
@@ -141,6 +147,41 @@ public class ProjectServiceImpl implements ProjectService {
         return ProjectContentResponse.fromEntity(project);
     }
 
+    @Override
+    @Transactional
+    public PublishedProjectResponse publishProject(Long id, String requestedSlug) {
+        User owner = requireCurrentUser();
+        Project project = projectRepository.findByIdAndOwnerId(id, owner.getId())
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Project not found"));
+
+        String base = requestedSlug == null || requestedSlug.isBlank()
+                ? project.getTitle()
+                : requestedSlug;
+        String uniqueSlug = generateUniqueSlug(base, id);
+
+        project.setPublicUrl(uniqueSlug);
+        project.setStatus(ProjectStatus.PUBLISHED);
+        projectRepository.save(project);
+
+        return new PublishedProjectResponse(project.getId(), uniqueSlug, "/p/" + uniqueSlug);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PublicLandingPageResponse getPublicLandingPage(String slug) {
+        String normalized = normalizeSlug(slug);
+        if (normalized.isBlank()) {
+            throw new ResponseStatusException(NOT_FOUND, "Public page not found");
+        }
+        Project project = projectRepository.findByPublicUrlAndStatus(normalized, ProjectStatus.PUBLISHED)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Public page not found"));
+        return new PublicLandingPageResponse(
+                project.getTitle(),
+                safe(project.getHtmlContent(), ""),
+                safe(project.getCssContent(), "")
+        );
+    }
+
     private static boolean shouldApplyTemplateStarter(Project project) {
         String html = project.getHtmlContent();
         return html == null || html.trim().isEmpty();
@@ -222,5 +263,37 @@ public class ProjectServiceImpl implements ProjectService {
         }
         String trimmed = publicUrl.trim();
         return trimmed.isEmpty() ? null : trimmed;
+    }
+
+    private String generateUniqueSlug(String source, Long projectId) {
+        String base = normalizeSlug(source);
+        if (base.isBlank()) {
+            base = "project-" + projectId;
+        }
+        String candidate = base;
+        int index = 2;
+        while (projectRepository.existsByPublicUrl(candidate)) {
+            candidate = base + "-" + index;
+            index++;
+        }
+        return candidate;
+    }
+
+    private static String normalizeSlug(String raw) {
+        if (raw == null) {
+            return "";
+        }
+        String normalized = raw.toLowerCase(Locale.ROOT).trim()
+                .replace(' ', '-')
+                .replace('_', '-');
+        normalized = NON_SLUG_CHARS.matcher(normalized).replaceAll("");
+        normalized = MULTI_DASH.matcher(normalized).replaceAll("-");
+        if (normalized.startsWith("-")) {
+            normalized = normalized.substring(1);
+        }
+        if (normalized.endsWith("-")) {
+            normalized = normalized.substring(0, normalized.length() - 1);
+        }
+        return normalized;
     }
 }

@@ -4,6 +4,8 @@ import com.localvitrine.dto.ProjectContentRequest;
 import com.localvitrine.dto.ProjectContentResponse;
 import com.localvitrine.dto.ProjectRequest;
 import com.localvitrine.dto.ProjectResponse;
+import com.localvitrine.dto.PublicLandingPageResponse;
+import com.localvitrine.dto.PublishedProjectResponse;
 
 import java.util.List;
 
@@ -24,4 +26,8 @@ public interface ProjectService {
     ProjectContentResponse getProjectContent(Long id);
 
     ProjectContentResponse updateProjectContent(Long id, ProjectContentRequest request);
+
+    PublishedProjectResponse publishProject(Long id, String requestedSlug);
+
+    PublicLandingPageResponse getPublicLandingPage(String slug);
 }

@@ -1,6 +1,7 @@
 package com.localvitrine.repository;
 
 import com.localvitrine.entity.Project;
+import com.localvitrine.entity.ProjectStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -13,4 +14,8 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     Optional<Project> findByIdAndOwnerId(Long id, Long ownerId);
 
     boolean existsByTemplateId(Long templateId);
+
+    Optional<Project> findByPublicUrlAndStatus(String publicUrl, ProjectStatus status);
+
+    boolean existsByPublicUrl(String publicUrl);
 }

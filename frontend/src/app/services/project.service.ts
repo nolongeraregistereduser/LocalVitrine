@@ -23,6 +23,18 @@ export interface ProjectPayload {
   publicUrl: string | null;
 }
 
+export interface PublishResultDto {
+  projectId: number;
+  slug: string;
+  publicUrl: string;
+}
+
+export interface PublicLandingPageDto {
+  title: string;
+  htmlContent: string;
+  cssContent: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class ProjectService {
   private readonly http = inject(HttpClient);
@@ -50,5 +62,13 @@ export class ProjectService {
 
   assignTemplate(projectId: number, templateId: number): Observable<ProjectDto> {
     return this.http.put<ProjectDto>(`${this.baseUrl}/${projectId}/template/${templateId}`, null);
+  }
+
+  publish(projectId: number, slug?: string): Observable<PublishResultDto> {
+    return this.http.post<PublishResultDto>(`${this.baseUrl}/${projectId}/publish`, { slug: slug ?? null });
+  }
+
+  getPublicLandingPage(slug: string): Observable<PublicLandingPageDto> {
+    return this.http.get<PublicLandingPageDto>(`${environment.apiUrl}/public/${slug}`);
   }
 }

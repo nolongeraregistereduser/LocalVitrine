@@ -4,7 +4,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { UiButtonComponent } from '../../../components/ui/ui-button/ui-button.component';
-import { ProjectDto, ProjectService } from '../../../services/project.service';
+import { ProjectDto, ProjectService, PublishResultDto } from '../../../services/project.service';
 
 @Component({
   selector: 'app-project-setup-publish',
@@ -24,7 +24,8 @@ export class ProjectSetupPublishComponent implements OnInit {
   error?: string;
   success?: string;
   project?: ProjectDto;
-  publicUrl = '';
+  slug = '';
+  published?: PublishResultDto;
 
   ngOnInit(): void {
     const raw = this.route.snapshot.paramMap.get('projectId');
@@ -45,14 +46,12 @@ export class ProjectSetupPublishComponent implements OnInit {
     this.error = undefined;
     this.success = undefined;
     this.publishing = true;
-    this.projectService.update(this.project.id, {
-      title: this.project.title,
-      status: 'PUBLISHED',
-      publicUrl: this.publicUrl.trim() || null
-    }).subscribe({
-      next: (updated) => {
+    this.projectService.publish(this.project.id, this.slug.trim() || undefined).subscribe({
+      next: (result) => {
         this.publishing = false;
-        this.project = updated;
+        this.published = result;
+        this.slug = result.slug;
+        this.project = { ...this.project!, status: 'PUBLISHED', publicUrl: result.slug };
         this.success = 'Projet publie avec succes.';
       },
       error: (err: HttpErrorResponse) => {
@@ -76,7 +75,14 @@ export class ProjectSetupPublishComponent implements OnInit {
     this.projectService.getById(this.projectId).subscribe({
       next: (project) => {
         this.project = project;
-        this.publicUrl = project.publicUrl ?? '';
+        this.slug = project.publicUrl ?? '';
+        if (project.status === 'PUBLISHED' && project.publicUrl) {
+          this.published = {
+            projectId: project.id,
+            slug: project.publicUrl,
+            publicUrl: `/p/${project.publicUrl}`
+          };
+        }
         this.loading = false;
       },
       error: () => {
