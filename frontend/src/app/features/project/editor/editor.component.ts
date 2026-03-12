@@ -5,6 +5,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { interval, of, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import grapesjs, { Editor } from 'grapesjs';
+import { AiContentService, AiGeneratedContentDto } from '../../../services/ai-content.service';
 import { ProjectEditorService } from '../../../services/project-editor.service';
 import { getLandingPageBlocks } from './editor-landing-blocks';
 
@@ -18,6 +19,7 @@ import { getLandingPageBlocks } from './editor-landing-blocks';
 export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly editorService = inject(ProjectEditorService);
+  private readonly aiService = inject(AiContentService);
 
   @ViewChild('editorHost', { static: true }) editorHost!: ElementRef<HTMLDivElement>;
   @ViewChild('blocksHost', { static: true }) blocksHost!: ElementRef<HTMLDivElement>;
@@ -30,6 +32,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
   noContentMessage = '';
   hasPendingChanges = false;
   templateReadyMessage = '';
+  aiLoading = false;
+  aiMessage = '';
 
   private editor?: Editor;
   private autosaveSub?: Subscription;
@@ -71,6 +75,34 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
   saveManual(): void {
     this.save(true);
+  }
+
+  generateAiContent(): void {
+    if (!this.projectId || !this.editor || this.aiLoading) {
+      return;
+    }
+    this.aiLoading = true;
+    this.aiMessage = '';
+    this.aiService.generate(this.projectId).subscribe({
+      next: (generated) => {
+        const html = (generated.html ?? '').trim();
+        if (!html || html.toLowerCase() === 'null' || html.toLowerCase() === 'undefined') {
+          this.aiLoading = false;
+          this.aiMessage = 'AI returned invalid content. Please try again.';
+          return;
+        }
+        this.aiLoading = false;
+        this.editor?.setComponents(html);
+        this.editor?.setStyle((generated.css ?? '').trim());
+        this.aiMessage = 'Content generated successfully';
+        this.hasUnsavedChanges = true;
+        this.hasPendingChanges = true;
+      },
+      error: (err: HttpErrorResponse) => {
+        this.aiLoading = false;
+        this.aiMessage = err.error?.message ?? 'AI generation failed';
+      }
+    });
   }
 
   private initEditor(): void {
@@ -153,4 +185,5 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   }
+
 }
