@@ -6,10 +6,10 @@
 }
 
 .shell {
-  padding: 20px;
+  padding: var(--lv-space-5);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--lv-space-4);
 }
 
 .auth-layout {
@@ -17,7 +17,7 @@
   display: grid;
   place-items: center;
   padding: 24px 16px;
-  background: radial-gradient(circle at 20% 20%, #f5ebff 0%, #f5f3ff 40%, #f8fafc 100%);
+  background: var(--lv-bg-gradient);
 }
 
 .marketing-layout {
@@ -32,7 +32,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 18px;
+  padding: 12px 16px;
   border: 1px solid var(--lv-border);
   border-radius: var(--lv-radius-md);
   background: var(--lv-surface);
@@ -62,12 +62,13 @@
 
 .ghost-button {
   border: 1px solid var(--lv-border);
-  background: var(--lv-surface);
+  background: #fff;
   color: var(--lv-text);
-  border-radius: var(--lv-radius-sm);
+  border-radius: 12px;
   padding: 8px 12px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
+  transition: background-color 160ms ease, box-shadow 160ms ease;
 }
 
 .topbar__actions {
@@ -86,13 +87,13 @@
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  border: 1px solid #ddd6fe;
+  border: 1px solid var(--lv-border);
 }
 
 .icon-button {
   width: 34px;
   height: 34px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid var(--lv-border);
   background: var(--lv-surface);
   color: var(--lv-text);
@@ -101,59 +102,76 @@
 
 .ghost-button:hover {
   background: var(--lv-surface-soft);
+  box-shadow: var(--lv-shadow-sm);
 }
 
 .shell__body {
   display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
+  grid-template-columns: clamp(248px, 23vw, 292px) minmax(0, 1fr);
   gap: 16px;
 }
 
 .sidebar {
   border: 1px solid var(--lv-border);
   border-radius: var(--lv-radius-md);
-  padding: 14px;
-  background: var(--lv-surface);
+  padding: 16px;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(124, 58, 237, 0.08), transparent 48%),
+    var(--lv-surface);
   box-shadow: var(--lv-shadow-sm);
   align-self: start;
   transition: width 180ms ease, padding 180ms ease;
-  width: 220px;
+  width: clamp(248px, 23vw, 292px);
   overflow: hidden;
 }
 
 .sidebar__nav {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 12px;
+  gap: 6px;
+  margin-top: 14px;
 }
 
 .sidebar__nav a {
   text-decoration: none;
   color: var(--lv-text);
-  padding: 10px 12px;
+  padding: 11px 12px;
   border-radius: 10px;
-  transition: background-color 150ms ease;
-  font-weight: 500;
+  border: 1px solid transparent;
+  transition: background-color 150ms ease, border-color 150ms ease, transform 150ms ease;
+  font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .sidebar__nav a.active,
 .sidebar__nav a:hover {
-  background: #ede9fe;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.18), rgba(124, 58, 237, 0.08));
+  border-color: rgba(124, 58, 237, 0.2);
+  transform: translateX(2px);
 }
 
 .nav-icon {
-  width: 14px;
+  width: 18px;
+  height: 18px;
   text-align: center;
   color: var(--lv-primary-strong);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(124, 58, 237, 0.1);
+  font-size: 0.72rem;
 }
 
 .sidebar--collapsed {
   width: 78px;
   padding-inline: 8px;
+}
+
+.sidebar--collapsed app-user-journey-progress {
+  display: none;
 }
 
 .sidebar--collapsed .nav-label {
@@ -177,7 +195,7 @@
   background: var(--lv-surface);
   border: 1px solid var(--lv-border);
   border-radius: var(--lv-radius-md);
-  padding: 24px;
+  padding: var(--lv-space-6);
   min-height: calc(100vh - 130px);
   box-shadow: var(--lv-shadow-sm);
 }
@@ -203,10 +221,10 @@
     top: 74px;
     bottom: 12px;
     z-index: 25;
-    width: min(280px, calc(100vw - 24px));
+    width: min(320px, calc(100vw - 24px));
     transform: translateX(-120%);
     transition: transform 200ms ease;
-    padding: 12px;
+    padding: 14px;
   }
 
   .sidebar.sidebar--mobile-open {

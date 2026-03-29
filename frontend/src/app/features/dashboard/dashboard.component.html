@@ -1,66 +1,125 @@
 <div class="dashboard">
-  <h1 class="lv-page-title">Tableau de bord</h1>
-  <p class="lv-subtitle">Start by creating your project, then follow the guided setup until publication.</p>
+  <section class="dashboard-hero lv-card">
+    <div class="dashboard-hero__copy">
+      <p class="kicker">Workspace LocalVitrine</p>
+      <h1 class="lv-page-title">Tableau de bord</h1>
+      <p class="lv-subtitle">Pilotez vos vitrines, suivez l'avancement et publiez plus rapidement.</p>
+    </div>
+    <app-ui-button [disabled]="projectsLoading" (click)="openCreateModal()">Nouveau projet</app-ui-button>
+  </section>
 
-  <div class="dashboard__grid">
-    <app-ui-card>
-      <h2 class="card-title">Etat de l'API</h2>
-      <p *ngIf="loadingHealth" class="muted">Chargement du statut...</p>
-      <p *ngIf="healthError" class="error">{{ healthError }}</p>
-      <div *ngIf="health && !loadingHealth" class="api-status">
-        <app-status-badge tone="success">{{ health.status }}</app-status-badge>
-        <p class="muted">Horodatage: {{ health.timestamp }}</p>
-      </div>
-    </app-ui-card>
+  <section class="dashboard-stats" *ngIf="!projectsLoading">
+    <article class="stat-card lv-card">
+      <p>Total projets</p>
+      <strong>{{ totalProjects }}</strong>
+    </article>
+    <article class="stat-card lv-card">
+      <p>Publies</p>
+      <strong>{{ publishedProjectsCount }}</strong>
+    </article>
+    <article class="stat-card lv-card">
+      <p>Brouillons</p>
+      <strong>{{ draftProjectsCount }}</strong>
+    </article>
+    <article class="stat-card lv-card">
+      <p>Taux de publication</p>
+      <strong>{{ publishRate }}%</strong>
+    </article>
+  </section>
 
-    <app-ui-card class="dashboard__projects-wide">
-      <div class="projects-header">
+  <section class="projects-panel lv-card">
+    <div class="projects-header">
+      <div>
         <h2 class="card-title">Mes projets</h2>
-        <app-ui-button [disabled]="projectsLoading" (click)="openCreateModal()">Nouveau projet</app-ui-button>
+        <p class="muted">Tous vos projets centralises, avec acces rapide aux actions principales.</p>
       </div>
+    </div>
 
-      <p *ngIf="projectsLoading" class="muted">Chargement de vos projets...</p>
-      <p *ngIf="projectsError" class="lv-alert lv-alert--error">{{ projectsError }}</p>
-      <p *ngIf="projectsSuccess" class="lv-alert lv-alert--success">{{ projectsSuccess }}</p>
+    <p *ngIf="projectsLoading" class="muted">Chargement de vos projets...</p>
+    <p *ngIf="projectsError" class="lv-alert lv-alert--error">{{ projectsError }}</p>
+    <p *ngIf="projectsSuccess" class="lv-alert lv-alert--success">{{ projectsSuccess }}</p>
 
-      <div *ngIf="!projectsLoading && !projects.length && !projectsError" class="empty-state">
-        <p class="muted">No project yet. Create your first project to begin your step-by-step journey.</p>
-        <app-ui-button (click)="openCreateModal()">Create Project</app-ui-button>
-      </div>
+    <div *ngIf="!projectsLoading && projects.length" class="projects-toolbar lv-card">
+      <label class="projects-toolbar__search" aria-label="Rechercher un projet">
+        <input type="search" [(ngModel)]="projectSearch" placeholder="Rechercher par nom, URL ou template" />
+      </label>
 
-      <div *ngIf="!projectsLoading && projects.length" class="project-grid">
-        <div class="project-card" *ngFor="let project of projects">
-          <app-ui-card>
-            <div class="project-card__head">
-              <h3 class="project-title">{{ project.title }}</h3>
-              <app-status-badge [tone]="projectStatusTone(project.status)">{{ project.status }}</app-status-badge>
-            </div>
-            <p class="muted project-meta">Cree le {{ project.createdAt | date : 'short' }}</p>
-            <p *ngIf="project.publicUrl" class="project-url">
-              <span class="muted">URL publique:</span>
-              {{ project.publicUrl }}
-            </p>
-            <div class="project-actions">
-              <a class="project-nav-link" [routerLink]="['/projects', project.id]">Project Hub</a>
-              <a class="project-nav-link" [routerLink]="setupRoute(project)">Continue setup</a>
-              <a class="project-nav-link" [routerLink]="['/projects', project.id, 'editor']">Editeur visuel</a>
-              <app-ui-button variant="secondary" [disabled]="projectsLoading" (click)="openEditModal(project)">
-                Modifier
-              </app-ui-button>
-              <app-ui-button
-                variant="secondary"
-                [disabled]="projectsLoading || deletingProjectId === project.id"
-                [loading]="deletingProjectId === project.id"
-                (click)="deleteProject(project)"
-              >
-                Supprimer
-              </app-ui-button>
-            </div>
-          </app-ui-card>
+      <label class="projects-toolbar__control" aria-label="Filtrer par statut">
+        <span>Statut</span>
+        <select [(ngModel)]="projectFilterStatus">
+          <option value="ALL">Tous</option>
+          <option *ngFor="let status of statusOptions" [ngValue]="status">{{ status }}</option>
+        </select>
+      </label>
+
+      <label class="projects-toolbar__control" aria-label="Trier les projets">
+        <span>Trier</span>
+        <select [(ngModel)]="projectSort">
+          <option *ngFor="let option of projectSortOptions" [ngValue]="option.value">{{ option.label }}</option>
+        </select>
+      </label>
+    </div>
+
+    <p *ngIf="!projectsLoading && projects.length" class="projects-count muted">
+      {{ visibleProjectsCount }} projet(s) affiche(s) sur {{ totalProjects }}
+    </p>
+
+    <div *ngIf="!projectsLoading && !projects.length && !projectsError" class="empty-state lv-card">
+      <h3>Aucun projet pour le moment</h3>
+      <p class="muted">Creez votre premier projet pour demarrer votre parcours de creation.</p>
+      <app-ui-button (click)="openCreateModal()">Creer mon premier projet</app-ui-button>
+    </div>
+
+    <div *ngIf="!projectsLoading && projects.length && !filteredProjects.length" class="empty-state empty-state--filtered lv-card">
+      <h3>Aucun resultat</h3>
+      <p class="muted">Essayez de changer le filtre ou votre recherche.</p>
+    </div>
+
+    <div *ngIf="!projectsLoading && filteredProjects.length" class="project-grid">
+      <app-ui-card class="project-card" *ngFor="let project of filteredProjects">
+        <div class="project-card__head">
+          <h3 class="project-title">{{ project.title }}</h3>
+          <app-status-badge [tone]="projectStatusTone(project.status)">{{ project.status }}</app-status-badge>
         </div>
-      </div>
-    </app-ui-card>
-  </div>
+
+        <p class="muted project-meta">Cree le {{ project.createdAt | date : 'short' }}</p>
+
+        <div class="project-card__chips">
+          <span class="project-chip" [class.project-chip--ready]="project.templateId != null">
+            {{ project.templateId != null ? 'Template choisi' : 'Template manquant' }}
+          </span>
+          <span class="project-chip" [class.project-chip--ready]="!!project.publicUrl">
+            {{ project.publicUrl ? 'URL configuree' : 'URL non configuree' }}
+          </span>
+        </div>
+
+        <p *ngIf="project.publicUrl" class="project-url">
+          <span class="muted">URL publique:</span>
+          <a [href]="project.publicUrl" target="_blank" rel="noopener">{{ project.publicUrl }}</a>
+        </p>
+
+        <div class="project-main-actions">
+          <a class="project-nav-link lv-btn" [routerLink]="['/projects', project.id]">Project Hub</a>
+          <a class="project-nav-link lv-btn" [routerLink]="setupRoute(project)">Continuer setup</a>
+          <a class="project-nav-link lv-btn" [routerLink]="['/projects', project.id, 'editor']">Editeur visuel</a>
+        </div>
+
+        <div class="project-secondary-actions">
+          <app-ui-button variant="secondary" [disabled]="projectsLoading" (click)="openEditModal(project)">
+            Modifier
+          </app-ui-button>
+          <app-ui-button
+            variant="secondary"
+            [disabled]="projectsLoading || deletingProjectId === project.id"
+            [loading]="deletingProjectId === project.id"
+            (click)="deleteProject(project)"
+          >
+            Supprimer
+          </app-ui-button>
+        </div>
+      </app-ui-card>
+    </div>
+  </section>
 </div>
 
 <div *ngIf="modalOpen" class="modal-backdrop" (click)="closeModal()">
@@ -71,6 +130,7 @@
       <label class="field">
         <span>Titre du projet</span>
         <input
+          type="text"
           name="title"
           [(ngModel)]="formTitle"
           required
@@ -93,6 +153,7 @@
       <label class="field">
         <span>URL publique (optionnel)</span>
         <input
+          type="url"
           name="publicUrl"
           [(ngModel)]="formPublicUrl"
           maxlength="500"

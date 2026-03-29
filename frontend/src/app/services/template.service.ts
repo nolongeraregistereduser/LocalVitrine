@@ -12,6 +12,8 @@ export interface TemplateDto {
   description: string;
   activityType: ActivityType;
   previewUrl: string;
+  starterHtml: string;
+  starterCss: string;
   createdAt: string;
   updatedAt: string;
 }

@@ -12,6 +12,8 @@ public record TemplateResponse(
         String description,
         ActivityType activityType,
         String previewUrl,
+    String starterHtml,
+    String starterCss,
         Instant createdAt,
         Instant updatedAt
 ) {
@@ -24,6 +26,8 @@ public record TemplateResponse(
                 template.getDescription(),
                 template.getActivityType(),
                 template.getPreviewUrl(),
+                template.getStarterHtml(),
+                template.getStarterCss(),
                 template.getCreatedAt(),
                 template.getUpdatedAt()
         );

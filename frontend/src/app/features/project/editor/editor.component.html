@@ -7,11 +7,11 @@
       <span *ngIf="hasPendingChanges && !saving" class="saving-state">Modifications non sauvegardees</span>
       <span *ngIf="saving" class="saving-state">Saving...</span>
       <span *ngIf="saveMessage" class="saved-state">{{ saveMessage }}</span>
-      <button type="button" class="ai-btn" (click)="generateAiContent()" [disabled]="aiLoading || loading || saving">
+      <button type="button" class="ai-btn lv-btn lv-btn--secondary" (click)="generateAiContent()" [disabled]="aiLoading || loading || saving">
         {{ aiLoading ? 'Generating...' : '✨ Generate Content' }}
       </button>
-      <button type="button" class="save-btn" (click)="saveManual()" [disabled]="saving || loading">Enregistrer</button>
-      <a [routerLink]="['/projects', projectId, 'setup', 'publish']" class="flow-link">Continue</a>
+      <button type="button" class="save-btn lv-btn" (click)="saveManual()" [disabled]="saving || loading">Enregistrer</button>
+      <a [routerLink]="['/projects', projectId, 'setup', 'publish']" class="flow-link lv-btn lv-btn--secondary">Continue</a>
     </div>
   </header>
 

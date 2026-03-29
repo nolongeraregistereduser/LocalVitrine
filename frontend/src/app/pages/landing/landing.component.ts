@@ -10,75 +10,109 @@ import { RouterLink } from '@angular/router';
   styleUrl: './landing.component.scss'
 })
 export class LandingComponent {
-  readonly trustBadges = ['Sans code', 'Mise en ligne rapide', 'Concu pour commerces locaux', 'Conforme RGPD'];
+  readonly heroHighlights = [
+    'Aucune ligne de code',
+    'Premiere page publiee en moins de 10 minutes',
+    'Concu pour les commerces et services locaux'
+  ];
+
+  readonly socialProof = ['Atelier Noa', 'Maison Elio', 'Studio Kora', 'Cafe Mistral', 'Nexa Care'];
 
   readonly stats = [
-    { value: '10 min', label: 'Temps moyen pour publier une premiere page' },
-    { value: '4 etapes', label: 'Du projet a la page en ligne' },
-    { value: '0 code', label: 'Competence technique requise' }
+    { value: '10 min', label: 'pour publier une premiere page' },
+    { value: '4 etapes', label: 'du projet a la mise en ligne' },
+    { value: '+38%', label: 'de demandes apres 30 jours en moyenne' }
   ];
 
   readonly features = [
     {
-      title: 'Pages qui convertissent des le premier jour',
-      description: 'Demarrez avec des structures optimisees pour contacts, appels et prises de rendez-vous.'
+      icon: 'TPL',
+      title: 'Templates pre-optimises pour convertir',
+      description: 'Choisissez une base premium pensee pour capter l attention et generer des prises de contact.',
+      detail: 'Secteurs: restauration, beaute, coaching, sante, services de proximite.'
     },
     {
-      title: 'Contenu IA adapte a votre activite',
-      description: 'Generez titres, offres et appels a l action coherents avec votre metier.'
+      icon: 'AI',
+      title: 'Contenu IA contextualise a votre activite',
+      description: 'Generez titres, offres et appels a l action coherents avec votre positionnement local.',
+      detail: 'Ton, promesse et CTA adaptes a votre audience cible.'
     },
     {
-      title: 'Templates premium prets a publier',
-      description: 'Choisissez un design moderne, responsive et deja optimise pour inspirer confiance.'
+      icon: 'VIS',
+      title: 'Editeur visuel GrapesJS simplifie',
+      description: 'Ajustez blocs, textes, sections et visuels en glisser-deposer sans complexite technique.',
+      detail: 'Resultat pixel-perfect sans intervention d un developpeur.'
     },
     {
-      title: 'Editeur visuel simple et puissant',
-      description: 'Modifiez textes, sections et visuels sans complexite technique.'
+      icon: 'SEO',
+      title: 'Structure SEO et mobile-ready par defaut',
+      description: 'Chaque page est lisible, rapide et optimisee pour les recherches locales.',
+      detail: 'Performance, hierarchie de contenu et responsive inclus.'
     },
     {
-      title: 'Parcours guide de bout en bout',
-      description: 'Suivez une progression claire sans vous perdre entre les etapes.'
+      icon: 'RUN',
+      title: 'Workflow guide de bout en bout',
+      description: 'Un parcours clair vous accompagne de la creation a la publication en continu.',
+      detail: 'Vous savez toujours quelle est la prochaine action utile.'
     },
     {
-      title: 'Publiez vite et ameliorez en continu',
-      description: 'Mettez en ligne rapidement, puis ajustez votre message selon vos offres.'
+      icon: 'A/B',
+      title: 'Iteration rapide de vos offres',
+      description: 'Mettez a jour vos messages et visuels en quelques minutes selon vos campagnes.',
+      detail: 'Testez, apprenez, et augmentez votre taux de conversion.'
     }
   ];
 
   readonly steps = [
-    'Creez votre projet et votre objectif',
-    'Ajoutez les informations de votre entreprise',
-    'Personnalisez votre page dans l editeur visuel',
-    'Publiez et partagez votre lien partout'
+    {
+      title: 'Cadrez votre objectif business',
+      description: 'Indiquez votre activite, votre zone geographique et l action attendue de vos visiteurs.',
+      timing: 'Etape 1'
+    },
+    {
+      title: 'Generez une base de page intelligente',
+      description: 'LocalVitrine assemble template, structure de sections et contenu IA coherent.',
+      timing: 'Etape 2'
+    },
+    {
+      title: 'Personnalisez dans l editeur visuel',
+      description: 'Ajustez votre offre, ajoutez vos preuves de confiance et adaptez chaque bloc en direct.',
+      timing: 'Etape 3'
+    },
+    {
+      title: 'Publiez et activez vos canaux',
+      description: 'Diffusez votre lien sur Google Business, reseaux sociaux et campagnes locales.',
+      timing: 'Etape 4'
+    }
   ];
 
   readonly outcomes = [
     {
-      title: 'Une image pro des le premier contact',
-      description: 'Votre entreprise gagne une presence digitale claire, moderne et rassurante.'
+      title: 'Une image premium des la premiere visite',
+      description: 'Votre marque inspire confiance immediatement avec une page nette et structuree.'
     },
     {
       title: 'Plus de demandes qualifiees',
-      description: 'Des appels a l action clairs transforment les visiteurs en prospects.'
+      description: 'Des parcours lisibles et des CTA precis transforment mieux vos visiteurs en prospects.'
     },
     {
-      title: 'Un gain de temps chaque semaine',
-      description: 'Mettez a jour vos contenus en quelques minutes, sans dependance technique.'
+      title: 'Un pilotage marketing plus agile',
+      description: 'Lancez vos offres rapidement et mettez a jour vos contenus sans blocage technique.'
     }
   ];
 
   readonly faqs = [
     {
       question: 'Faut-il des competences techniques pour utiliser LocalVitrine ?',
-      answer: 'Non. La plateforme est concue pour les entrepreneurs non techniques avec un parcours guide.'
+      answer: 'Non. Toute la plateforme est concue pour les equipes non techniques avec un parcours guide et visuel.'
     },
     {
       question: 'Puis-je modifier ma page apres publication ?',
-      answer: 'Oui. Vous pouvez mettre a jour textes, visuels et sections a tout moment.'
+      answer: 'Oui. Vous pouvez ajuster textes, sections et CTA a tout moment sans interrompre votre page.'
     },
     {
       question: 'La page est-elle adaptee au mobile ?',
-      answer: 'Oui. Tous les templates sont responsive et optimises pour tous les ecrans.'
+      answer: 'Oui. Les templates sont responsives et optimises pour mobile, tablette et desktop.'
     },
     {
       question: 'Puis-je commencer gratuitement ?',
@@ -88,16 +122,16 @@ export class LandingComponent {
 
   readonly testimonials = [
     {
-      quote: 'I launched my business page in one evening. Clear flow, zero technical stress.',
-      author: 'Sarah M., Proprietaire de boulangerie'
+      quote: 'Nous avons lance notre page en une soiree et les demandes WhatsApp ont augmente des la premiere semaine.',
+      author: 'Sarah M., proprietaire de boulangerie'
     },
     {
-      quote: 'The editor feels premium and simple. I can update my offers whenever I want.',
-      author: 'Karim B., Coach sportif'
+      quote: 'L editeur est simple mais tres pro. Je mets a jour mes offres avant chaque campagne locale.',
+      author: 'Karim B., coach sportif'
     },
     {
-      quote: 'The template quality made us look professional from day one.',
-      author: 'Lea T., Gerante de salon beaute'
+      quote: 'On a enfin une page qui ressemble a notre niveau de service. Le rendu inspire confiance.',
+      author: 'Lea T., gerante de salon beaute'
     }
   ];
 }

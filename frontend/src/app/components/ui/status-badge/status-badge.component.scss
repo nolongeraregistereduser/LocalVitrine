@@ -4,8 +4,9 @@
   border-radius: 999px;
   font-size: 12px;
   font-weight: 700;
-  background: #e2e8f0;
-  color: #1e293b;
+  background: var(--lv-surface-soft);
+  color: var(--lv-text);
+  border: 1px solid var(--lv-border);
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }

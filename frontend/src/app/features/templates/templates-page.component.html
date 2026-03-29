@@ -1,27 +1,136 @@
 <div class="templates-page">
-  <h1 class="lv-page-title">Bibliotheque de modeles</h1>
-  <p class="lv-subtitle">
-    Decouvrez les styles disponibles. Pour <strong>personnaliser votre landing page</strong>, ouvrez un
-    <a routerLink="/dashboard">projet</a>, completez l'etape <strong>Template</strong>, puis allez dans
-    <strong>Personnaliser ma page</strong> (editeur GrapesJS) — le contenu de la page est lie a chaque projet.
-  </p>
+  <div class="templates-intro lv-card">
+    <div>
+      <h1 class="lv-page-title">Bibliotheque de modeles</h1>
+      <p class="lv-subtitle">
+        Decouvrez les styles disponibles. Pour <strong>personnaliser votre landing page</strong>, ouvrez un
+        <a routerLink="/dashboard">projet</a>, completez l'etape <strong>Template</strong>, puis allez dans
+        <strong>Personnaliser ma page</strong> (editeur GrapesJS) - le contenu de la page est lie a chaque projet.
+      </p>
+    </div>
+    <p *ngIf="!loading && !error && templates.length" class="templates-count">
+      {{ filteredTemplates.length }} modele{{ filteredTemplates.length > 1 ? 's' : '' }} visible{{ filteredTemplates.length > 1 ? 's' : '' }}
+    </p>
+  </div>
 
-  <p *ngIf="loading" class="muted">Chargement des templates...</p>
   <p *ngIf="error" class="lv-alert lv-alert--error">{{ error }}</p>
+  <p *ngIf="createError" class="lv-alert lv-alert--error">{{ createError }}</p>
+
+  <div *ngIf="loading" class="grid grid--skeleton" aria-busy="true">
+    <article *ngFor="let _ of loadingSkeletons" class="template-skeleton lv-card">
+      <div class="template-skeleton__thumb"></div>
+      <div class="template-skeleton__line template-skeleton__line--lg"></div>
+      <div class="template-skeleton__line"></div>
+      <div class="template-skeleton__line"></div>
+      <div class="template-skeleton__chip"></div>
+      <div class="template-skeleton__actions">
+        <div class="template-skeleton__btn"></div>
+        <div class="template-skeleton__btn"></div>
+      </div>
+    </article>
+  </div>
 
   <div *ngIf="!loading && !error && !templates.length" class="empty">
     <p>Aucun template disponible pour le moment.</p>
   </div>
 
-  <div *ngIf="!loading && templates.length" class="grid">
-    <app-ui-card *ngFor="let t of templates">
-      <div class="thumb-wrap">
+  <section *ngIf="!loading && !error && templates.length" class="templates-controls lv-card">
+    <label class="templates-search">
+      <span>Recherche</span>
+      <input
+        type="search"
+        [value]="searchTerm"
+        (input)="searchTerm = $any($event.target).value"
+        placeholder="Nom, description ou type d'activite"
+      />
+    </label>
+
+    <div class="templates-filters" aria-label="Filtrer par activite">
+      <button
+        *ngFor="let option of activityOptions"
+        type="button"
+        [class.is-active]="activityFilter === option"
+        (click)="setActivityFilter(option)"
+      >
+        {{ option === 'ALL' ? 'Tout' : option }}
+      </button>
+    </div>
+  </section>
+
+  <div *ngIf="!loading && !error && templates.length && !filteredTemplates.length" class="empty">
+    <p>Aucun modele ne correspond a votre recherche.</p>
+  </div>
+
+  <div *ngIf="!loading && filteredTemplates.length" class="grid">
+    <app-ui-card *ngFor="let t of filteredTemplates">
+      <button class="thumb-wrap" type="button" (click)="openPreview(t)">
         <img [src]="t.previewUrl" [alt]="t.name" loading="lazy" />
-      </div>
+        <span class="thumb-overlay">Apercu rapide</span>
+      </button>
       <h3>{{ t.name }}</h3>
       <p>{{ t.description }}</p>
       <span class="tag">{{ t.activityType }}</span>
+
+      <div class="template-actions">
+        <button class="lv-btn lv-btn--secondary" type="button" (click)="openPreview(t)">Preview</button>
+        <button class="lv-btn" type="button" (click)="createProjectFromTemplate(t)" [disabled]="creatingTemplateId != null">
+          {{ isCreatingFor(t.id) ? 'Creation...' : 'Creer projet' }}
+        </button>
+      </div>
     </app-ui-card>
+  </div>
+
+  <div *ngIf="selectedTemplate as current" class="preview-modal" role="dialog" aria-modal="true" [attr.aria-label]="'Apercu ' + current.name">
+    <button class="preview-modal__backdrop" type="button" (click)="closePreview()" aria-label="Fermer"></button>
+
+    <article class="preview-modal__panel lv-card">
+      <div class="preview-modal__media">
+        <div class="preview-mode-toggle" role="tablist" aria-label="Mode de preview">
+          <button
+            type="button"
+            [class.is-active]="previewMode === 'live'"
+            [disabled]="!selectedTemplateHasLivePreview"
+            (click)="setPreviewMode('live')"
+          >
+            Live
+          </button>
+          <button type="button" [class.is-active]="previewMode === 'image'" (click)="setPreviewMode('image')">Image</button>
+        </div>
+
+        <div *ngIf="previewMode === 'live'" class="preview-frame">
+          <iframe
+            *ngIf="selectedTemplateHasLivePreview && livePreviewUrl"
+            [src]="livePreviewUrl"
+            [title]="'Preview live ' + current.name"
+            sandbox="allow-same-origin"
+            loading="lazy"
+          ></iframe>
+          <p *ngIf="!selectedTemplateHasLivePreview" class="muted">Preview live indisponible pour ce modele.</p>
+        </div>
+
+        <img *ngIf="previewMode === 'image'" [src]="current.previewUrl" [alt]="current.name" />
+      </div>
+
+      <div class="preview-modal__body">
+        <span class="tag">{{ current.activityType }}</span>
+        <h2>{{ current.name }}</h2>
+        <p>{{ current.description }}</p>
+        <p class="preview-help">Astuce: utilisez les fleches gauche/droite du clavier pour parcourir les modeles.</p>
+
+        <div class="preview-modal__actions">
+          <button class="lv-btn lv-btn--secondary" type="button" (click)="showPreviousPreview()" [disabled]="!hasMultipleFilteredTemplates">
+            Precedent
+          </button>
+          <button class="lv-btn lv-btn--secondary" type="button" (click)="showNextPreview()" [disabled]="!hasMultipleFilteredTemplates">
+            Suivant
+          </button>
+          <button class="lv-btn" type="button" (click)="createProjectFromTemplate(current)" [disabled]="creatingTemplateId != null">
+            {{ isCreatingFor(current.id) ? 'Creation...' : 'Creer projet avec ce modele' }}
+          </button>
+          <button class="lv-btn lv-btn--ghost" type="button" (click)="closePreview()">Fermer</button>
+        </div>
+      </div>
+    </article>
   </div>
 </div>
 

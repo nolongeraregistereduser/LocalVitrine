@@ -3,7 +3,7 @@
   border-radius: var(--lv-radius-md);
   background: var(--lv-surface);
   box-shadow: var(--lv-shadow-sm);
-  padding: 12px 14px;
+  padding: 14px;
 }
 
 .journey__kicker {
@@ -17,13 +17,15 @@
 
 .journey__title {
   margin: 4px 0 0;
-  font-size: 1.05rem;
+  font-size: 1.12rem;
+  line-height: 1.2;
 }
 
 .journey__hint {
-  margin: 4px 0 0;
+  margin: 6px 0 0;
   color: var(--lv-text-muted);
   font-size: 0.9rem;
+  line-height: 1.45;
 }
 
 .journey__steps {
@@ -39,11 +41,15 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   color: var(--lv-text-muted);
-  padding: 6px 8px;
+  padding: 7px 8px;
   border-radius: 8px;
   background: var(--lv-surface-soft);
+}
+
+.journey__label {
+  line-height: 1.28;
 }
 
 .journey__dot {
@@ -64,8 +70,8 @@
 
 .journey__step.is-current {
   color: var(--lv-primary-strong);
-  border: 1px solid #bfdbfe;
-  background: #eff6ff;
+  border: 1px solid rgba(124, 58, 237, 0.26);
+  background: rgba(124, 58, 237, 0.1);
 }
 
 .journey__step.is-current .journey__dot {
@@ -73,7 +79,29 @@
 }
 
 .journey--compact .journey__steps {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
+  gap: 7px;
+}
+
+.journey--compact .journey__title {
+  font-size: 1.08rem;
+}
+
+.journey--compact .journey__hint {
+  font-size: 0.84rem;
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.journey--compact .journey__step {
+  padding: 9px 10px;
+}
+
+.journey--compact .journey__label {
+  font-size: 0.86rem;
 }
 
 @media (max-width: 1100px) {

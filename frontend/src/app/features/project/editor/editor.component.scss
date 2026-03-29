@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #fff;
+  background: var(--lv-surface);
   border-bottom: 1px solid var(--lv-border);
   padding: 10px 14px;
   min-height: 64px;
@@ -19,57 +19,16 @@
 .editor-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--lv-space-2);
 }
 
 .back-link {
   text-decoration: none;
-  font-weight: 600;
-}
-
-.save-btn {
-  border: none;
-  background: var(--lv-primary);
-  color: #fff;
-  border-radius: 10px;
-  padding: 9px 14px;
-  cursor: pointer;
-  transition: transform 0.18s ease, background-color 0.18s ease;
-}
-
-.ai-btn {
-  border: 1px solid #d6bcfa;
-  background: #faf5ff;
-  color: #6b21a8;
-  border-radius: 10px;
-  padding: 9px 14px;
-  cursor: pointer;
   font-weight: 700;
 }
 
 .ai-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.flow-link {
-  text-decoration: none;
-  border: 1px solid var(--lv-border);
-  background: var(--lv-surface-soft);
-  color: var(--lv-text);
-  border-radius: 10px;
-  padding: 8px 12px;
-  font-weight: 600;
-}
-
-.save-btn:hover:not(:disabled) {
-  transform: translateY(-1px);
-  background: var(--lv-primary-strong);
-}
-
-.save-btn:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .saving-state,
@@ -80,7 +39,7 @@
 
 .template-ready-state {
   font-size: 0.86rem;
-  color: #1f7a45;
+  color: var(--lv-success);
   background: #eefcf4;
   border: 1px solid #b7ebcc;
   border-radius: 999px;
@@ -96,7 +55,7 @@
   display: flex;
   flex: 1;
   min-height: 0;
-  background: #fff;
+  background: var(--lv-surface);
   border: none;
   overflow: hidden;
   box-shadow: none;
@@ -145,7 +104,7 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  background: #f1f5f9;
+  background: #f4f3ff;
 }
 
 .loading-msg {

@@ -6,7 +6,6 @@ import { Router, RouterLink } from '@angular/router';
 import { StatusBadgeComponent } from '../../components/ui/status-badge/status-badge.component';
 import { UiButtonComponent } from '../../components/ui/ui-button/ui-button.component';
 import { UiCardComponent } from '../../components/ui/ui-card/ui-card.component';
-import { HealthService, HealthResponse } from '../../services/health.service';
 import { ProjectDto, ProjectPayload, ProjectService, ProjectStatus } from '../../services/project.service';
 
 @Component({
@@ -17,19 +16,17 @@ import { ProjectDto, ProjectPayload, ProjectService, ProjectStatus } from '../..
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
-  private readonly healthService = inject(HealthService);
   private readonly projectService = inject(ProjectService);
   private readonly router = inject(Router);
-
-  health?: HealthResponse;
-  loadingHealth = true;
-  healthError?: string;
 
   projects: ProjectDto[] = [];
   projectsLoading = true;
   projectsError?: string;
   projectsSuccess?: string;
   deletingProjectId?: number;
+  projectSearch = '';
+  projectFilterStatus: 'ALL' | ProjectStatus = 'ALL';
+  projectSort: 'newest' | 'oldest' | 'name-asc' | 'name-desc' = 'newest';
 
   modalOpen = false;
   modalMode: 'create' | 'edit' = 'create';
@@ -42,21 +39,76 @@ export class DashboardComponent implements OnInit {
   modalTouched = false;
 
   readonly statusOptions: ProjectStatus[] = ['DRAFT', 'PUBLISHED'];
+  readonly projectSortOptions: Array<{ value: 'newest' | 'oldest' | 'name-asc' | 'name-desc'; label: string }> = [
+    { value: 'newest', label: 'Plus recents' },
+    { value: 'oldest', label: 'Plus anciens' },
+    { value: 'name-asc', label: 'Nom A-Z' },
+    { value: 'name-desc', label: 'Nom Z-A' }
+  ];
 
   ngOnInit(): void {
-    this.healthService.getHealth().subscribe({
-      next: (res) => {
-        this.health = res;
-        this.loadingHealth = false;
-      },
-      error: (err: HttpErrorResponse) => {
-        this.healthError =
-          err.status === 401 ? 'Session expirée. Veuillez vous reconnecter.' : 'API injoignable';
-        this.loadingHealth = false;
+    this.refreshProjects();
+  }
+
+  get totalProjects(): number {
+    return this.projects.length;
+  }
+
+  get publishedProjectsCount(): number {
+    return this.projects.filter((project) => project.status === 'PUBLISHED').length;
+  }
+
+  get draftProjectsCount(): number {
+    return this.projects.filter((project) => project.status === 'DRAFT').length;
+  }
+
+  get publishRate(): number {
+    if (!this.totalProjects) {
+      return 0;
+    }
+    return Math.round((this.publishedProjectsCount / this.totalProjects) * 100);
+  }
+
+  get filteredProjects(): ProjectDto[] {
+    const query = this.projectSearch.trim().toLowerCase();
+
+    const filtered = this.projects.filter((project) => {
+      const statusMatch = this.projectFilterStatus === 'ALL' || project.status === this.projectFilterStatus;
+      if (!statusMatch) {
+        return false;
       }
+
+      if (!query) {
+        return true;
+      }
+
+      return (
+        project.title.toLowerCase().includes(query) ||
+        (project.publicUrl?.toLowerCase().includes(query) ?? false) ||
+        (project.templateName?.toLowerCase().includes(query) ?? false)
+      );
     });
 
-    this.refreshProjects();
+    const sorted = [...filtered];
+    switch (this.projectSort) {
+      case 'oldest':
+        sorted.sort((a, b) => this.toTimestamp(a.createdAt) - this.toTimestamp(b.createdAt));
+        break;
+      case 'name-asc':
+        sorted.sort((a, b) => a.title.localeCompare(b.title, 'fr', { sensitivity: 'base' }));
+        break;
+      case 'name-desc':
+        sorted.sort((a, b) => b.title.localeCompare(a.title, 'fr', { sensitivity: 'base' }));
+        break;
+      default:
+        sorted.sort((a, b) => this.toTimestamp(b.createdAt) - this.toTimestamp(a.createdAt));
+    }
+
+    return sorted;
+  }
+
+  get visibleProjectsCount(): number {
+    return this.filteredProjects.length;
   }
 
   refreshProjects(): void {
@@ -219,5 +271,10 @@ export class DashboardComponent implements OnInit {
     } catch {
       return false;
     }
+  }
+
+  private toTimestamp(value: string): number {
+    const time = Date.parse(value);
+    return Number.isNaN(time) ? 0 : time;
   }
 }

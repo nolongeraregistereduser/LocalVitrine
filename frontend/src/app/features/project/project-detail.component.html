@@ -18,7 +18,7 @@
       <p class="status-text" [class.ok]="businessInfoReady">
         {{ businessInfoReady ? 'Completed' : 'Missing information' }}
       </p>
-      <a class="action-link" [routerLink]="['/projects', projectId, 'setup', 'business']">
+      <a class="action-link lv-btn" [routerLink]="['/projects', projectId, 'setup', 'business']">
         {{ businessInfoReady ? 'Update business info' : 'Start business info' }}
       </a>
     </app-ui-card>
@@ -28,7 +28,7 @@
       <p class="status-text" [class.ok]="hasTemplate">
         {{ hasTemplate ? project.templateName : 'No template selected yet' }}
       </p>
-      <a class="action-link" [routerLink]="['/projects', projectId, 'setup', 'template']">
+      <a class="action-link lv-btn" [routerLink]="['/projects', projectId, 'setup', 'template']">
         {{ hasTemplate ? 'Change template' : 'Choose template' }}
       </a>
     </app-ui-card>
@@ -40,8 +40,8 @@
         page (si vous n'avez pas encore personnalise le contenu).
       </p>
       <div class="hub-actions">
-        <a class="action-link action-link--primary" [routerLink]="['/projects', projectId, 'editor']">Personnaliser ma page</a>
-        <a class="action-link" [routerLink]="['/projects', projectId, 'setup', 'editor']">Parcours guide (etape 3)</a>
+        <a class="action-link action-link--primary lv-btn" [routerLink]="['/projects', projectId, 'editor']">Personnaliser ma page</a>
+        <a class="action-link lv-btn lv-btn--secondary" [routerLink]="['/projects', projectId, 'setup', 'editor']">Parcours guide (etape 3)</a>
       </div>
     </app-ui-card>
 
@@ -50,11 +50,11 @@
       <p class="status-text" [class.ok]="isPublished">
         {{ isPublished ? 'Published' : 'Draft - ready when setup is complete' }}
       </p>
-      <a class="action-link" [routerLink]="['/projects', projectId, 'setup', 'publish']">Go to publish step</a>
+      <a class="action-link lv-btn" [routerLink]="['/projects', projectId, 'setup', 'publish']">Go to publish step</a>
     </app-ui-card>
   </div>
 
   <p *ngIf="project && !loading" class="next-step">
-    <a [routerLink]="nextStepRoute">Next step</a>
+    <a class="lv-btn" [routerLink]="nextStepRoute">Next step</a>
   </p>
 </div>

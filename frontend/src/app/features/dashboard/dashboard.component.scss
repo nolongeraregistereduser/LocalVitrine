@@ -1,28 +1,126 @@
 .dashboard {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--lv-space-5);
 }
 
-.dashboard__grid {
+.dashboard-hero {
+  padding: clamp(18px, 2.6vw, 26px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--lv-space-4);
+  background:
+    radial-gradient(circle at 90% 12%, rgba(167, 139, 250, 0.2), transparent 35%),
+    linear-gradient(180deg, #ffffff 0%, #faf7ff 100%);
+  animation: dash-fade-up 480ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.dashboard-hero__copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lv-space-2);
+}
+
+.kicker {
+  margin: 0;
+  display: inline-flex;
+  width: fit-content;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--lv-primary-soft);
+  border: 1px solid rgba(124, 58, 237, 0.18);
+  color: var(--lv-primary-strong);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dashboard-stats {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--lv-space-4);
 }
 
-.dashboard__grid > app-ui-card.dashboard__projects-wide {
-  grid-column: 1 / -1;
-}
-
-.card-title {
-  margin: 0 0 12px;
-  font-size: 1.05rem;
-}
-
-.api-status {
+.stat-card {
+  padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  animation: dash-fade-up 560ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.stat-card:nth-child(1) {
+  animation-delay: 40ms;
+}
+
+.stat-card:nth-child(2) {
+  animation-delay: 90ms;
+}
+
+.stat-card:nth-child(3) {
+  animation-delay: 130ms;
+}
+
+.stat-card:nth-child(4) {
+  animation-delay: 170ms;
+}
+
+.stat-card p,
+.stat-card strong {
+  margin: 0;
+}
+
+.stat-card p {
+  color: var(--lv-text-muted);
+  font-size: 0.86rem;
+}
+
+.stat-card strong {
+  color: var(--lv-text);
+  font-family: 'Sora', 'Manrope', sans-serif;
+  font-size: clamp(1.35rem, 2vw, 1.9rem);
+}
+
+.card-title {
+  margin: 0 0 var(--lv-space-3);
+  font-size: 1.2rem;
+}
+
+.projects-panel {
+  padding: clamp(18px, 2.6vw, 26px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--lv-space-4);
+  animation: dash-fade-up 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.projects-toolbar {
+  display: grid;
+  grid-template-columns: 1.5fr 0.75fr 0.75fr;
+  gap: var(--lv-space-3);
+  padding: 12px;
+  background: linear-gradient(180deg, #ffffff, #fcf9ff);
+}
+
+.projects-toolbar__search,
+.projects-toolbar__control {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.projects-toolbar__control span {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--lv-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.projects-count {
+  font-size: 0.88rem;
 }
 
 .error {
@@ -36,31 +134,52 @@
 
 .projects-header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--lv-space-4);
 }
 
 .projects-header .card-title {
-  margin: 0;
+  margin: 0 0 6px;
 }
 
 .empty-state {
+  padding: clamp(20px, 3vw, 28px);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--lv-space-2);
+  align-items: flex-start;
+  border-style: dashed;
+}
+
+.empty-state--filtered {
+  border-style: solid;
 }
 
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 12px;
-  margin-top: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: var(--lv-space-3);
 }
 
 .project-card {
+  display: block;
   min-width: 0;
+  height: 100%;
+  animation: dash-fade-up 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+:host ::ng-deep app-ui-card.project-card .ui-card {
+  height: 100%;
+  padding: 18px;
+  border-radius: 14px;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+:host ::ng-deep app-ui-card.project-card .ui-card:hover {
+  transform: translateY(-4px);
+  border-color: #cbb5f8;
+  box-shadow: var(--lv-shadow-md);
 }
 
 .project-card__head {
@@ -80,42 +199,82 @@
   font-size: 0.9rem;
 }
 
-.project-url {
-  margin: 0;
-  word-break: break-word;
-  font-size: 0.9rem;
+.project-card__chips {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.project-actions {
-  display: flex;
-  flex-wrap: wrap;
+.project-chip {
+  border-radius: 999px;
+  border: 1px solid var(--lv-border);
+  background: var(--lv-surface-soft);
+  color: var(--lv-text-muted);
+  padding: 4px 10px;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.project-chip--ready {
+  border-color: #b7ebcc;
+  background: #eefcf4;
+  color: #1f7a45;
+}
+
+.project-url {
+  margin: 10px 0 0;
+  word-break: break-word;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.project-url a {
+  color: var(--lv-primary-strong);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.project-url a:hover {
+  text-decoration: underline;
+}
+
+.project-main-actions {
+  margin-top: 12px;
+  display: grid;
   gap: 8px;
-  align-items: center;
-  margin-top: 4px;
+}
+
+.project-secondary-actions {
+  display: flex;
+  margin-top: 10px;
+  gap: var(--lv-space-2);
 }
 
 .project-nav-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 14px;
-  border-radius: var(--lv-radius-sm);
-  font-weight: 600;
-  font-size: 0.9rem;
-  text-decoration: none;
-  background: var(--lv-primary, #2563eb);
-  color: #fff;
-  border: none;
+  width: 100%;
+  padding: 10px 14px;
 }
 
-.project-nav-link:hover {
-  filter: brightness(1.05);
+:host ::ng-deep .dashboard-hero app-ui-button .ui-button {
+  width: auto;
+  min-width: 168px;
+}
+
+:host ::ng-deep .empty-state app-ui-button .ui-button {
+  width: auto;
+  min-width: 210px;
+}
+
+:host ::ng-deep .project-secondary-actions app-ui-button {
+  flex: 1;
 }
 
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.45);
+  background: rgba(17, 24, 39, 0.45);
+  backdrop-filter: blur(3px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -127,40 +286,36 @@
   background: var(--lv-surface);
   border: 1px solid var(--lv-border);
   border-radius: var(--lv-radius-md);
-  padding: 20px;
+  padding: var(--lv-space-5);
   width: min(520px, 100%);
   max-height: calc(100vh - 32px);
   overflow: auto;
-  box-shadow: var(--lv-shadow-sm);
+  box-shadow: var(--lv-shadow-md);
 }
 
 .modal-title {
-  margin: 0 0 16px;
+  margin: 0 0 var(--lv-space-4);
   font-size: 1.15rem;
 }
 
 .modal-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--lv-space-3);
 }
 
 .field {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-weight: 600;
+  font-size: 0.88rem;
+  font-weight: 700;
   color: var(--lv-text);
 }
 
 .field input,
 .field select {
-  font: inherit;
-  padding: 10px 12px;
-  border-radius: var(--lv-radius-sm);
-  border: 1px solid var(--lv-border);
-  background: var(--lv-bg);
-  color: var(--lv-text);
+  background: #fff;
 }
 
 .field input:disabled,
@@ -183,13 +338,52 @@
 .modal-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: var(--lv-space-2);
   flex-wrap: wrap;
-  margin-top: 8px;
+  margin-top: var(--lv-space-2);
 }
 
 @media (max-width: 900px) {
-  .dashboard__grid {
+  .dashboard-hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dashboard-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .project-grid {
     grid-template-columns: 1fr;
+  }
+
+  .projects-toolbar {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .project-secondary-actions {
+    flex-direction: column;
+  }
+
+  :host ::ng-deep .project-secondary-actions app-ui-button {
+    width: 100%;
+  }
+}
+
+@keyframes dash-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

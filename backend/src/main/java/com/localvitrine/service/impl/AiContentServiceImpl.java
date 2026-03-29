@@ -96,39 +96,42 @@ public class AiContentServiceImpl implements AiContentService {
                     new HttpEntity<>(payload, headers),
                     String.class
             );
-            AiGeneratedContentResponse generated = extractGeneratedContent(response.getBody(), profile);
+            AiGeneratedContentResponse generated = extractGeneratedContent(response.getBody(), profile, project);
             if (isHighQuality(generated)) {
                 return generated;
             }
             return retryWithStrictPrompt(restTemplate, headers, profile, project);
         } catch (RestClientException ex) {
-            return fallback(profile);
+            return fallback(profile, project);
         }
     }
 
-    private AiGeneratedContentResponse extractGeneratedContent(String responseBody, BusinessProfile profile) {
+    private AiGeneratedContentResponse extractGeneratedContent(String responseBody, BusinessProfile profile, Project project) {
         try {
             JsonNode root = objectMapper.readTree(responseBody);
             String content = root.path("choices").path(0).path("message").path("content").asText(null);
             if (content == null || content.isBlank()) {
-                return fallback(profile);
+                return fallback(profile, project);
             }
 
             JsonNode generated = parseGeneratedPayload(content);
             if (generated == null || generated.isMissingNode()) {
-                return fallback(profile);
+                return fallback(profile, project);
             }
             String html = generated.path("html").asText("").trim();
             String css = generated.path("css").asText("").trim();
             if (!looksLikeLandingHtml(html)) {
-                return fallback(profile);
+                return fallback(profile, project);
             }
             if (css.equalsIgnoreCase("null") || css.equalsIgnoreCase("undefined")) {
                 css = "";
             }
+            if (css.isBlank() && project.getTemplate() != null && project.getTemplate().getStarterCss() != null) {
+                css = project.getTemplate().getStarterCss();
+            }
             return new AiGeneratedContentResponse(html, css);
         } catch (Exception ex) {
-            return fallback(profile);
+            return fallback(profile, project);
         }
     }
 
@@ -159,10 +162,10 @@ public class AiContentServiceImpl implements AiContentService {
                     new HttpEntity<>(retryPayload, headers),
                     String.class
             );
-            AiGeneratedContentResponse generated = extractGeneratedContent(retry.getBody(), profile);
-            return isHighQuality(generated) ? generated : fallback(profile);
+            AiGeneratedContentResponse generated = extractGeneratedContent(retry.getBody(), profile, project);
+            return isHighQuality(generated) ? generated : fallback(profile, project);
         } catch (RestClientException ex) {
-            return fallback(profile);
+            return fallback(profile, project);
         }
     }
 
@@ -240,22 +243,35 @@ public class AiContentServiceImpl implements AiContentService {
         String instagram = safe(profile.getInstagram(), "N/A");
         String whatsapp = safe(profile.getWhatsapp(), "N/A");
         String templateGuide = buildTemplateGuide(project.getTemplate());
+        String selectedTemplateName = project.getTemplate() != null
+            ? safe(project.getTemplate().getName(), "Premium template")
+            : "Premium default";
+
+        String ctaInstruction = switch (primaryCta) {
+            case "CALL_NOW" -> "Primary CTA should push direct phone calls and include click-to-call wording.";
+            case "BOOK_NOW" -> "Primary CTA should focus on appointments/reservations urgency.";
+            case "GET_QUOTE" -> "Primary CTA should emphasize quick quote request and low friction.";
+            case "ORDER_NOW" -> "Primary CTA should encourage immediate purchase/order intent.";
+            case "SEND_MESSAGE" -> "Primary CTA should invite WhatsApp/message contact with reassurance.";
+            default -> "Primary CTA should push direct contact with clear immediate next step.";
+        };
 
         String strictRules = strict
                 ? """
                   Additional strict requirements:
-                  - Make copy emotionally persuasive and specific to this business context.
-                  - Include trust signals: years of experience, client outcomes, guarantees, ratings or social proof tone.
-                  - Include conversion microcopy under primary CTAs.
-                  - Include section IDs exactly: hero, features, about, testimonials, cta, contact, footer.
-                  - HTML length target: 2500+ characters. CSS length target: 1800+ characters.
-                  - Use polished spacing scale, hierarchy, responsive breakpoints, and refined hover effects.
-                  - Do not output generic "our services" wording; make it concrete to sector and audience.
+              - Include ids exactly once for all key sections: hero, trust, services, process, portfolio, pricing, testimonials, faq, cta, contact, footer.
+              - Write concrete, non-generic copy tied to sector, city, audience and goal.
+              - Add trust elements: proof metrics, outcomes, guarantees, credibility hooks.
+              - Add conversion microcopy under CTAs and reassure users about next step.
+              - Ensure strong hierarchy, premium spacing rhythm, and clean mobile responsive layout.
+              - HTML target 3500+ chars and CSS target 2200+ chars.
+              - Never output lorem ipsum or generic placeholders.
                   """
                 : "";
 
         return """
-                Create a COMPLETE, premium SaaS landing page in HTML + CSS.
+            Create a COMPLETE premium landing page in HTML + CSS for this real business.
+            The result must feel production-ready, high-converting and visually premium.
 
                 Business context:
                 - Name: %s
@@ -274,30 +290,40 @@ public class AiContentServiceImpl implements AiContentService {
                 - Instagram: %s
                 - WhatsApp: %s
 
-                Brand and quality direction:
-                - High-end startup quality (Stripe/Webflow style)
-                - Modern, conversion-focused, visually elegant
-                - Large hero typography, clear value proposition, clear CTA hierarchy
-                - Soft shadows, rounded controls, subtle gradients, strong spacing rhythm
-                - Semantic and clean HTML for GrapesJS compatibility
-                - Follow this selected template identity exactly:
+                Strategy alignment:
+                - Selected template: %s
+                - Conversion goal: %s
+                - CTA behavior: %s
+
+                Design and quality direction:
+                - Premium quality similar to top modern SaaS/agency sites.
+                - Strong visual storytelling with clear section rhythm and clean semantic markup.
+                - Conversion-first structure with explicit CTA hierarchy.
+                - Mobile-first responsiveness (phone/tablet/desktop).
+                - Semantic and clean HTML for GrapesJS compatibility.
+                - Respect selected template identity exactly:
                 %s
 
                 Mandatory page structure:
-                1) HERO: bold headline, rich subheadline, primary CTA, secondary CTA, trust microcopy
-                2) FEATURES: 3-5 premium feature cards with outcome-driven copy
-                3) ABOUT: business narrative and credibility
-                4) TESTIMONIALS: 2-3 realistic testimonials with names/business types
-                5) CTA: high-conversion section with urgency and clarity
-                6) CONTACT: phone/email/location placeholders and clear next step
-                7) FOOTER: concise links/copyright style line
+                1) HERO (id="hero"): strong headline, clear value proposition, primary CTA, secondary CTA, trust microcopy
+                2) TRUST BAR (id="trust"): social proof chips, metrics or assurance statements
+                3) SERVICES (id="services"): 3-6 concrete offers with benefit-driven copy
+                4) PROCESS (id="process"): explain how collaboration works in 3-4 steps
+                5) PORTFOLIO (id="portfolio"): 3 project highlights or outcomes
+                6) PRICING (id="pricing"): tier cards or offer bundles with clear CTA
+                7) TESTIMONIALS (id="testimonials"): 2-3 realistic testimonials
+                8) FAQ (id="faq"): at least 3 useful objections and answers
+                9) CTA (id="cta"): persuasive closing CTA with urgency/clarity
+                10) CONTACT (id="contact"): phone, email, address, social links, website when available
+                11) FOOTER (id="footer"): concise brand/signature line
 
                 Technical rules:
                 - Return ONLY valid JSON (no markdown fences, no explanations)
                 - Output format exactly: {"html":"<full HTML>","css":"<full CSS>"}
-                - HTML must include semantic sections and class names, no inline style clutter
-                - CSS must include responsive design (mobile/tablet/desktop) and hover states
-                - Avoid lorem ipsum and generic placeholders
+                - HTML must include semantic sections and descriptive class names.
+                - CSS must include premium typography scale, spacing system, hover/focus states, and breakpoints.
+                - Use real, persuasive copy specific to this business profile.
+                - Never use lorem ipsum.
                 %s
                 """.formatted(
                 businessName,
@@ -315,6 +341,9 @@ public class AiContentServiceImpl implements AiContentService {
                 facebook,
                 instagram,
                 whatsapp,
+                selectedTemplateName,
+                goal,
+                ctaInstruction,
                 templateGuide,
                 strictRules
         );
@@ -326,16 +355,40 @@ public class AiContentServiceImpl implements AiContentService {
         }
         String html = generated.html() == null ? "" : generated.html().toLowerCase();
         String css = generated.css() == null ? "" : generated.css();
-        if (html.length() < 1800 || css.length() < 900) {
+        if (html.length() < 3200 || css.length() < 1800) {
+            return false;
+        }
+        if (html.contains("lorem ipsum") || html.contains("your company") || html.contains("dummy")) {
+            return false;
+        }
+        int sectionCount = countOccurrences(html, "<section");
+        if (sectionCount < 8) {
             return false;
         }
         return html.contains("id=\"hero\"")
-                && html.contains("id=\"features\"")
-                && html.contains("id=\"about\"")
+                && html.contains("id=\"trust\"")
+                && html.contains("id=\"services\"")
+                && html.contains("id=\"process\"")
+                && html.contains("id=\"portfolio\"")
+                && html.contains("id=\"pricing\"")
                 && html.contains("id=\"testimonials\"")
+                && html.contains("id=\"faq\"")
                 && html.contains("id=\"cta\"")
                 && html.contains("id=\"contact\"")
                 && html.contains("id=\"footer\"");
+    }
+
+    private static int countOccurrences(String content, String marker) {
+        if (content == null || content.isEmpty() || marker == null || marker.isEmpty()) {
+            return 0;
+        }
+        int count = 0;
+        int index = 0;
+        while ((index = content.indexOf(marker, index)) >= 0) {
+            count++;
+            index += marker.length();
+        }
+        return count;
     }
 
     private static String buildTemplateGuide(Template template) {
@@ -398,7 +451,15 @@ public class AiContentServiceImpl implements AiContentService {
                 """.formatted(name, activityType, description);
     }
 
-    private static AiGeneratedContentResponse fallback(BusinessProfile profile) {
+    private static AiGeneratedContentResponse fallback(BusinessProfile profile, Project project) {
+        Template selectedTemplate = project.getTemplate();
+        if (selectedTemplate != null
+                && selectedTemplate.getStarterHtml() != null && !selectedTemplate.getStarterHtml().isBlank()
+                && selectedTemplate.getStarterCss() != null && !selectedTemplate.getStarterCss().isBlank()) {
+            String personalizedHtml = personalizeTemplateHtml(selectedTemplate.getStarterHtml(), profile, project);
+            return new AiGeneratedContentResponse(personalizedHtml, selectedTemplate.getStarterCss());
+        }
+
         String businessName = safe(profile.getBusinessName(), "Your business");
         String city = safe(profile.getCity(), "your city");
         String description = safe(profile.getDescription(), "Professional services tailored to your needs.");
@@ -486,6 +547,63 @@ public class AiContentServiceImpl implements AiContentService {
                 html,
                 css
         );
+    }
+
+    private static String personalizeTemplateHtml(String html, BusinessProfile profile, Project project) {
+        String businessName = escapeHtml(safe(profile.getBusinessName(), project.getTitle()));
+        String city = escapeHtml(safe(profile.getCity(), "your city"));
+        String rawDescription = safe(profile.getDescription(), "Professional services tailored to your needs.");
+        String description = escapeHtml(rawDescription);
+        String detailedDescription = escapeHtml(safe(profile.getDetailedDescription(), rawDescription));
+        String targetAudience = escapeHtml(safe(profile.getTargetAudience(), "Local customers"));
+        String goal = escapeHtml(safe(profile.getGoal() != null ? profile.getGoal().name() : null, "LEADS"));
+        String address = escapeHtml(safe(profile.getAddress(), city));
+        String phone = escapeHtml(safe(profile.getPhone(), "+000000000"));
+        String email = escapeHtml(safe(profile.getEmail(), "contact@business.com"));
+        String website = escapeHtml(safe(profile.getWebsite(), ""));
+        String cta = escapeHtml(resolvePrimaryCtaLabel(profile));
+        String facebook = escapeHtml(safe(profile.getFacebook(), ""));
+        String instagram = escapeHtml(safe(profile.getInstagram(), ""));
+        String whatsapp = escapeHtml(safe(profile.getWhatsapp(), ""));
+
+        return html
+                .replace("{{businessName}}", businessName)
+                .replace("{{city}}", city)
+                .replace("{{description}}", description)
+                .replace("{{detailedDescription}}", detailedDescription)
+                .replace("{{targetAudience}}", targetAudience)
+                .replace("{{goal}}", goal)
+                .replace("{{address}}", address)
+                .replace("{{phone}}", phone)
+                .replace("{{email}}", email)
+                .replace("{{website}}", website)
+                .replace("{{ctaPrimary}}", cta)
+                .replace("{{facebook}}", facebook)
+                .replace("{{instagram}}", instagram)
+                .replace("{{whatsapp}}", whatsapp);
+    }
+
+    private static String resolvePrimaryCtaLabel(BusinessProfile profile) {
+        if (profile.getPrimaryCTA() == null) {
+            return "Contact us now";
+        }
+        return switch (profile.getPrimaryCTA()) {
+            case CALL_NOW -> "Call now";
+            case BOOK_NOW -> "Book now";
+            case GET_QUOTE -> "Get a quote";
+            case CONTACT_US -> "Contact us";
+            case ORDER_NOW -> "Order now";
+            case SEND_MESSAGE -> "Send us a message";
+        };
+    }
+
+    private static String escapeHtml(String value) {
+        return value
+                .replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&#39;");
     }
 
     private Project requireOwnedProject(Long projectId) {

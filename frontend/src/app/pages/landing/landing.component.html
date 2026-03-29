@@ -1,48 +1,79 @@
 <div class="landing">
   <header class="landing-nav">
-    <a class="brand" href="#">LocalVitrine</a>
+    <a class="brand" href="#top" aria-label="LocalVitrine home">
+      <span class="brand-mark">LV</span>
+      <span>LocalVitrine</span>
+    </a>
     <nav class="nav-links">
       <a href="#features">Fonctionnalites</a>
       <a href="#how">Parcours</a>
       <a href="#pricing">Tarifs</a>
-      <a routerLink="/login">Connexion</a>
+      <a href="#faq">FAQ</a>
     </nav>
-    <a class="cta cta--small" routerLink="/register">Commencer gratuitement</a>
+    <nav class="nav-actions" aria-label="Authentification">
+      <a routerLink="/login">Connexion</a>
+      <a class="cta cta--small" routerLink="/register">Demarrer gratuitement</a>
+    </nav>
   </header>
 
-  <section class="hero">
+  <section id="top" class="hero reveal">
     <div class="hero-copy">
-      <p class="kicker">Concu pour les entreprises locales</p>
-      <h1>Transformez votre audience en clients avec une page premium.</h1>
+      <p class="kicker">Plateforme SaaS pour croissance locale</p>
+      <h1>La landing page qui transforme vos visites locales en demandes clients.</h1>
       <p class="subtitle">
-        LocalVitrine vous aide a creer une presence en ligne credibile, elegante et performante sans complexite technique.
+        Lancez une page professionnelle avec templates conversion-ready, editeur visuel GrapesJS et contenu IA adapte a votre
+        activite en quelques minutes.
       </p>
       <div class="hero-actions">
         <a class="cta" routerLink="/register">Creer ma page gratuitement</a>
-        <a class="ghost" href="#how">Voir le parcours</a>
+        <a class="ghost" href="#how">Voir comment ca marche</a>
       </div>
-      <p class="microcopy">Aucune carte requise. Configuration en quelques minutes.</p>
-      <div class="steps" style="margin-top:14px;">
-        <article class="step" *ngFor="let b of trustBadges">
-          <span>✓</span>
-          <p>{{ b }}</p>
+      <p class="microcopy">Aucune carte requise. Premiere version en ligne le jour meme.</p>
+      <div class="hero-highlights">
+        <article class="highlight" *ngFor="let item of heroHighlights; let i = index" [style.--delay]="(i * 90) + 'ms'">
+          <span class="highlight-check">OK</span>
+          <p>{{ item }}</p>
         </article>
       </div>
     </div>
-    <div class="hero-mockup" aria-hidden="true">
-      <div class="mockup-card">
-        <p class="mockup-tag">Live Preview</p>
-        <h3>Bella Studio</h3>
-        <p>Beauty services in your city, online booking and instant contact.</p>
-        <p><strong>+37% booking requests in 30 days</strong></p>
+
+    <div class="hero-visual reveal" aria-hidden="true">
+      <div class="preview-shell">
+        <div class="preview-head">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="preview-body">
+          <p class="mockup-tag">Live Preview</p>
+          <h3>Maison Elio - Coiffure & soins</h3>
+          <p>Page locale orientee conversion avec CTA clair, horaires et prise de rendez-vous.</p>
+          <div class="preview-cta-row">
+            <span class="chip">Rendez-vous</span>
+            <span class="chip chip--soft">WhatsApp</span>
+          </div>
+        </div>
+      </div>
+      <div class="metric-card metric-card--primary">
+        <p>Demandes hebdomadaires</p>
+        <strong>+38%</strong>
+      </div>
+      <div class="metric-card">
+        <p>Temps de mise en ligne</p>
+        <strong>09:42</strong>
       </div>
     </div>
   </section>
 
-  <section class="section">
-    <h2>Pourquoi les entrepreneurs choisissent LocalVitrine</h2>
+  <section class="social-proof reveal">
+    <p>Utilise par des entreprises locales ambitieuses:</p>
+    <div class="logo-strip">
+      <span *ngFor="let logo of socialProof">{{ logo }}</span>
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <h2>Pourquoi les equipes locales choisissent LocalVitrine</h2>
     <p class="microcopy">Une plateforme orientee resultat, pas juste un editeur de plus.</p>
-    <div class="feature-grid">
+    <div class="stats-grid">
       <article class="feature" *ngFor="let s of stats">
         <h3>{{ s.value }}</h3>
         <p>{{ s.label }}</p>
@@ -50,50 +81,58 @@
     </div>
   </section>
 
-  <section id="features" class="section">
+  <section id="features" class="section reveal">
     <h2>Tout ce qu il faut pour lancer plus vite</h2>
-    <p class="microcopy">Chaque fonctionnalite est pensee pour faciliter la conversion.</p>
+    <p class="microcopy">Chaque fonctionnalite est concue pour clarifier votre offre et augmenter vos conversions.</p>
     <div class="feature-grid">
-      <article class="feature" *ngFor="let feature of features">
-        <h3>{{ feature.title }}</h3>
+      <article class="feature feature--premium" *ngFor="let feature of features; let i = index" [style.--delay]="(i * 70) + 'ms'">
+        <div class="feature-head">
+          <span class="feature-icon">{{ feature.icon }}</span>
+          <h3>{{ feature.title }}</h3>
+        </div>
         <p>{{ feature.description }}</p>
+        <small>{{ feature.detail }}</small>
       </article>
     </div>
   </section>
 
-  <section id="how" class="section">
+  <section id="how" class="section reveal">
     <h2>Comment ca marche</h2>
-    <p class="microcopy">Un parcours guide, clair et rassurant du debut a la publication.</p>
-    <div class="steps">
-      <article class="step" *ngFor="let step of steps; let i = index">
+    <p class="microcopy">Un systeme simple en 4 etapes pour passer de l idee a la page performante.</p>
+    <div class="steps steps--flow">
+      <article class="step step--flow" *ngFor="let step of steps; let i = index" [style.--delay]="(i * 80) + 'ms'">
         <span>{{ i + 1 }}</span>
-        <p>{{ step }}</p>
+        <div>
+          <p class="step-label">{{ step.timing }}</p>
+          <h3>{{ step.title }}</h3>
+          <p>{{ step.description }}</p>
+        </div>
       </article>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section reveal">
     <h2>Les resultats que vous pouvez viser</h2>
     <p class="microcopy">Une meilleure image, plus de demandes et une execution plus rapide.</p>
-    <div class="feature-grid">
-      <article class="feature" *ngFor="let o of outcomes">
+    <div class="feature-grid outcomes-grid">
+      <article class="feature" *ngFor="let o of outcomes; let i = index" [style.--delay]="(i * 90) + 'ms'">
         <h3>{{ o.title }}</h3>
         <p>{{ o.description }}</p>
       </article>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section reveal">
     <h2>Ils nous font confiance pour leur croissance locale</h2>
     <div class="testimonials">
-      <article class="testimonial" *ngFor="let t of testimonials">
+      <article class="testimonial" *ngFor="let t of testimonials; let i = index" [style.--delay]="(i * 100) + 'ms'">
         <p>"{{ t.quote }}"</p>
         <strong>{{ t.author }}</strong>
       </article>
     </div>
   </section>
 
-  <section id="pricing" class="section pricing">
+  <section id="pricing" class="section pricing reveal">
     <h2>Tarification simple et transparente</h2>
     <div class="pricing-card">
       <p class="plan">Plan Starter</p>
@@ -110,29 +149,54 @@
     </div>
   </section>
 
-  <section class="section">
+  <section id="faq" class="section reveal">
     <h2>Questions frequentes</h2>
-    <div class="testimonials">
+    <div class="faq-grid">
       <article class="testimonial" *ngFor="let faq of faqs">
         <strong>{{ faq.question }}</strong>
-        <p style="margin-top:8px;">{{ faq.answer }}</p>
+        <p class="faq-answer">{{ faq.answer }}</p>
       </article>
     </div>
   </section>
 
-  <section class="final-cta">
-    <h2>Pret a accelerer votre presence en ligne ?</h2>
-    <p>Lancez votre premiere page premium aujourd hui et commencez a generer de vraies opportunites.</p>
-    <a class="cta" routerLink="/register">Demarrer maintenant</a>
-    <p class="microcopy">Configuration guidee. Resultat visible des la premiere semaine.</p>
+  <section class="final-cta reveal">
+    <p class="kicker">Passez a l action</p>
+    <h2>Votre prochaine landing performante peut etre en ligne aujourd hui.</h2>
+    <p>Demarrez avec une structure premium, adaptez votre message avec l IA, puis publiez en quelques clics.</p>
+    <div class="hero-actions hero-actions--center">
+      <a class="cta" routerLink="/register">Lancer mon essai gratuit</a>
+      <a class="ghost" routerLink="/login">Acceder a mon espace</a>
+    </div>
+    <p class="microcopy">Configuration guidee. Support humain. Resultats mesurables rapidement.</p>
   </section>
 
   <footer class="footer">
-    <p>© {{ 2026 }} LocalVitrine. Concu pour la croissance locale.</p>
-    <div>
-      <a routerLink="/login">Connexion</a>
-      <a routerLink="/register">Inscription</a>
+    <div class="footer-brand">
+      <a class="brand" href="#top">
+        <span class="brand-mark">LV</span>
+        <span>LocalVitrine</span>
+      </a>
+      <p>La plateforme SaaS pour creer des pages locales qui convertissent.</p>
     </div>
+    <div class="footer-links">
+      <div>
+        <h4>Produit</h4>
+        <a href="#features">Fonctionnalites</a>
+        <a href="#how">Parcours</a>
+        <a href="#pricing">Tarifs</a>
+      </div>
+      <div>
+        <h4>Compte</h4>
+        <a routerLink="/login">Connexion</a>
+        <a routerLink="/register">Inscription</a>
+      </div>
+      <div>
+        <h4>Ressources</h4>
+        <a href="#faq">FAQ</a>
+        <a href="#top">Demonstration</a>
+      </div>
+    </div>
+    <p class="footer-copy">© {{ 2026 }} LocalVitrine. Concu pour la croissance locale.</p>
   </footer>
 </div>
 
