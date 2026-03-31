@@ -18,10 +18,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render shell brand link', () => {
+  it('should render marketing layout on root route', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.textContent).toContain('LocalVitrine');
+    expect(compiled.querySelector('.marketing-layout')).toBeTruthy();
   });
 });
