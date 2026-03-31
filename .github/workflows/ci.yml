@@ -63,7 +63,7 @@ jobs:
         env:
           CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
           CI: true
-        run: npm run test -- --watch=false --browsers=ChromeHeadless --no-progress
+        run: npm run test -- --watch=false --browsers=ChromeHeadlessCI --no-progress
 
       - name: Lint (if available)
         run: |
